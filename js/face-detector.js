@@ -57,25 +57,25 @@ const state = {
 /**初始化模型加载 */
 async function fnLoadModel() {
     // 面部轮廓模型
-    await faceapi.loadFaceLandmarkModel("/live2d_demo/public/models");
+    await faceapi.loadFaceLandmarkModel("/js/public/models");
     // 面部表情模型
-    await faceapi.loadFaceExpressionModel("/live2d_demo/public/models");
+    await faceapi.loadFaceExpressionModel("/js/public/models");
     // 年龄性别模型
-    await faceapi.loadAgeGenderModel("/live2d_demo/public/models");
+    await faceapi.loadAgeGenderModel("/js/public/models");
 
     // 模型参数-ssdMobilenetv1
-    await faceapi.nets.ssdMobilenetv1.loadFromUri("/live2d_demo/public/models");
+    await faceapi.nets.ssdMobilenetv1.loadFromUri("/js/public/models");
     state.netsOptions.ssdMobilenetv1 = new faceapi.SsdMobilenetv1Options({
         minConfidence: 0.5, // 0.1 ~ 0.9
     });
     // 模型参数-tinyFaceDetector
-    await faceapi.nets.tinyFaceDetector.loadFromUri("/live2d_demo/public/models");
+    await faceapi.nets.tinyFaceDetector.loadFromUri("/js/public/models");
     state.netsOptions.tinyFaceDetector = new faceapi.TinyFaceDetectorOptions({
         inputSize: 224, // 160 224 320 416 512 608
         scoreThreshold: 0.5, // 0.1 ~ 0.9
     });
     // 模型参数-mtcnn 已弃用，将很快被删除
-    await faceapi.nets.mtcnn.loadFromUri("/live2d_demo/public/models");
+    await faceapi.nets.mtcnn.loadFromUri("/js/public/models");
     state.netsOptions.mtcnn = new faceapi.MtcnnOptions({
         minFaceSize: 20, // 1 ~ 50
         scaleFactor: 0.56, // 0.1 ~ 0.9
@@ -122,39 +122,39 @@ async function fnRedraw() {
     const dims = faceapi.matchDimensions(state.canvasEl, state.videoEl, true);
     const result = faceapi.resizeResults(detect, dims);
     // 面框分值
-    if (state.draws.includes("box")) {
-        faceapi.draw.drawDetections(state.canvasEl, result);
-    }
+    // if (state.draws.includes("box")) {
+    //     faceapi.draw.drawDetections(state.canvasEl, result);
+    // }
     // 面部轮廓
     if (state.draws.includes("landmark")) {
         // 需引入面部轮廓模型
         faceapi.draw.drawFaceLandmarks(state.canvasEl, result);
     }
     // 面部表情
-    if (state.draws.includes("expression")) {
-        // 需引入面部表情模型
-        faceapi.draw.drawFaceExpressions(state.canvasEl, result, 0.05);
-    }
+    // if (state.draws.includes("expression")) {
+    //     // 需引入面部表情模型
+    //     faceapi.draw.drawFaceExpressions(state.canvasEl, result, 0.05);
+    // }
     // 年龄性别
-    if (state.draws.includes("ageGender")) {
-        // 需引入年龄性别模型模型
-        const drawItem = (item) => {
-            const { age, gender, genderProbability } = item;
-            new faceapi.draw.DrawTextField(
-                [
-                `${Math.round(age)} Age`,
-                `${gender} (${Math.round(genderProbability)})`,
-                ],
-                item.detection.box.topRight
-            ).draw(state.canvasEl);
-        };
-        // 多结果
-        if (Array.isArray(result)) {
-            result.forEach((item) => drawItem(item));
-        } else {
-            drawItem(result);
-        }
-    }
+    // if (state.draws.includes("ageGender")) {
+    //     // 需引入年龄性别模型模型
+    //     const drawItem = (item) => {
+    //         const { age, gender, genderProbability } = item;
+    //         new faceapi.draw.DrawTextField(
+    //             [
+    //             `${Math.round(age)} Age`,
+    //             `${gender} (${Math.round(genderProbability)})`,
+    //             ],
+    //             item.detection.box.topRight
+    //         ).draw(state.canvasEl);
+    //     };
+    //     // 多结果
+    //     if (Array.isArray(result)) {
+    //         result.forEach((item) => drawItem(item));
+    //     } else {
+    //         drawItem(result);
+    //     }
+    // }
     // 定时器句柄
     state.timer = setTimeout(() => fnRedraw(), 100);
     let x = result[0].detection.box.x +  result[0].detection.box._width/2//获取 人脸绘制结果的x坐标

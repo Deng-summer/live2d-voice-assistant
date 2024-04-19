@@ -1,6 +1,6 @@
 var LAppDefine = {   
     // 调试，true时会在console里显示日志
-    DEBUG_LOG : true,
+    DEBUG_LOG : false,
     DEBUG_MOUSE_LOG : false, // 鼠标相关日志   
     //  全部设定    
     //这里配置canvsa元素的id
@@ -75,7 +75,7 @@ var LAppDefine = {
     HIT_AREA_BODY : "body",
     
     //初始化的模型大小
-    SCALE : 1.0,
+    SCALE : 1,
     //新增属性，是否播放音频 默认为true
     IS_PLAY_AUDIO : true,
     //新增属性，audio标签id值   

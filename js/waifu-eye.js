@@ -1,4 +1,5 @@
-function eyeMove(clientX,clientY){
+function eyeMove(clientX,clientY){// 获取要触发事件的DOM元素
+    var targetElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
     var event = new MouseEvent('mousemove', {
         'view': window,
         'bubbles': true,
@@ -7,28 +8,28 @@ function eyeMove(clientX,clientY){
         'clientY': clientY
     });
     // 触发鼠标移动事件
-    document.dispatchEvent(event);
+    targetElement.dispatchEvent(event);
 
     // 获取页面宽度和高度
     // var pageWidth = window.innerWidth;
     // var pageHeight = window.innerHeight;
 
     // 模拟鼠标移动的函数
-    function simulateMouseMove() {
-        // 生成随机的鼠标坐标
-        var x = Math.floor(Math.random() * pageWidth);
-        var y = Math.floor(Math.random() * pageHeight);
-        // 创建鼠标移动事件
-        var event = new MouseEvent('mousemove', {
-            'view': window,
-            'bubbles': true,
-            'cancelable': true,
-            'clientX': x,
-            'clientY': y
-        });
-        // 触发鼠标移动事件
-        document.dispatchEvent(event);
-    }
+    // function simulateMouseMove() {
+    //     // 生成随机的鼠标坐标
+    //     var x = Math.floor(Math.random() * pageWidth);
+    //     var y = Math.floor(Math.random() * pageHeight);
+    //     // 创建鼠标移动事件
+    //     var event = new MouseEvent('mousemove', {
+    //         'view': window,
+    //         'bubbles': true,
+    //         'cancelable': true,
+    //         'clientX': x,
+    //         'clientY': y
+    //     });
+    //     // 触发鼠标移动事件
+    //     document.dispatchEvent(event);
+    // }
 
     // 模拟鼠标移动的定时器，每隔一段时间触发一次
     // var moveInterval = setInterval(simulateMouseMove, 1000);
@@ -57,6 +58,8 @@ function showMessage(text, timeout, flag) {
         
         $('.waifu-tips').stop();
         $('.waifu-tips').html(text).fadeTo(200, 1);
+        $('.dialog-question').html(text).fadeTo(200, 1);
+        $('.dialog-answer-p').html(text).fadeTo(200, 1);
         if (timeout === undefined) timeout = 5000;
         hideMessage(timeout);
     }

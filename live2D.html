@@ -19,41 +19,53 @@
     <script src="js/live2d.min.js"></script>
     <script src="js/LAppDefine.js"></script>
     <body onload="InitLive2D()">
-        <div class="live2dpage">
+        <div class="live2dpage" id="live2dpage">
             <div class="page_draw">
                 <video
                     id="page_draw-video"
                     muted
-                    playsinline
                 ></video>
                 <canvas id="page_draw-video-canvas"></canvas>
             </div>
             <audio id="my_audio"></audio>
-            <p class="btn-p">
-                <button id="Change" class="active">Change Model</button>
-            </p>
-            <p class="btn-p">
-                <button id="Change" class="active" onclick="test()">Start Talk</button>
-            </p>
-            <p class="btn-p">
-                <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
-            </p>
-            <p class="btn-p">
-                <button id="Change" class="active" onclick="fnOpen()">Face Dectector</button>
-            </p>
-            <p class="btn-p">
-                <button id="Change" class="active" onclick="fnClose()">Face Close</button>
-            </p>
+            <div class='btn-sec'>
+                <p class="btn-p">
+                    <button id="Change" class="active">Change Model</button>
+                </p>
+                <p class="btn-p">
+                    <button id="Change" class="active" onclick="test()">Start Talk</button>
+                </p>
+                <p class="btn-p">
+                    <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
+                </p>
+                <p class="btn-p">
+                    <button id="Change" class="active" onclick="fnOpen()">Face Dectector</button>
+                </p>
+                <p class="btn-p">
+                    <button id="Change" class="active" onclick="fnClose()">Face Close</button>
+                </p>
+            </div>
             <div class="waifu-tips"></div>
             <div>
-                <canvas id="mycanvas" width=600 height=600
-                    style="border:dashed 1px #CCC">
-                </canvas>
+                <canvas id="mycanvas" width=800 height=800></canvas>
             </div>
+            <div class="black-bg">
+
+            </div>
+            <div class="dialog-sec">
+                <div class="dialog-body">
+                    <div class="dialog-question">
+                        请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁
+                    </div>
+                    <div class="dialog-answer">
+                        <p class="dialog-answer-p">请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁是谁请问你是谁请问你是谁请问你是谁</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <script>
             function test() {
-                console.log('test')
                 var model = new LAppModel();
                 model.startAppointMotion("tap_body",3,2);
             }
@@ -61,7 +73,6 @@
                 var model = new LAppModel();
                 model.changeTexure(1);
             }
-
         </script>
     </body>
 </html>

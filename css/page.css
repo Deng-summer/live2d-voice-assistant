@@ -12,8 +12,9 @@
 }
 .waifu-tips {
     opacity: 0;
+    font-size:20px;
     margin: -20px 20px;
-    padding: 5px 10px;
+    padding: 20px 20px;
     border: 1px solid rgba(224, 186, 140, 0.62);
     border-radius: 12px;
     background-color: rgba(236, 217, 188, 0.5);
@@ -21,6 +22,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     position: absolute;
+    right:20%;
     animation-delay: 5s;
     animation-duration: 50s;
     animation-iteration-count: infinite;
@@ -48,248 +50,6 @@
 }
 .waifu #live2d{
     position: relative;
-}
-
-@keyframes shake {
-    2% {
-        transform: translate(0.5px, -1.5px) rotate(-0.5deg);
-    }
-
-    4% {
-        transform: translate(0.5px, 1.5px) rotate(1.5deg);
-    }
-
-    6% {
-        transform: translate(1.5px, 1.5px) rotate(1.5deg);
-    }
-
-    8% {
-        transform: translate(2.5px, 1.5px) rotate(0.5deg);
-    }
-
-    10% {
-        transform: translate(0.5px, 2.5px) rotate(0.5deg);
-    }
-
-    12% {
-        transform: translate(1.5px, 1.5px) rotate(0.5deg);
-    }
-
-    14% {
-        transform: translate(0.5px, 0.5px) rotate(0.5deg);
-    }
-
-    16% {
-        transform: translate(-1.5px, -0.5px) rotate(1.5deg);
-    }
-
-    18% {
-        transform: translate(0.5px, 0.5px) rotate(1.5deg);
-    }
-
-    20% {
-        transform: translate(2.5px, 2.5px) rotate(1.5deg);
-    }
-
-    22% {
-        transform: translate(0.5px, -1.5px) rotate(1.5deg);
-    }
-
-    24% {
-        transform: translate(-1.5px, 1.5px) rotate(-0.5deg);
-    }
-
-    26% {
-        transform: translate(1.5px, 0.5px) rotate(1.5deg);
-    }
-
-    28% {
-        transform: translate(-0.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    30% {
-        transform: translate(1.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    32% {
-        transform: translate(2.5px, -1.5px) rotate(1.5deg);
-    }
-
-    34% {
-        transform: translate(2.5px, 2.5px) rotate(-0.5deg);
-    }
-
-    36% {
-        transform: translate(0.5px, -1.5px) rotate(0.5deg);
-    }
-
-    38% {
-        transform: translate(2.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    40% {
-        transform: translate(-0.5px, 2.5px) rotate(0.5deg);
-    }
-
-    42% {
-        transform: translate(-1.5px, 2.5px) rotate(0.5deg);
-    }
-
-    44% {
-        transform: translate(-1.5px, 1.5px) rotate(0.5deg);
-    }
-
-    46% {
-        transform: translate(1.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    48% {
-        transform: translate(2.5px, -0.5px) rotate(0.5deg);
-    }
-
-    50% {
-        transform: translate(-1.5px, 1.5px) rotate(0.5deg);
-    }
-
-    52% {
-        transform: translate(-0.5px, 1.5px) rotate(0.5deg);
-    }
-
-    54% {
-        transform: translate(-1.5px, 1.5px) rotate(0.5deg);
-    }
-
-    56% {
-        transform: translate(0.5px, 2.5px) rotate(1.5deg);
-    }
-
-    58% {
-        transform: translate(2.5px, 2.5px) rotate(0.5deg);
-    }
-
-    60% {
-        transform: translate(2.5px, -1.5px) rotate(1.5deg);
-    }
-
-    62% {
-        transform: translate(-1.5px, 0.5px) rotate(1.5deg);
-    }
-
-    64% {
-        transform: translate(-1.5px, 1.5px) rotate(1.5deg);
-    }
-
-    66% {
-        transform: translate(0.5px, 2.5px) rotate(1.5deg);
-    }
-
-    68% {
-        transform: translate(2.5px, -1.5px) rotate(1.5deg);
-    }
-
-    70% {
-        transform: translate(2.5px, 2.5px) rotate(0.5deg);
-    }
-
-    72% {
-        transform: translate(-0.5px, -1.5px) rotate(1.5deg);
-    }
-
-    74% {
-        transform: translate(-1.5px, 2.5px) rotate(1.5deg);
-    }
-
-    76% {
-        transform: translate(-1.5px, 2.5px) rotate(1.5deg);
-    }
-
-    78% {
-        transform: translate(-1.5px, 2.5px) rotate(0.5deg);
-    }
-
-    80% {
-        transform: translate(-1.5px, 0.5px) rotate(-0.5deg);
-    }
-
-    82% {
-        transform: translate(-1.5px, 0.5px) rotate(-0.5deg);
-    }
-
-    84% {
-        transform: translate(-0.5px, 0.5px) rotate(1.5deg);
-    }
-
-    86% {
-        transform: translate(2.5px, 1.5px) rotate(0.5deg);
-    }
-
-    88% {
-        transform: translate(-1.5px, 0.5px) rotate(1.5deg);
-    }
-
-    90% {
-        transform: translate(-1.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    92% {
-        transform: translate(-1.5px, -1.5px) rotate(1.5deg);
-    }
-
-    94% {
-        transform: translate(0.5px, 0.5px) rotate(-0.5deg);
-    }
-
-    96% {
-        transform: translate(2.5px, -0.5px) rotate(-0.5deg);
-    }
-
-    98% {
-        transform: translate(-1.5px, -1.5px) rotate(-0.5deg);
-    }
-
-    0%, 100% {
-        transform: translate(0, 0) rotate(0);
-    }
-}
-@font-face {
-  font-family: 'Flat-UI-Icons';
-  src: url('flat-ui-icons-regular.eot');
-  src: url('flat-ui-icons-regular.eot?#iefix') format('embedded-opentype'), url('flat-ui-icons-regular.woff') format('woff'), url('flat-ui-icons-regular.ttf') format('truetype'), url('flat-ui-icons-regular.svg#flat-ui-icons-regular') format('svg');
-}
-[class^="fui-"],
-[class*="fui-"] {
-  font-family: 'Flat-UI-Icons';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.fui-cross:before {
-  content: "\e609";
-}
-.fui-info-circle:before {
-  content: "\e60f";
-}
-.fui-photo:before {
-  content: "\e62a";
-}
-.fui-eye:before {
-  content: "\e62c";
-}
-.fui-custom:before{
-  content: "\e63a";
-}
-.fui-chat:before {
-  content: "\e62d";
-}
-.fui-home:before {
-  content: "\e62e";
-}
-.fui-user:before {
-  content: "\e631";
 }
 html, body {
     oveflow: hidden;
@@ -367,6 +127,11 @@ button.inactive {
         to(#c0392b));
     border: 1px solid #c0392b;
 }
+.btn-sec{
+    position: fixed;
+    top: 10%;
+    z-index: 999;
+}
 .btn-p{
     display:inline-block;
 }
@@ -376,6 +141,7 @@ button.inactive {
     top:20%;
     left:30%;
 }
+
 .live2dpage{
     position: fixed;
     top: 0;
@@ -384,13 +150,10 @@ button.inactive {
     bottom:0;
     width: 100vw;
     height: 100vh;
-    z-index:99;
+    background-color: #000;
 }
 
-.page{
-    z-index:0;
-}
-.page .page_draw {
+.page_draw {
     position: fixed;
     top: 0;
     left: 0;
@@ -400,31 +163,78 @@ button.inactive {
     height: 100vh;
 }
 
-.page .page_draw #page_draw-video {
+#page_draw-video {
     position: fixed;
     top: 0;
     left: 0;
     right:0;
     bottom:0;
-    width: 100vw;
-    height: 100vh;
-}
-.page .page_draw #page_draw-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right:0;
-    bottom:0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 0;
 }
 
-.page .page_draw #page_draw-video-canvas {
+#page_draw-video-canvas {
     position: fixed;
     top: 0;
     left: 0;
     right:0;
     bottom:0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+.black-bg{
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 100;
+}
+.dialog-sec{
+    position: fixed;
+    top:10%;
+    right:5%;
+    width: 600px;
+    max-width: 600px;
+    background-image: url('../img/dialogbg.png');
+    background-size: 100% 100%;
+    z-index:1000;
+}
+.dialog-body{
+    padding:22px 22px;
+    font-weight: 400;
+    font-size: 23px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+}
+.dialog-question{
+    min-height: 42px;
+    padding:7px 9px 6px 17px;
+    background: linear-gradient( 135deg, #A3BAE8 0%, #1C7195 100%);
+    border-radius: 10px 0px 10px 10px;
+    border: 0px solid;
+    border-image: linear-gradient(156deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)) 0 0;
+    max-width: 80%;
+    margin-left: auto;
+}
+.dialog-answer{
+    min-height: 42px;
+    background: linear-gradient( 136deg, #FFFFFF 0%, rgba(255,255,255,0.3) 100%);
+    border-radius: 0px 10px 10px 10px;
+    border: 0px solid;
+    /* border-image: linear-gradient(156deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)) 0 0; */
+    margin-top: 28px;
+    padding:7px 9px 6px 17px;
+    border-radius: 0px 10px 10px 10px;
+    font-size: #fff;
+    max-width: 80%;
+    background-image: url('../img/dialogbg.png');
+    background-size: 100% 100%;
+}
+.dialog-answer-p{
+    color: #fff;
+    opacity: 1 ;
 }

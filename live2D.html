@@ -4,20 +4,23 @@
         <meta charset="UTF-8">
             <title>Live2D SampleApp1</title>
         </meta>
-        
         <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=1.0, maximum-scale=4.0">
         </meta>
         <link rel="stylesheet" type="text/css" href="css/page.css?v=1.4.2"/>
         <style></style>
     </head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/waifu-eye.js"></script>
     <script src="./js/face-api.min.js"></script>
-    <script src="./js/face-detector.js"></script>
-    <script src="./js/websocket.js"></script>
-    <!-- Live2D Library -->
-    <script src="js/live2d.min.js"></script>
     <script src="js/LAppDefine.js"></script>
+    <!-- 人脸检测 -->
+    <script src="./js/face-detector.js"></script>
+    <!-- 处理接收音频 -->
+    <script src="js/audioLoad.js"></script> 
+    <!-- 处理接收消息-->
+    <script src="./js/websocket.js"></script>
+    <script src="js/live2d.min.js"></script>
     <body onload="InitLive2D()">
         <div class="live2dpage" id="live2dpage">
             <div class="page_draw">
@@ -29,50 +32,53 @@
             </div>
             <audio id="my_audio"></audio>
             <div class='btn-sec'>
-                <p class="btn-p">
+                <!-- <p class="btn-p">
                     <button id="Change" class="active">Change Model</button>
-                </p>
+                </p> -->
                 <p class="btn-p">
-                    <button id="Change" class="active" onclick="test()">Start Talk</button>
+                    <!-- <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button> -->
                 </p>
-                <p class="btn-p">
+                <!-- <p class="btn-p">
                     <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
                 </p>
                 <p class="btn-p">
+                    <button id="Change" class="active" onclick="connectAudio()">Connect Audio</button>
+                </p> -->
+                <!-- <p class="btn-p">
                     <button id="Change" class="active" onclick="fnOpen()">Face Dectector</button>
-                </p>
-                <p class="btn-p">
+                </p> -->
+                <!-- <p class="btn-p">
                     <button id="Change" class="active" onclick="fnClose()">Face Close</button>
-                </p>
+                </p> -->
             </div>
             <div class="waifu-tips"></div>
             <div>
                 <canvas id="mycanvas" width=800 height=800></canvas>
             </div>
-            <div class="black-bg">
-
-            </div>
+            <div class="black-bg"></div>
             <div class="dialog-sec">
                 <div class="dialog-body">
                     <div class="dialog-question">
-                        请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁
+                        请问你是谁
                     </div>
                     <div class="dialog-answer">
-                        <p class="dialog-answer-p">请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁请问你是谁是谁请问你是谁请问你是谁请问你是谁</p>
+                        <p class="dialog-answer-p">我也不知道我是谁！</p>
                     </div>
                 </div>
             </div>
 
         </div>
         <script>
-            function test() {
-                var model = new LAppModel();
-                model.startAppointMotion("tap_body",3,2);
-            }
+            //切换皮肤
             function changeTexure() {
                 var model = new LAppModel();
                 model.changeTexure(1);
             }
+
+            // connect()
+            // connectAudio()
+            fnOpen()
+            
         </script>
     </body>
 </html>

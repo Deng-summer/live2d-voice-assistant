@@ -28,7 +28,7 @@ var LAppDefine = {
     PRIORITY_FORCE : 3,
 
     //是否绑定切换模型按钮
-    IS_BIND_BUTTON : true,
+    IS_BIND_BUTTON : false,
     //绑定按钮元素id
     BUTTON_ID : "Change",
     //是否开启模型切换完成之前禁止按钮点击的选项，默认为true

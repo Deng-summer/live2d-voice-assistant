@@ -1,8 +1,8 @@
-function eyeMove(clientX,clientY){// 获取要触发事件的DOM元素
+function eyeMove(clientX,clientY){
     var targetElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
     var event = new MouseEvent('mousemove', {
         'view': window,
-        'bubbles': true,
+        'bubbles': false,
         'cancelable': true,
         'clientX': clientX,
         'clientY': clientY
@@ -13,7 +13,6 @@ function eyeMove(clientX,clientY){// 获取要触发事件的DOM元素
     // 获取页面宽度和高度
     // var pageWidth = window.innerWidth;
     // var pageHeight = window.innerHeight;
-
     // 模拟鼠标移动的函数
     // function simulateMouseMove() {
     //     // 生成随机的鼠标坐标
@@ -41,33 +40,10 @@ function eyeMove(clientX,clientY){// 获取要触发事件的DOM元素
     // function stopSimulateMouseMove() {
     //     clearInterval(moveInterval);
     // }
-    var element = document;
-    // 添加鼠标移动事件监听器
-    element.addEventListener('mousemove', function(event) {
-        // console.log('位置',event.clientX,event.clientY)
-    // 当鼠标移动时触发的操作
-    })
-}
-
-function showMessage(text, timeout, flag) {
-    // console.log(101,text)
-    if(flag || sessionStorage.getItem('waifu-text') === '' || sessionStorage.getItem('waifu-text') === null){
-        if(Array.isArray(text)) text = text[Math.floor(Math.random() * text.length + 1)-1];
-        // if (live2d_settings.showF12Message) console.log('[Message]', text.replace(/<[^<>]+>/g,''));
-        if(flag) sessionStorage.setItem('waifu-text', text);
-        
-        $('.waifu-tips').stop();
-        $('.waifu-tips').html(text).fadeTo(200, 1);
-        $('.dialog-question').html(text).fadeTo(200, 1);
-        $('.dialog-answer-p').html(text).fadeTo(200, 1);
-        if (timeout === undefined) timeout = 5000;
-        // hideMessage(timeout);
-    }
-}
-
-function hideMessage(timeout) {
-    $('.waifu-tips').stop().css('opacity',1);
-    if (timeout === undefined) timeout = 5000;
-    window.setTimeout(function() {sessionStorage.removeItem('waifu-text')}, timeout);
-    $('.waifu-tips').delay(timeout).fadeTo(200, 0);
+    // var element = document;
+    // // 添加鼠标移动事件监听器
+    // element.addEventListener('mousemove', function(event) {
+    //     // console.log('位置',event.clientX,event.clientY)
+    //     // 当鼠标移动时触发的操作
+    // })
 }

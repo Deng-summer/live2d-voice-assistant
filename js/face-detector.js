@@ -155,15 +155,29 @@ async function fnRedraw() {
     //     }
     // }
     // 定时器句柄
-    state.timer = setTimeout(() => fnRedraw(), 100);
-    let x = result[0].detection.box.x +  result[0].detection.box._width/2//获取 人脸绘制结果的x坐标
-    let y = result[0].detection.box.y +  result[0].detection.box._height/2//获取 人脸绘制结果的y坐标
-    // console.log(x,y)
-    eyeMove(x,y)
+    state.timer = setTimeout(() => fnRedraw(), 80);
+    let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
+    let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
+    eyeMove(Math.floor(x),Math.floor(y))
 }
 /**启动摄像头视频媒体 */
 async function fnOpen() {
     if (state.stream) return;
+    if (!state.videoEl) {
+        state.videoEl = document.getElementById("page_draw-video");
+        if (!state.videoEl) {
+            console.error("无法找到视频元素");
+            return;
+        }
+    }
+
+    if (!state.canvasEl) {
+        state.canvasEl = document.getElementById("page_draw-video-canvas");
+        if (!state.canvasEl) {
+            console.error("无法找到画布元素");
+            return;
+        }
+    }
     try {
         state.stream = {}; // 置为空对象，避免重复点击
         const stream = await navigator.mediaDevices.getUserMedia(state.constraints);
@@ -232,9 +246,8 @@ function fnChange(e) {
 
 
 window.addEventListener('load', async (event) => {
-    console.log('Page and all resources are loaded');
     await fnLoadModel();
-    fnOpen() //button按钮控制
+    await fnOpen() //button按钮控制
     // 在这里执行你想要在页面加载完成后执行的操作
 });
 window.addEventListener('beforeunload', (event) => {

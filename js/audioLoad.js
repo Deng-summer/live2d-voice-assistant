@@ -1,0 +1,121 @@
+
+let socket_audio; // WebSocket 对象
+const url_audio = 'ws://192.168.192.10:7999/ws_vedio'; // WebSocket 服务器地址
+// const url_audio = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
+let reconnectInterval_audio = 1000; // 重连间隔时间，单位：毫秒
+let maxReconnectIntezrval_audio = 30000; // 最大重连间隔时间，单位：毫秒
+let socketText_audio = ''
+
+function connectAudio() {
+    socket_audio = new WebSocket(url_audio); // 创建 WebSocket 连接
+    // 连接打开时触发
+    socket_audio.onopen = function(event) {
+        console.log('ws_vedio WebSocket连接已打开');
+        // showMessage('ws_vedio WebSocket连接已打开', 10000); 
+    };
+
+    // 接收到消息时触发
+    socket_audio.onmessage = function(event) {
+        let temp = event.data
+        console.log('ws_vedio 消息', temp);
+        socketText_audio = temp
+
+        let url_audio = temp && JSON.parse(temp)?.[0]
+        downAudio(url_audio)
+    };
+
+    // 连接关闭时触发
+    socket_audio.onclose = function(event) {
+        console.log('WebSocket连接已关闭');
+        // 触发重连逻辑
+        reconnectAudio();
+    };
+
+    // 发生错误时触发
+    socket_audio.onerror = function(event) {
+        console.error('WebSocket连接出错：', event);
+        // 触发重连逻辑
+        reconnectAudio();
+    };
+}
+
+function reconnectAudio() {
+    // 重连间隔递增
+    reconnectInterval_audio = Math.min(2 * reconnectInterval_audio, maxReconnectInterval);
+    console.log(`尝试在 ${reconnectInterval_audio} 毫秒后重连...`);
+    
+    // 在重连间隔后尝试重新连接
+    setTimeout(function() {
+        connect();
+    }, reconnectInterval_audio);
+}
+// 销毁 WebSocket 连接
+function disconnectAudio() {
+    if (socket_audio) {
+        socket_audio.close(); // 关闭 WebSocket 连接
+        console.log('WebSocket 连接已销毁');
+    }
+}
+
+// 在页面关闭之前执行销毁操作
+window.addEventListener('beforeunload', function(event) {
+    disconnectAudio(); // 页面关闭前销毁 WebSocket 连接
+});
+
+//下载音频
+function downAudio(filePath){
+    return new Promise((resolve,reject)=>{
+        let url = 'http://192.168.192.10:7999/down_load'
+        axios({
+            data:{filepath:filePath},
+            method: 'POST',
+            url,
+            responseType: 'arraybuffer', // 默认值
+            timeout: 0, // 默认值是 `0` (永不超时)
+        }).then(res =>{
+            playAudio(res.data)
+            resolve(res)
+        }).catch(err =>{
+            reject(err)
+        })
+    })
+}
+
+// 播放音频数据放入音频播放器
+function playAudio(arrayBuffer) {
+    const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' }); // 创建 Blob 对象
+    const audioData = URL.createObjectURL(blob); // 生成 Blob URL
+    console.log('生成 Blob URL',audioData)
+    let audioPlayer = document.getElementById('my_audio');
+    audioPlayer.pause()
+    audioPlayer.src = audioData
+    audioPlayer.play();
+    // 在音频加载完成后获取音频时长
+    audioPlayer.onloadedmetadata = function() {
+        let talkTime = audioPlayer.duration
+        changeTalk(talkTime)
+    };
+}
+
+//切换说话动作
+function changeTalk(time) {
+    var model = new LAppModel();
+// (2) 第二个参数3 ，动作的优先级程度
+    // 动作优先级常量
+    // PRIORITY_NONE : 0,
+    // PRIORITY_IDLE : 1,
+    // PRIORITY_NORMAL : 2,
+    // PRIORITY_FORCE : 3,
+// （3）第三个参数10，代表动作组里的第(10 + 1)个动作，数组从0开始。
+
+    model.startAppointMotion("tap_body",3,2);
+    let timer = null
+
+    if(timer){
+        timer = setTimeout(() => {
+            model.startAppointMotion("idle",3,0);
+            clearTimeout(timers)
+            timer = null
+        }, time*1000)
+    }
+}

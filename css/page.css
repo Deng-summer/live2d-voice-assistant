@@ -212,7 +212,7 @@ button.inactive {
 }
 .dialog-question{
     min-height: 42px;
-    padding:7px 9px 6px 17px;
+    padding:17px 9px 6px 17px;
     background: linear-gradient( 135deg, #A3BAE8 0%, #1C7195 100%);
     border-radius: 10px 0px 10px 10px;
     border: 0px solid;

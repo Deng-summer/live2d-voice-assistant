@@ -53,7 +53,6 @@ const state = {
     /**视频流 */
     stream: null,
 }
-
 /**初始化模型加载 */
 async function fnLoadModel() {
     // 面部轮廓模型
@@ -231,23 +230,16 @@ function fnChange(e) {
     }, 300);
 }
 
-// onMounted(() => {
-//     fnLoadModel();
-// });
-
-// onUnmounted(() => {
-//     clearTimeout(state.timer);
-//     state.timer = 0;
-// });
 
 window.addEventListener('load', async (event) => {
     console.log('Page and all resources are loaded');
     await fnLoadModel();
-    // fnOpen() //button按钮控制
+    fnOpen() //button按钮控制
     // 在这里执行你想要在页面加载完成后执行的操作
 });
 window.addEventListener('beforeunload', (event) => {
     console.log('beforeunload');
+    fnClose()
     clearTimeout(state.timer);
     state.timer = 0;
 });

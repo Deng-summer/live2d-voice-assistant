@@ -61,7 +61,7 @@ function showMessage(text, timeout, flag) {
         $('.dialog-question').html(text).fadeTo(200, 1);
         $('.dialog-answer-p').html(text).fadeTo(200, 1);
         if (timeout === undefined) timeout = 5000;
-        hideMessage(timeout);
+        // hideMessage(timeout);
     }
 }
 

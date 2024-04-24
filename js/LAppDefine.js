@@ -28,7 +28,7 @@ var LAppDefine = {
     PRIORITY_FORCE : 3,
 
     //是否绑定切换模型按钮
-    IS_BIND_BUTTON : false,
+    IS_BIND_BUTTON : true,
     //绑定按钮元素id
     BUTTON_ID : "Change",
     //是否开启模型切换完成之前禁止按钮点击的选项，默认为true
@@ -58,7 +58,9 @@ var LAppDefine = {
         ["model/shizuku/shizuku.model.json"],
         ["model/haru/haru_01.model.json","model/haru/haru_02.model.json"],
         ["model/Epsilon2.1/Epsilon2.1.model.json"],
-        ["model/Pio/model.json"]
+        ["model/aite/model.json"],
+        ["model/Epsilon2.1/Epsilon2.1.model.json"],
+        // ["model/Pio/model.json"]
     ],
 
     // 与外部定义的json文件匹配

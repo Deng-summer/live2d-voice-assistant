@@ -20,7 +20,9 @@
     <script src="js/audioLoad.js"></script> 
     <!-- 处理接收消息-->
     <script src="./js/websocket.js"></script>
-    <script src="js/live2d.min.js"></script>
+    <script src="./js/live2d.min.js"></script>
+    <script src="./js/streamText.js"></script>
+
     <body onload="InitLive2D()">
         <div class="live2dpage" id="live2dpage">
             <div class="page_draw">
@@ -32,9 +34,9 @@
             </div>
             <audio id="my_audio"></audio>
             <div class='btn-sec'>
-                <!-- <p class="btn-p">
+                <p class="btn-p">
                     <button id="Change" class="active">Change Model</button>
-                </p> -->
+                </p>
                 <p class="btn-p">
                     <!-- <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button> -->
                 </p>
@@ -78,7 +80,7 @@
             // connect()
             // connectAudio()
             fnOpen()
-            
+
         </script>
     </body>
 </html>

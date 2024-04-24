@@ -158,7 +158,9 @@ async function fnRedraw() {
     state.timer = setTimeout(() => fnRedraw(), 80);
     let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
-    eyeMove(Math.floor(x),Math.floor(y))
+    if(x>0 && y>0){
+        eyeMove(Math.floor(x),Math.floor(y))
+    }
 }
 /**启动摄像头视频媒体 */
 async function fnOpen() {

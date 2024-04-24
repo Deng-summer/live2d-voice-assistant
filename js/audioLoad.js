@@ -20,8 +20,10 @@ function connectAudio() {
         console.log('ws_vedio 消息', temp);
         socketText_audio = temp
 
-        let url_audio = temp && JSON.parse(temp)?.[0]
-        downAudio(url_audio)
+        let url_audioArr = temp && JSON.parse(temp)
+        url_audioArr.foreach((item)=>{
+            downAudio(item)
+        })
     };
 
     // 连接关闭时触发
@@ -107,10 +109,8 @@ function changeTalk(time) {
     // PRIORITY_NORMAL : 2,
     // PRIORITY_FORCE : 3,
 // （3）第三个参数10，代表动作组里的第(10 + 1)个动作，数组从0开始。
-
     model.startAppointMotion("tap_body",3,2);
     let timer = null
-
     if(timer){
         timer = setTimeout(() => {
             model.startAppointMotion("idle",3,0);

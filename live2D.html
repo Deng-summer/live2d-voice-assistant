@@ -11,8 +11,20 @@
     </head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/jquery.min.js"></script>
-    <script src="./js/waifu-eye.js"></script>
+
+    <!-- live2d sdk2 sdk4版本支持 -->
+    <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
+    <script src="./js/live2d-cubism4.js"></script>
+    <!-- <script src="./js/live2d-cubism4-basic.js"></script> -->
+
+    <!-- 眼球追踪控制 -->
+    <script src="./js/move-eye.js"></script>
     <script src="./js/face-api.min.js"></script>
+    <!-- live2d 配置 -->
     <script src="js/LAppDefine.js"></script>
     <!-- 人脸检测 -->
     <script src="./js/face-detector.js"></script>
@@ -20,10 +32,10 @@
     <script src="js/audioLoad.js"></script> 
     <!-- 处理接收消息-->
     <script src="./js/websocket.js"></script>
-    <script src="./js/live2d.min.js"></script>
+    <!-- <script src="./js/live2d.min.js"></script>  -->
     <script src="./js/streamText.js"></script>
-
-    <body onload="InitLive2D()">
+    <!-- <body onload="InitLive2D()"> -->
+    <body>
         <div class="live2dpage" id="live2dpage">
             <div class="page_draw">
                 <video
@@ -38,7 +50,7 @@
                     <button id="Change" class="active">Change Model</button>
                 </p>
                 <p class="btn-p">
-                    <!-- <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button> -->
+                    <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button>
                 </p>
                 <!-- <p class="btn-p">
                     <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
@@ -55,9 +67,11 @@
             </div>
             <div class="waifu-tips"></div>
             <div>
-                <canvas id="mycanvas" width=800 height=800></canvas>
+                <!-- <canvas id="mycanvas" width=800 height=800></canvas> -->
+                <canvas id="canvaslive2d4"></canvas>
             </div>
-            <div class="black-bg"></div>
+            <div id="control"></div>
+            <!-- <div class="black-bg"></div> -->
             <div class="dialog-sec">
                 <div class="dialog-body">
                     <div class="dialog-question">
@@ -68,7 +82,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <script>
             //切换皮肤
@@ -76,11 +89,16 @@
                 var model = new LAppModel();
                 model.changeTexure(1);
             }
-
+            const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
+            // 添加鼠标移动事件监听器
+            document.addEventListener('mousemove', function(event) {
+                // console.log('位置',event.clientX,event.clientY)
+                // 当鼠标移动时触发的操作
+            })
             // connect()
             // connectAudio()
-            fnOpen()
-
+            // fnOpen()
+            live2dMain()
         </script>
     </body>
 </html>

@@ -7,6 +7,24 @@
 		],
 		"DisplayInfo": "ai.cdi3.json"
 	},
+	"Motions": {
+		"Idle": [
+			{
+				"File": "idle.motion3.json"
+			}
+		],
+		"Sleepy": [
+			{
+				"File": "sleepy.motion3.json"
+			}
+		],
+		"Tap": [
+			{
+				"File": "talk.motion3.json",
+				"Sound": "../shizuku/sounds/flickHead_00.mp3"
+			}
+		]
+	},
 	"Groups": [
 		{
 			"Target": "Parameter",
@@ -20,6 +38,16 @@
 				"ParamEyeLOpen",
 				"ParamEyeROpen"
 			]
+		}
+	],
+	"HitAreas": [
+		{
+			"Id": "HitArea",
+			"Name": "Head"
+		},
+		{
+			"Id": "HitArea2",
+			"Name": "Body"
 		}
 	]
 }

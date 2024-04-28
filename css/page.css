@@ -136,10 +136,31 @@ button.inactive {
     display:inline-block;
 }
 #mycanvas{
+    display: none;
     z-index:999;
     position:fixed;
     top:20%;
     left:30%;
+}
+#control{
+    position: absolute;
+    top: 8px;
+    left: 24px;
+    color: white;
+    font-size: 18px;
+}
+#canvaslive2d4{
+    z-index:999;
+    position:fixed;
+    top:0%;
+    left:0%;
+    width: 100vw;
+    height: 100vh;
+    /* eyemove 测试使用 eyemove*/
+    /* top:30%;
+    left:40%;
+    width: 300px;
+    height: 300px; */
 }
 
 .live2dpage{

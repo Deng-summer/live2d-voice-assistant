@@ -159,9 +159,26 @@ async function fnRedraw() {
     let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
     if(x>0 && y>0){
-        eyeMove(Math.floor(x),Math.floor(y))
+        //节流版
+        // throttledEyeMove(Math.floor(x), Math.floor(y));
+        //不节流版
+        // eyeMove(Math.floor(x), Math.floor(y))
     }
 }
+function throttle(func, wait) {
+    let previous = 0;
+    return function() {
+        const now = Date.now();
+        const context = this;
+        const args = arguments;
+        if (now - previous > wait) {
+        func.apply(context, args);
+            previous = now;
+        }
+    };
+}
+// 使用节流函数包装 eyeMove 函数
+const throttledEyeMove = throttle(eyeMove, 50);
 /**启动摄像头视频媒体 */
 async function fnOpen() {
     if (state.stream) return;

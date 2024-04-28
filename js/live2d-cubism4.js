@@ -4,7 +4,7 @@ const mikongMotionSleepy = '../../../ai/sleepy.motion3.json'
 const mikongMotionTalk = '../../../ai/talk.motion3.json'
 
 const haruModel = '../../../haru/haru_greeter_t03.model3.json'
-const haruMotionM05 = '../../../haru/motion/haru_g_m05.motion3.json'
+// const haruMotionM05 = '../../../haru/motion/haru_g_m05.motion3.json'
 
 const live2d = PIXI.live2d;
 
@@ -15,8 +15,10 @@ async function live2dMain() {
         resizeTo: window,
         backgroundColor: 0x647
     });
+    //测试haru Tap动作 成功
+    // const model = await live2d.Live2DModel.from(haruModel);
+    const model = await live2d.Live2DModel.from(mikongModel);
 
-    const model = await live2d.Live2DModel.from(haruModel);
     app.stage.addChild(model);
 
     const scaleX = (innerWidth * 0.4) / model.width;
@@ -25,20 +27,20 @@ async function live2dMain() {
     model.x = 0;
     model.scale.set(0.6);
     
-    const settings = {
-        motions: {
-            sleepy: [
-                { file: "../../../haru/motion/haru_g_m05.motion3.json", fade_in: 0.5, fade_out: 0.5 },
-            ],
-        },
-        expressions: true // 表情是否可用，根据你的需求设置
-    };
-    const customParameters = {
-        idle: haruMotionM05,
-        // sleepy: mikongMotionSleepy,
-        // talk: mikongMotionTalk
-    };
-    const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
+    // const settings = {
+    //     motions: {
+    //         sleepy: [
+    //             { file: "../../../haru/motion/haru_g_m05.motion3.json", fade_in: 0.5, fade_out: 0.5 },
+    //         ],
+    //     },
+    //     expressions: true // 表情是否可用，根据你的需求设置
+    // };
+    // const customParameters = {
+    //     idle: haruMotionM05,
+    //     // sleepy: mikongMotionSleepy,
+    //     // talk: mikongMotionTalk
+    // };
+    // const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
     setInterval(() => {
         console.log('start motion')
         // motionManager.startMotion('sleepy');

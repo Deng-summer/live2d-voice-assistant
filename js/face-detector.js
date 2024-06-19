@@ -160,7 +160,7 @@ async function fnRedraw() {
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
     if(x>0 && y>0){
         //节流版
-        // throttledEyeMove(Math.floor(x), Math.floor(y));
+        throttledEyeMove(Math.floor(x), Math.floor(y));
         //不节流版
         // eyeMove(Math.floor(x), Math.floor(y))
     }

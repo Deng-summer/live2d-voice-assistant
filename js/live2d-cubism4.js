@@ -7,24 +7,27 @@ const haruModel = '../../../haru/haru_greeter_t03.model3.json'
 // const haruMotionM05 = '../../../haru/motion/haru_g_m05.motion3.json'
 
 const live2d = PIXI.live2d;
-
+var model = {}
 async function live2dMain() {
     const app = new PIXI.Application({
         view: document.getElementById("canvaslive2d4"),
         autoStart: true,
         resizeTo: window,
-        backgroundColor: 0x647
+        backgroundColor: 0x000
     });
     //测试haru Tap动作 成功
     // const model = await live2d.Live2DModel.from(haruModel);
-    const model = await live2d.Live2DModel.from(mikongModel);
-
+    model = await live2d.Live2DModel.from(mikongModel);
+    
     app.stage.addChild(model);
 
-    const scaleX = (innerWidth * 0.4) / model.width;
-    const scaleY = (innerHeight * 0.8) / model.height;
-    model.scale.set(Math.min(scaleX, scaleY));
+    // const scaleX = (innerWidth * 0.4) / model.width;
+    // const scaleY = (innerHeight * 0.8) / model.height;
+    // model.scale.set(Math.min(scaleX, scaleY));
     model.x = 0;
+    model.y = 0;
+    model.width = innerWidth
+    model.width = innerHeight
     model.scale.set(0.6);
     
     // const settings = {
@@ -41,11 +44,21 @@ async function live2dMain() {
     //     // talk: mikongMotionTalk
     // };
     // const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
-    setInterval(() => {
-        console.log('start motion')
+    
+    //睡眠动作触发
+    // setInterval(() => {
+        // console.log('start motion')
         // motionManager.startMotion('sleepy');
-        model.motion('Tap',0)
-    }, 5000);
+        // model.motion('sleepy',0) //这段 触发自定义Tap动作
+    // }, 5000);
+
+    //说话动作触发
+    // setInterval(() => {
+        // console.log('model.focus')
+        // motionManager.startMotion('sleepy');
+        // model.motion('Tap',0)
+        // model.focus(0, 0)
+    // }, 100);
 }
 
 // async function live2dMain() {

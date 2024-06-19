@@ -1,6 +1,9 @@
 
 let socket_audio; // WebSocket 对象
-const url_audio = 'ws://192.168.192.10:7999/ws_vedio'; // WebSocket 服务器地址
+// const url_audio = 'ws://192.168.192.10:7999/ws_vedio'; // WebSocket 服务器地址
+const url_audio = 'ws://127.0.0.1:7999/ws_vedio'
+// const url_audio = 'ws://192.168.192.13:7999/ws_vedio'
+
 // const url_audio = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
 let reconnectInterval_audio = 1000; // 重连间隔时间，单位：毫秒
 let maxReconnectIntezrval_audio = 30000; // 最大重连间隔时间，单位：毫秒
@@ -21,7 +24,7 @@ function connectAudio() {
         socketText_audio = temp
 
         let url_audioArr = temp && JSON.parse(temp)
-        url_audioArr.foreach((item)=>{
+        url_audioArr.forEach((item)=>{
             downAudio(item)
         })
     };
@@ -67,7 +70,9 @@ window.addEventListener('beforeunload', function(event) {
 //下载音频
 function downAudio(filePath){
     return new Promise((resolve,reject)=>{
-        let url = 'http://192.168.192.10:7999/down_load'
+        // let url = 'http://192.168.192.10:7999/down_load'
+        let url = 'http://127.0.0.1:7999/down_load'
+        // let url = 'http://192.168.192.13:7999/down_load'
         axios({
             data:{filepath:filePath},
             method: 'POST',
@@ -82,22 +87,55 @@ function downAudio(filePath){
         })
     })
 }
+// 音频队列
+const audioQueue = [];
+ // 标记是否正在播放音频
+let isPlaying = false;
 
 // 播放音频数据放入音频播放器
 function playAudio(arrayBuffer) {
     const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' }); // 创建 Blob 对象
     const audioData = URL.createObjectURL(blob); // 生成 Blob URL
     console.log('生成 Blob URL',audioData)
-    let audioPlayer = document.getElementById('my_audio');
-    audioPlayer.pause()
-    audioPlayer.src = audioData
-    audioPlayer.play();
+    // let audioPlayer = document.getElementById('my_audio');
+    // audioPlayer.pause()
+    // audioPlayer.src = audioData
+    // audioPlayer.play();
+
+    // 将音频 URL 加入音频队列
+    audioQueue.push(audioData);
+    model.motion('talk',0) //这段 触发自定义Tap动作
+
+    // 如果当前没有正在播放的音频，则播放队列中的第一个音频
+    if (!isPlaying) {
+        playNextAudio();
+    }
+
     // 在音频加载完成后获取音频时长
-    audioPlayer.onloadedmetadata = function() {
-        let talkTime = audioPlayer.duration
-        changeTalk(talkTime)
-    };
+    // audioPlayer.onloadedmetadata = function() {
+    //     let talkTime = audioPlayer.duration
+    //     changeTalk(talkTime)
+    // };
 }
+
+// 播放队列中的下一段音频
+function playNextAudio() {
+    // 如果队列中有音频
+    if (audioQueue.length > 0) {
+        isPlaying = true; // 标记正在播放
+
+        const audioPlayer = document.getElementById('my_audio');
+        audioPlayer.src = audioQueue.shift(); // 从队列中取出并移除第一段音频
+        audioPlayer.play();
+
+        // 监听音频结束事件，在音频结束后播放下一段音频
+        audioPlayer.onended = function() {
+            isPlaying = false; // 标记播放结束
+            playNextAudio(); // 播放下一段音频
+        };
+    }
+}
+
 
 //切换说话动作
 function changeTalk(time) {

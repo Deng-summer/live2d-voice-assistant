@@ -1,6 +1,8 @@
 let socket; // WebSocket 对象
-const url = 'ws://192.168.192.10:7999/ws'; // WebSocket 服务器地址
-// const url = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
+// const url = 'ws://192.168.192.10:7999/ws'; // WebSocket 服务器地址
+const url = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
+// const url = 'ws://192.168.192.13:7999/ws'; // 本地WebSocket 服务器地址
+
 let reconnectInterval = 1000; // 重连间隔时间，单位：毫秒
 let maxReconnectInterval = 30000; // 最大重连间隔时间，单位：毫秒
 let socketText = ''
@@ -19,9 +21,12 @@ function connect() {
         console.log('ws 消息', temp);
         let question = temp && JSON.parse(JSON.parse(temp)).question
         let answer = temp && JSON.parse(JSON.parse(temp)).answer
+        //流式输出
+        // streamShowText2($('.dialog-question'),question)
+        // streamShowText2($('.dialog-answer-p'),answer)
 
-        $('.dialog-question').html(question).fadeTo(200, 1);
-        $('.dialog-answer-p').html(answer).fadeTo(200, 1);
+        $('.dialog-question').html(question).fadeTo(100, 1);
+        $('.dialog-answer-p').html(answer).fadeTo(100, 1);
         // showMessage(socketText, 5000); 
     };
 
@@ -57,7 +62,6 @@ function disconnect() {
         console.log('WebSocket 连接已销毁');
     }
 }
-
 
 function showWKText(text, timeout, flag) {
     // console.log(101,text)

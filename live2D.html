@@ -9,15 +9,15 @@
         <link rel="stylesheet" type="text/css" href="css/page.css?v=1.4.2"/>
         <style></style>
     </head>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/cdn/axios.min.js"></script>
     <script src="./js/jquery.min.js"></script>
 
     <!-- live2d sdk2 sdk4版本支持 -->
-    <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
+    <script src="./js/cdn/live2dcubismcore.min.js"></script>
+    <script src="./js/cdn/live2d.min.js"></script>
+    <script src="./js/cdn/pixi.min.js"></script>
+    <script src="./js/cdn/index.min.js"></script>
+    <script src="./js/cdn/extra.min.js"></script>
     <script src="./js/live2d-cubism4.js"></script>
     <!-- <script src="./js/live2d-cubism4-basic.js"></script> -->
 
@@ -74,11 +74,9 @@
             <!-- <div class="black-bg"></div> -->
             <div class="dialog-sec">
                 <div class="dialog-body">
-                    <div class="dialog-question">
-                        请问你是谁
-                    </div>
+                    <div class="dialog-question"></div>
                     <div class="dialog-answer">
-                        <p class="dialog-answer-p">我也不知道我是谁！</p>
+                        <p class="dialog-answer-p"></p>
                     </div>
                 </div>
             </div>
@@ -91,14 +89,15 @@
             }
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
             // 添加鼠标移动事件监听器
-            document.addEventListener('mousemove', function(event) {
-                // console.log('位置',event.clientX,event.clientY)
-                // 当鼠标移动时触发的操作
-            })
-            // connect()
-            // connectAudio()
+            // document.addEventListener('mousemove', function(event) {
+            //     // console.log('位置',event.clientX,event.clientY)
+            //     // 当鼠标移动时触发的操作
+            // })
+            connect()
+            connectAudio()
             // fnOpen()
             live2dMain()
+
         </script>
     </body>
 </html>

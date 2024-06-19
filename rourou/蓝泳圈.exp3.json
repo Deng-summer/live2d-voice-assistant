@@ -1,0 +1,10 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "yongquan_ButtonMW",
+            "Value": 1.0,
+            "Blend": "Add"
+        }
+    ]
+}

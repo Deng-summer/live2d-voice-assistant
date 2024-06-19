@@ -1,0 +1,132 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "肉肉泳装_vts.moc3",
+		"Textures": [
+			"肉肉泳装_vts.4096/texture_00.png",
+			"肉肉泳装_vts.4096/texture_01.png",
+			"肉肉泳装_vts.4096/texture_02.png",
+			"肉肉泳装_vts.4096/texture_03.png",
+			"肉肉泳装_vts.4096/texture_04.png",
+			"肉肉泳装_vts.4096/texture_05.png",
+			"肉肉泳装_vts.4096/texture_06.png",
+			"肉肉泳装_vts.4096/texture_07.png"
+		],
+		"Physics": "肉肉泳装_vts.physics3.json",
+		"DisplayInfo": "肉肉泳装_vts.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "发色变更",
+				"File": "发色变更.exp3.json"
+			},
+			{
+				"Name": "口水",
+				"File": "口水.exp3.json"
+			},
+			{
+				"Name": "哭",
+				"File": "哭.exp3.json"
+			},
+			{
+				"Name": "圈圈眼",
+				"File": "圈圈眼.exp3.json"
+			},
+			{
+				"Name": "墨镜",
+				"File": "墨镜.exp3.json"
+			},
+			{
+				"Name": "带虎牙闭嘴",
+				"File": "带虎牙闭嘴.exp3.json"
+			},
+			{
+				"Name": "帽子",
+				"File": "帽子.exp3.json"
+			},
+			{
+				"Name": "抱住贝壳手",
+				"File": "抱住贝壳手.exp3.json"
+			},
+			{
+				"Name": "爱心眼",
+				"File": "爱心眼.exp3.json"
+			},
+			{
+				"Name": "眯眯眼",
+				"File": "眯眯眼.exp3.json"
+			},
+			{
+				"Name": "脸红",
+				"File": "脸红.exp3.json"
+			},
+			{
+				"Name": "脸黑",
+				"File": "脸黑.exp3.json"
+			},
+			{
+				"Name": "蓝泳圈",
+				"File": "蓝泳圈.exp3.json"
+			},
+			{
+				"Name": "高光消失",
+				"File": "高光消失.exp3.json"
+			},
+			{
+				"Name": "吐舌头",
+				"File": "吐舌头.exp3.json"
+			},
+			{
+				"Name": "外套开关",
+				"File": "外套开关.exp3.json"
+			},
+			{
+				"Name": "星星眼",
+				"File": "星星眼.exp3.json"
+			},
+			{
+				"Name": "泳圈",
+				"File": "泳圈.exp3.json"
+			},
+			{
+				"Name": "手持麦克风",
+				"File": "手持麦克风.exp3.json"
+			},
+			{
+				"Name": "三角嘴",
+				"File": "三角嘴.exp3.json"
+			},
+			{
+				"Name": "高光消失",
+				"File": "高光消失.exp3.json"
+			},
+			{
+				"Name": "瞳色切换",
+				"File": "瞳色切换.exp3.json"
+			},
+			{
+				"Name": "抹胸替换",
+				"File": "抹胸替换.exp3.json"
+			}
+		],
+		"Motions": {
+			"": [
+				{
+					"File": "IDLE.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

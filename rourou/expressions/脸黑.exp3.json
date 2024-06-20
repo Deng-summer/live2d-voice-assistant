@@ -1,0 +1,10 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "Black_ButtonMW",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

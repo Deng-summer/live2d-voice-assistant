@@ -4,7 +4,7 @@
     "ModelID": "c2e5db43e0304ae08ab91cada3beac3f",
     "FileReferences": {
         "Icon": "ico_肉肉泳装_vts.png",
-        "Model": "肉肉泳装_vts.model3.json",
+        "Model": "rourou.model3.json",
         "IdleAnimation": "IDLE.motion3.json",
         "IdleAnimationWhenTrackingLost": ""
     },

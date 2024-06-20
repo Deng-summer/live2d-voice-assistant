@@ -1,0 +1,20 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "EyeNormalButton",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ku_ButtonMW",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "mimiyan_ButtonMW",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

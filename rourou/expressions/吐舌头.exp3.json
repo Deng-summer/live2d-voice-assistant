@@ -1,0 +1,30 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "huyan_ButtonMW",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "tushetou_ButtonMW",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "sanjioazui_NormalMW",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "Mouth_lButtonMW",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "koushui_ButtonMW",
+			"Value": 0,
+			"Blend": "Add"
+		}
+	]
+}

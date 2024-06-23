@@ -1,7 +1,7 @@
 let socket; // WebSocket 对象
 // const url = 'ws://192.168.192.10:7999/ws'; // WebSocket 服务器地址
-const url = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
-// const url = 'ws://192.168.192.13:7999/ws'; // 本地WebSocket 服务器地址
+// const url = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
+const url = 'ws://192.168.192.13:7999/ws_chat'; // 本地WebSocket 服务器地址
 
 let reconnectInterval = 1000; // 重连间隔时间，单位：毫秒
 let maxReconnectInterval = 30000; // 最大重连间隔时间，单位：毫秒
@@ -12,36 +12,62 @@ function connect() {
     // 连接打开时触发
     socket.onopen = function(event) {
         console.log('ws WebSocket连接已打开');
-        // showMessage('WebSocket连接已打开', 10000); 
+        // alert('connect success')
+        // showMessage('WebSocket连接已打开', 1000); 
+        // "{\"session_id\": \"start\"}"
+        // socket.send(JSON.stringify({'session_id':'start'}))
+        socket.send("{\"session_id\": \"start\"}")
+        //test 调试
+        // socket.send("{\"traceId\": \"finish\"}")
     };
 
     // 接收到消息时触发
     socket.onmessage = function(event) {
         let temp = event.data
         console.log('ws 消息', temp);
-        let question = temp && JSON.parse(JSON.parse(temp)).question
-        let answer = temp && JSON.parse(JSON.parse(temp)).answer
-        //流式输出
-        // streamShowText2($('.dialog-question'),question)
-        // streamShowText2($('.dialog-answer-p'),answer)
+        let parse_temp = temp ? JSON.parse(JSON.parse(temp)) : {}
+        if(parse_temp.question ){
+            let question = temp && parse_temp.question
+            //流式滚动输出
+            // streamShowText2($('.dialog-question'),question)
+            // streamShowText2($('.dialog-answer-p'),answer)
+            $('.dialog-question').html(question).fadeTo(100, 1);
+            // showMessage(socketText, 5000); 
 
-        $('.dialog-question').html(question).fadeTo(100, 1);
-        $('.dialog-answer-p').html(answer).fadeTo(100, 1);
-        // showMessage(socketText, 5000); 
+        }else if(parse_temp.answer){
+            let answer = temp && parse_temp.answer
+            $('.dialog-answer-p').html(answer).fadeTo(100, 1);
+        }
+        else if(parse_temp.filepath){
+            let path = parse_temp.filepath
+            //autdioLoad中处理 音频
+            handleAudioMesage(path) //autdioLoad中处理
+        }
+        else if(parse_temp.status){
+            // alert(parse_temp.status)
+            if(parse_temp.status === '主动聆听'){
+                $('#listen-desc').show();
+            }else{
+                $('#listen-desc').hide();
+            }
+        }
+        
     };
 
     // 连接关闭时触发
     socket.onclose = function(event) {
-        console.log('WebSocket连接已关闭');
+        console.log('ws WebSocket连接已关闭');
+        // alert('ws WebSocket连接已关闭')
         // 触发重连逻辑
-        reconnect();
+        // reconnect();
     };
 
     // 发生错误时触发
     socket.onerror = function(event) {
-        console.error('WebSocket连接出错：', event);
+        console.error('ws WebSocket连接出错：', event);
+        alert('ws WebSocket连接出错')
         // 触发重连逻辑
-        reconnect();
+        // reconnect();
     };
 }
 

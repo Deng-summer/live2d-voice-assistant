@@ -27,7 +27,7 @@
     <!-- live2d 配置 -->
     <script src="js/LAppDefine.js"></script>
     <!-- 人脸检测 -->
-    <script src="./js/face-detector.js"></script>
+    <!-- <script src="./js/face-detector.js"></script> -->
     <!-- 处理接收音频 -->
     <script src="js/audioLoad.js"></script> 
     <!-- 处理接收消息-->
@@ -37,6 +37,8 @@
     <!-- <body onload="InitLive2D()"> -->
     <body>
         <div class="live2dpage" id="live2dpage">
+            <!-- <button class="btn-p start-p" id="myButton" onclick="connect()">start connect</button> -->
+            <div id="listen-desc" style="display: none;">正在听...</div>
             <div class="page_draw">
                 <video
                     id="page_draw-video"
@@ -94,9 +96,13 @@
             //     // 当鼠标移动时触发的操作
             // })
             connect()
-            connectAudio()
-            // fnOpen()
+            // connectAudio()
             live2dMain()
+            // document.addEventListener('mousemove', function(event) {
+            //     console.log(1)
+            //     event.preventDefault();
+            // });
+            motionTalk(false)
 
         </script>
     </body>

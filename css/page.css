@@ -259,3 +259,17 @@ button.inactive {
     color: #fff;
     opacity: 1 ;
 }
+.start-p{
+    position: relative;
+    z-index: 1000;
+    color: #2980b9;
+    border: none;
+}
+#listen-desc{
+    position: relative;
+    z-index: 1000;
+    color: #2980b9;
+    font-size: 26px;
+    margin-top: 20px;
+    margin-left: 20px;
+}

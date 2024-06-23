@@ -1,7 +1,5 @@
-const mikongModel = '../../../ai/ai.model3.json'
-const mikongMotionIdle = '../../../ai/idle.motion3.json'
-const mikongMotionSleepy = '../../../ai/sleepy.motion3.json'
-const mikongMotionTalk = '../../../ai/talk.motion3.json'
+const mikongModel = '../../../rourou/rourou.model3.json'
+const mikongMotionIdle = '../../../rourou/IDLE.motion3.json'
 
 const haruModel = '../../../haru/haru_greeter_t03.model3.json'
 // const haruMotionM05 = '../../../haru/motion/haru_g_m05.motion3.json'
@@ -9,16 +7,19 @@ const haruModel = '../../../haru/haru_greeter_t03.model3.json'
 const live2d = PIXI.live2d;
 var model = {}
 async function live2dMain() {
+    
     const app = new PIXI.Application({
         view: document.getElementById("canvaslive2d4"),
         autoStart: true,
         resizeTo: window,
-        backgroundColor: 0x000
+        backgroundColor: 0x90b1f6,
+        interactive:false,
+        focus:false,
     });
     //测试haru Tap动作 成功
     // const model = await live2d.Live2DModel.from(haruModel);
     model = await live2d.Live2DModel.from(mikongModel);
-    
+    // console.log(model)
     app.stage.addChild(model);
 
     // const scaleX = (innerWidth * 0.4) / model.width;
@@ -26,10 +27,29 @@ async function live2dMain() {
     // model.scale.set(Math.min(scaleX, scaleY));
     model.x = 0;
     model.y = 0;
-    model.width = innerWidth
-    model.width = innerHeight
-    model.scale.set(0.6);
+    // model.width = 800
+    // model.height = 700
+
+    model.x = 0
+    model.scale.set(0.15);
     
+    draggable(model);
+    //表情触发
+    setInterval(() => {
+        // model.expression()
+        // ParamMouthForm //嘴变形参数名
+        // model.expression('手持麦克风')
+        // model.expression('说话')
+        // model.focus(0, 0)
+    }, 5000);
+
+    // Set mouth parameter periodically
+    // setInterval(() => {
+        //没用的代码
+        // model.defaultMotionGroup.parameterValues.setParameter('ParamMouthForm', 1);
+        // model.setParameterValueById("ParamMouthForm", 1);
+    // }, 5000);
+
     // const settings = {
     //     motions: {
     //         sleepy: [
@@ -60,7 +80,43 @@ async function live2dMain() {
         // model.focus(0, 0)
     // }, 100);
 }
+// 控制说话和不说话状态
+// setTimeout(()=>{
+//     motionTalk(true)
+// },3000)
+var timerTalk = null
+function motionTalk(start){
+    let switchFlag = false
+    timerTalk && clearInterval(timerTalk)
 
+    if(start){
+        timerTalk = setInterval(() => {
+            // model.expression()
+            // ParamMouthForm //嘴变形参数名
+            // model.expression('手持麦克风')
+            switchFlag = !switchFlag
+            let expressName = ''
+            if(switchFlag){
+                const options = ['说话'];
+                const randomIndex = Math.floor(Math.random() * options.length)
+                expressName = options[randomIndex];
+            }else{
+                expressName = '闭嘴'
+            }
+            model.expression(expressName)
+        }, 500)
+    }else{
+        timerTalk = setInterval(() => {
+            const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',
+                '口水','哭','蓝泳圈','脸黑','脸红','帽子',
+                '眯眯眼','抹胸替换','墨镜','圈圈眼','三角嘴',
+                '瞳色切换','吐舌头','外套开关','星星眼','泳圈'];
+            // const options = ['不说话1','不说话2','不说话3','不说话4']
+            const randomIndex = Math.floor(Math.random() * options.length)
+            model.expression('爱心眼') //随机表情
+        },2000)
+    }
+}
 // async function live2dMain() {
 //     console.log(live2d)
 //     const priority = live2d.MotionPriority //FORCE: 3IDLE: 1NONE: 0NORMAL: 2
@@ -119,22 +175,22 @@ async function live2dMain() {
 //     });
 // }
 
-// function draggable(model) {
-//     model.buttonMode = true;
-//     model.on("pointerdown", (e) => {
-//         model.dragging = true;
-//         model._pointerX = e.data.global.x - model.x;
-//         model._pointerY = e.data.global.y - model.y;
-//     });
-//     model.on("pointermove", (e) => {
-//         if (model.dragging) {
-//         model.position.x = e.data.global.x - model._pointerX;
-//         model.position.y = e.data.global.y - model._pointerY;
-//         }
-//     });
-//     model.on("pointerupoutside", () => (model.dragging = false));
-//     model.on("pointerup", () => (model.dragging = false));
-// }
+function draggable(model) {
+    model.buttonMode = true;
+    model.on("pointerdown", (e) => {
+        model.dragging = true;
+        model._pointerX = e.data.global.x - model.x;
+        model._pointerY = e.data.global.y - model.y;
+    });
+    model.on("pointermove", (e) => {
+        if (model.dragging) {
+        model.position.x = e.data.global.x - model._pointerX;
+        model.position.y = e.data.global.y - model._pointerY;
+        }
+    });
+    model.on("pointerupoutside", () => (model.dragging = false));
+    model.on("pointerup", () => (model.dragging = false));
+}
 
 // function addFrame(model) {
 //     const foreground = PIXI.Sprite.from(PIXI.Texture.WHITE);

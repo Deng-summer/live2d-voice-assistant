@@ -19,6 +19,7 @@ async function live2dMain() {
     //测试haru Tap动作 成功
     // const model = await live2d.Live2DModel.from(haruModel);
     model = await live2d.Live2DModel.from(mikongModel);
+    model.focus = ()=>{} //关闭眼神追捕
     // console.log(model)
     app.stage.addChild(model);
 
@@ -35,13 +36,13 @@ async function live2dMain() {
     
     draggable(model);
     //表情触发
-    setInterval(() => {
+    // setInterval(() => {
         // model.expression()
         // ParamMouthForm //嘴变形参数名
         // model.expression('手持麦克风')
         // model.expression('说话')
         // model.focus(0, 0)
-    }, 5000);
+    // }, 5000);
 
     // Set mouth parameter periodically
     // setInterval(() => {
@@ -104,7 +105,7 @@ function motionTalk(start){
                 expressName = '闭嘴'
             }
             model.expression(expressName)
-        }, 500)
+        }, 400)
     }else{
         timerTalk = setInterval(() => {
             const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',

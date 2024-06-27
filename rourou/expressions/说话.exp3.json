@@ -3,7 +3,7 @@
 	"Parameters": [
 		{
 			"Id": "maozi_ButtonMW",
-			"Value": 0,
+			"Value": 1,
 			"Blend": "Add"
 		},
 		{
@@ -28,7 +28,7 @@
 		},
 		{
 			"Id": "ParamMouthOpenY",
-			"Value": 0.628,
+			"Value": 1,
 			"Blend": "Add"
 		},
 		{

@@ -42,30 +42,8 @@ function connectAudio() {
         // 触发重连逻辑
         // reconnectAudio();
     };
+}
 
-    //
-}
-//处理发送回来的音频消息
-function handleAudioMesage(path){
-    // debugger
-    // let url_audioArr = data && JSON.parse(data)
-    // if(url_audioArr.length > 0){
-    //     audioList = url_audioArr
-    //     url_audioArr.forEach((item)=>{
-    //         downAudio(item)
-    //     })
-    // }
-    // if(url_audioArr === 'done'){
-    //     receive_audio_done = true
-    // }
-    if(path !== 'Done!'){ //不是结束音频
-        downAudio(path)
-    }else{
-        if(path === 'Done!'){
-            receive_audio_done = true
-        }
-    }
-}
 
 function reconnectAudio() {
     // 重连间隔递增
@@ -89,10 +67,31 @@ function disconnectAudio() {
 window.addEventListener('beforeunload', function(event) {
     disconnectAudio(); // 页面关闭前销毁 WebSocket 连接
 });
+var pathSequence = 0 //存储的音频文件的序列号
+var pathSequenceNow = 0 //正在播放的音频文件的序列号
+
+//处理发送回来的音频消息
+function handleAudioMesage(path){
+    return new Promise(async (resolve,reject)=>{
+        if(path !== 'Done!'){ //不是结束音频
+            //只会阻塞downAudio的调用
+            await downAudio(path,pathSequence).finally(()=>{
+                resolve()
+            })
+            pathSequence++
+        }else{
+            if(path === 'Done!'){
+                receive_audio_done = true
+                pathSequence = 0
+            }
+        }
+    })
+    
+}
 
 //下载音频
-function downAudio(filePath){
-    return new Promise((resolve,reject)=>{
+async function downAudio(filePath,fileNum){
+    return await new Promise((resolve,reject)=>{
         // let url = 'http://192.168.192.10:7999/down_load'
         // let url = 'http://127.0.0.1:7999/down_load'
         let url = 'http://192.168.192.13:7999/down_load'
@@ -102,63 +101,116 @@ function downAudio(filePath){
             url,
             responseType: 'arraybuffer', // 默认值
             timeout: 0, // 默认值是 `0` (永不超时)
-        }).then(res =>{
-            playAudio(res.data)
-            resolve(res)
+        }).then(async res =>{
+            await playAudio(res.data,fileNum).then(()=>{
+                resolve(res)
+            })
         }).catch(err =>{
             reject(err)
         })
     })
 }
 // 音频队列
-const audioQueue = [];
+let audioQueue = [];
  // 标记是否正在播放音频
 let isPlaying = false;
 
 // 播放音频数据放入音频播放器
-function playAudio(arrayBuffer) {
-    const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' }); // 创建 Blob 对象
-    const audioData = URL.createObjectURL(blob); // 生成 Blob URL
-    console.log('生成 Blob URL',audioData)
-    // let audioPlayer = document.getElementById('my_audio');
-    // audioPlayer.pause()
-    // audioPlayer.src = audioData
-    // audioPlayer.play();
-
-    // 将音频 URL 加入音频队列
-    audioQueue.push(audioData);
-    model.motion('talk',0) //这段 触发自定义Tap动作
-    // 如果当前没有正在播放的音频，则播放队列中的第一个音频
-    if (!isPlaying) {
-        playNextAudio();
-    }
-
-    // 在音频加载完成后获取音频时长
-    // audioPlayer.onloadedmetadata = function() {
-    //     let talkTime = audioPlayer.duration
-    //     changeTalk(talkTime)
-    // };
+async function playAudio(arrayBuffer,fileNum) {
+    return await new Promise((resolve,reject)=>{
+        try{
+            const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' }); // 创建 Blob 对象
+            const audioData = URL.createObjectURL(blob); // 生成 Blob URL
+            // 将音频 URL 加入音频队列
+            audioQueue.push(audioData);
+            // audioQueue[fileNum]=audioData
+        
+            // model.motion('talk',0) //这段 触发自定义Tap动作
+            // 如果当前没有正在播放的音频，则播放队列中的第一个音频
+            if (!isPlaying) {
+                playNextAudio();
+                motionTalk(true)
+            }
+            resolve()
+        }catch{
+            reject()
+        }
+    })
 }
+
+let audioPlayer = null
+window.onload = function() {
+    audioPlayer = document.getElementById('my_audio');
+    if (audioPlayer) {
+        audioPlayer.addEventListener('ended', function() {
+            isPlaying = false; // 标记播放结束
+            pathSequenceNow++;
+            playNextAudio(); // 播放下一段音频
+            // 如果需要清空当前播放音频，请在这里实现相关逻辑
+            // audioQueue[pathSequenceNow] = ''; 
+        })
+        // 播放出错时的处理
+        audioPlayer.addEventListener('error', function(event) {
+            const error = audioPlayer.error;
+            let errorMessage;
+            switch (error.code) {
+                case error.MEDIA_ERR_ABORTED:
+                    errorMessage = '播放被中止';
+                    break;
+                case error.MEDIA_ERR_NETWORK:
+                    errorMessage = '网络错误';
+                    break;
+                case error.MEDIA_ERR_DECODE:
+                    errorMessage = '解码错误';
+                    break;
+                case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    errorMessage = '媒体资源不支持';
+                    break;
+                default:
+                    errorMessage = '未知错误';
+                    break;
+            }
+            console.error(`Audio playback error: ${errorMessage}`);
+            showEleMessage(errorMessage,'error')
+            isPlaying = false; // 标记播放结束，即使是因为错误
+            pathSequenceNow++;
+            playNextAudio();
+        });
+    
+    } else {
+        console.error('Audio element not found!');
+    }
+};
 
 // 播放队列中的下一段音频
 function playNextAudio() {
+    console.log('音频列表',audioQueue)
+    console.log('当前音频序列',pathSequenceNow)
+
     // 如果队列中有音频
-    if (audioQueue.length > 0) {
-        motionTalk(true) // live2d-cubism4
-        isPlaying = true; // 标记正在播放
+    if (audioQueue.length > 0 && pathSequenceNow<= audioQueue.length -1 && !isPlaying) {
 
-        const audioPlayer = document.getElementById('my_audio');
-        audioPlayer.src = audioQueue.shift(); // 从队列中取出并移除第一段音频
-        audioPlayer.play();
-
-        // 监听音频结束事件，在音频结束后播放下一段音频
-        audioPlayer.onended = function() {
-            isPlaying = false; // 标记播放结束
-            playNextAudio(); // 播放下一段音频
-        };
+        if(audioQueue[pathSequenceNow]){
+            audioPlayer.src = audioQueue[pathSequenceNow] //顺序播放的关键
+            // audioQueue.sclie(pathSequenceNow); // 从队列中取出并移除第一段音频
+            audioPlayer.play();
+            isPlaying = true; // 标记正在播放
+        }
+        
+        // else{
+        //     // 当前这段音频为空
+        //     isPlaying = false; // 标记播放结束
+        //     pathSequenceNow++
+        //     playNextAudio(); // 播放下一段音频
+        // }
+        
     }else{
         if(receive_audio_done){
-            motionTalk(false) // live2d-cubism4
+            pathSequenceNow = 0
+            pathSequence = 0
+            audioQueue = []
+            console.log('音频列表 被清',audioQueue)
+            console.log('当前音频序列 被清',pathSequenceNow)
             judgeLastAudio()
         }
     }
@@ -167,10 +219,10 @@ function playNextAudio() {
 //判断最后一段音频播放结束
 function judgeLastAudio(){
     //发送结束
-    // socket_audio.send(JSON.stringify({traceID:'finish'}))
     socket.send("{\"traceId\": \"finish\"}")
     //重新置位
     receive_audio_done = false
+    motionTalk(false) // live2d-cubism4
 }
 
 //切换说话动作

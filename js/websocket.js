@@ -12,6 +12,8 @@ function connect() {
     // 连接打开时触发
     socket.onopen = function(event) {
         console.log('ws WebSocket连接已打开');
+        showEleMessage('ws WebSocket连接已打开','success')
+
         // alert('connect success')
         // showMessage('WebSocket连接已打开', 1000); 
         // "{\"session_id\": \"start\"}"
@@ -24,7 +26,8 @@ function connect() {
     // 接收到消息时触发
     socket.onmessage = function(event) {
         let temp = event.data
-        console.log('ws 消息', temp);
+        let notify = null
+        // console.log('ws 消息', temp);
         let parse_temp = temp ? JSON.parse(JSON.parse(temp)) : {}
         if(parse_temp.question ){
             let question = temp && parse_temp.question
@@ -47,17 +50,21 @@ function connect() {
             // alert(parse_temp.status)
             if(parse_temp.status === '主动聆听'){
                 $('#listen-desc').show();
+                notify = showEleMessage('正在听...','success')
             }else{
                 $('#listen-desc').hide();
+                // notify?.close() //不生效
+                if(parse_temp.status === '唤醒成功'){
+                    showEleMessage('唤醒成功','success')
+                }
             }
         }
-        
     };
 
     // 连接关闭时触发
     socket.onclose = function(event) {
         console.log('ws WebSocket连接已关闭');
-        // alert('ws WebSocket连接已关闭')
+        showEleMessage('ws WebSocket连接被关闭','error')
         // 触发重连逻辑
         // reconnect();
     };
@@ -65,7 +72,8 @@ function connect() {
     // 发生错误时触发
     socket.onerror = function(event) {
         console.error('ws WebSocket连接出错：', event);
-        alert('ws WebSocket连接出错')
+        // alert('ws WebSocket连接出错')
+        showEleMessage('ws WebSocket连接出错','error')
         // 触发重连逻辑
         // reconnect();
     };

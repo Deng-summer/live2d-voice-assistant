@@ -273,3 +273,6 @@ button.inactive {
     margin-top: 20px;
     margin-left: 20px;
 }
+.el-notification__content{
+    line-height: 100% !important;
+}

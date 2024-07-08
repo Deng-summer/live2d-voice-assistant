@@ -6,6 +6,7 @@ const url = 'ws://192.168.192.13:7999/ws_chat'; // 本地WebSocket 服务器地�
 let reconnectInterval = 1000; // 重连间隔时间，单位：毫秒
 let maxReconnectInterval = 30000; // 最大重连间隔时间，单位：毫秒
 let socketText = ''
+let answerArr = [] //流式存储的answer数组
 
 function connect() {
     socket = new WebSocket(url); // 创建 WebSocket 连接
@@ -26,7 +27,6 @@ function connect() {
     // 接收到消息时触发
     socket.onmessage = function(event) {
         let temp = event.data
-        let notify = null
         // console.log('ws 消息', temp);
         let parse_temp = temp ? JSON.parse(JSON.parse(temp)) : {}
         if(parse_temp.question ){
@@ -36,9 +36,21 @@ function connect() {
             // streamShowText2($('.dialog-answer-p'),answer)
             $('.dialog-question').html(question).fadeTo(100, 1);
             // showMessage(socketText, 5000); 
+            $('.dialog-answer-p').html('').fadeTo(100, 1);
+            //流式存储的answer数组
+            answerArr = [] 
 
         }else if(parse_temp.answer){
             let answer = temp && parse_temp.answer
+            //流式滚动输出
+            // if(answer){
+            //     answerArr.push(answer)
+            //     if(answerArr.length){
+            //         let lastIndex = answerArr[answerArr.length-1].length
+            //         typeWriter(lastIndex,answer)
+            //     }
+            // }
+            //直接输出
             $('.dialog-answer-p').html(answer).fadeTo(100, 1);
         }
         else if(parse_temp.filepath){
@@ -48,12 +60,13 @@ function connect() {
         }
         else if(parse_temp.status){
             // alert(parse_temp.status)
+            let notify = null
             if(parse_temp.status === '主动聆听'){
                 $('#listen-desc').show();
-                notify = showEleMessage('正在听...','success')
+                notify = showEleMessage('正在听...','success',1000)
             }else{
                 $('#listen-desc').hide();
-                // notify?.close() //不生效
+                notify?.close()
                 if(parse_temp.status === '唤醒成功'){
                     showEleMessage('唤醒成功','success')
                 }
@@ -109,5 +122,4 @@ function showWKText(text, timeout, flag) {
 window.addEventListener('beforeunload', function(event) {
     disconnect(); // 页面关闭前销毁 WebSocket 连接
 });
-
 

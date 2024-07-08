@@ -5,6 +5,11 @@
 			"Id": "aixi_ButtonMW",
 			"Value": 1,
 			"Blend": "Add"
+		},
+		{
+			"Id": "maozi_ButtonMW",
+			"Value": 1,
+			"Blend": "Add"
 		}
 	]
 }

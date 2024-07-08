@@ -34,6 +34,7 @@
     <script src="./js/websocket.js"></script>
     <!-- <script src="./js/live2d.min.js"></script>  -->
     <script src="./js/streamText.js"></script>
+    <script src="./js/utils/typeWriter.js"></script>
     <!-- <body onload="InitLive2D()"> -->
     <script src="./js/vue@2.js"></script>
     <!-- 引入组件库 -->
@@ -55,12 +56,12 @@
             </div>
             <audio id="my_audio"></audio>
             <div class='btn-sec'>
-                <p class="btn-p">
+                <!-- <p class="btn-p">
                     <button id="Change" class="active">Change Model</button>
                 </p>
                 <p class="btn-p">
                     <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button>
-                </p>
+                </p> -->
                 <!-- <p class="btn-p">
                     <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
                 </p>
@@ -130,9 +131,14 @@
                 mounted() {
                     // 将方法挂载到 window 对象
                     window.showEleMessage = this.showEleMessage;
+                    // let notify = showEleMessage('1111','success',0)
+                    // setTimeout(()=>{
+                    //     notify?.close() //不生效
+                    // },5000)
                 }
             });
-            
+
+            // typeWriter(5,'12123123sadascasdq1231231dssdg')
         </script>
     </body>
 </html>

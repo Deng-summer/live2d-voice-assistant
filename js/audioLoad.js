@@ -131,7 +131,10 @@ async function playAudio(arrayBuffer,fileNum) {
                 playNextAudio();
                 motionTalk(true)
             }
-            resolve()
+            //处理返回成功 回调 延迟
+            setTimeout(()=>{
+                resolve()
+            },100)
         }catch{
             reject()
         }

@@ -121,14 +121,15 @@ async function fnRedraw() {
     const dims = faceapi.matchDimensions(state.canvasEl, state.videoEl, true);
     const result = faceapi.resizeResults(detect, dims);
     // 面框分值
-    // if (state.draws.includes("box")) {
-    //     faceapi.draw.drawDetections(state.canvasEl, result);
-    // }
-    // 面部轮廓
-    if (state.draws.includes("landmark")) {
-        // 需引入面部轮廓模型
-        faceapi.draw.drawFaceLandmarks(state.canvasEl, result);
+    if (state.draws.includes("box")) {
+        faceapi.draw.drawDetections(state.canvasEl, result);
+        // console.log(result[0].detection.box._width>300)
     }
+    // 面部轮廓
+    // if (state.draws.includes("landmark")) {
+    //     // 需引入面部轮廓模型
+    //     faceapi.draw.drawFaceLandmarks(state.canvasEl, result);
+    // }
     // 面部表情
     // if (state.draws.includes("expression")) {
     //     // 需引入面部表情模型
@@ -155,7 +156,7 @@ async function fnRedraw() {
     //     }
     // }
     // 定时器句柄
-    state.timer = setTimeout(() => fnRedraw(), 80);
+    state.timer = setTimeout(() => fnRedraw(), 1000);
     let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
     if(x>0 && y>0){

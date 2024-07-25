@@ -34,7 +34,7 @@ async function live2dMain() {
     model.x = 0
     model.scale.set(0.15);
     
-    draggable(model);
+    // draggable(model);
     //表情触发
     // setInterval(() => {
         // model.expression()

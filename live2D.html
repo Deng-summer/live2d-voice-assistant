@@ -21,7 +21,6 @@
     <script src="./js/cdn/index.min.js"></script>
     <script src="./js/cdn/extra.min.js"></script>
     <script src="./js/live2d-cubism4.js"></script>
-    <!-- <script src="./js/live2d-cubism4-basic.js"></script> -->
 
     <!-- 眼球追踪控制 -->
     <script src="./js/move-eye.js"></script>
@@ -37,7 +36,6 @@
     <!-- <script src="./js/live2d.min.js"></script>  -->
     <script src="./js/streamText.js"></script>
     <script src="./js/utils/typeWriter.js"></script>
-    <!-- <body onload="InitLive2D()"> -->
     <script src="./js/vue@2.js"></script>
     <!-- 引入组件库 -->
     <script src="./js/element-ui.js"></script>
@@ -46,7 +44,6 @@
 
     <body>
         <div class="live2dpage" id="live2dpage">
-            <!-- <button class="btn-p start-p" id="myButton" onclick="connect()">start connect</button> -->
             <div id="listen-desc" style="display: none;">正在听...</div>
             <div class="page_draw">
                 <video
@@ -56,26 +53,6 @@
                 <canvas id="page_draw-video-canvas"></canvas>
             </div>
             <audio id="my_audio"></audio>
-            <div class='btn-sec'>
-                <!-- <p class="btn-p">
-                    <button id="Change" class="active">Change Model</button>
-                </p>
-                <p class="btn-p">
-                    <button id="Change" class="active" onclick="changeTalk(5)">Start Talk</button>
-                </p> -->
-                <!-- <p class="btn-p">
-                    <button id="Change" class="active" onclick="connect()">Connect Websocket</button>
-                </p>
-                <p class="btn-p">
-                    <button id="Change" class="active" onclick="connectAudio()">Connect Audio</button>
-                </p> -->
-                <!-- <p class="btn-p">
-                    <button id="Change" class="active" onclick="fnOpen()">Face Dectector</button>
-                </p> -->
-                <!-- <p class="btn-p">
-                    <button id="Change" class="active" onclick="fnClose()">Face Close</button>
-                </p> -->
-            </div>
             <div class="waifu-tips"></div>
             <div>
                 <!-- <canvas id="mycanvas" width=800 height=800></canvas> -->
@@ -93,8 +70,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <audio id="audioID-1"></audio> -->
-            <!-- <button @click="showMessage">Show Message</button> -->
         </div>
         <script>
             //切换皮肤
@@ -131,14 +106,9 @@
                 mounted() {
                     // 将方法挂载到 window 对象
                     window.showEleMessage = this.showEleMessage;
-                    // let notify = showEleMessage('1111','success',0)
-                    // setTimeout(()=>{
-                    //     notify?.close() //不生效
-                    // },5000)
                 }
             });
 
-            // typeWriter(5,'12123123sadascasdq1231231dssdg')
         </script>
     </body>
 </html>

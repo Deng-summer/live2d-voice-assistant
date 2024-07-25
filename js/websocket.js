@@ -1,12 +1,12 @@
 let socket; // WebSocket 对象
 // const url = 'ws://192.168.192.10:7999/ws'; // WebSocket 服务器地址
 // const url = 'ws://127.0.0.1:7999/ws'; // 本地WebSocket 服务器地址
-const url = 'ws://192.168.192.13:7999/ws_chat'; // 本地WebSocket 服务器地址
+const url = 'ws://127.0.0.1:8080/ws'; // 本地node js WebSocket 服务器地址
+// const url = 'ws://192.168.192.13:7999/ws_chat'; // 本地WebSocket 服务器地址
 
 let reconnectInterval = 1000; // 重连间隔时间，单位：毫秒
 let maxReconnectInterval = 30000; // 最大重连间隔时间，单位：毫秒
 let socketText = ''
-let answerArr = [] //流式存储的answer数组
 
 function connect() {
     socket = new WebSocket(url); // 创建 WebSocket 连接
@@ -31,27 +31,20 @@ function connect() {
         let parse_temp = temp ? JSON.parse(JSON.parse(temp)) : {}
         if(parse_temp.question ){
             let question = temp && parse_temp.question
-            //流式滚动输出
-            // streamShowText2($('.dialog-question'),question)
-            // streamShowText2($('.dialog-answer-p'),answer)
+            //正常输出
             $('.dialog-question').html(question).fadeTo(100, 1);
             // showMessage(socketText, 5000); 
             $('.dialog-answer-p').html('').fadeTo(100, 1);
-            //流式存储的answer数组
-            answerArr = [] 
-
+            //清空回答数组
+            typeWriter_formatAnswer('')
         }else if(parse_temp.answer){
             let answer = temp && parse_temp.answer
             //流式滚动输出
-            // if(answer){
-            //     answerArr.push(answer)
-            //     if(answerArr.length){
-            //         let lastIndex = answerArr[answerArr.length-1].length
-            //         typeWriter(lastIndex,answer)
-            //     }
-            // }
+            if(answer){
+                typeWriter_formatAnswer(answer)
+            }
             //直接输出
-            $('.dialog-answer-p').html(answer).fadeTo(100, 1);
+            // $('.dialog-answer-p').html(answer).fadeTo(100, 1);
         }
         else if(parse_temp.filepath){
             let path = parse_temp.filepath

@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
             <title>Live2D SampleApp1</title>
         </meta>
+        <!-- <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline';"> -->
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'sha256-QIjW/+aUzfg58HcITJNHkkCTGmLovNUIQbL+Zq2TsIE=';"> -->
         <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=1.0, maximum-scale=4.0">
         </meta>
         <link rel="stylesheet" type="text/css" href="css/page.css?v=1.4.2"/>
@@ -40,7 +42,6 @@
     <!-- 引入组件库 -->
     <script src="./js/element-ui.js"></script>
     <!-- 引入样式 -->
-    <!-- <link rel="stylesheet" href="./js/elementui-theme-chalk.css"> -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 
     <body>
@@ -82,6 +83,8 @@
             </div>
             <div id="control"></div>
             <!-- <div class="black-bg"></div> -->
+        </div>
+        <div id="app">
             <div class="dialog-sec">
                 <div class="dialog-body">
                     <div class="dialog-question"></div>
@@ -90,8 +93,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="app">
             <!-- <audio id="audioID-1"></audio> -->
             <!-- <button @click="showMessage">Show Message</button> -->
         </div>

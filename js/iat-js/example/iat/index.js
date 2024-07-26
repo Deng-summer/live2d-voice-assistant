@@ -1,10 +1,16 @@
 (function () {
-
+  var APPID = "9d3bb036";
+  var API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
+  var API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
   let btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"
 
   const btnControl = document.getElementById("btn_control");
+  
+  //起live2D.html 地址
+  const recorder = new RecorderManager("../js/iat-js/dist/");
+  //起lat-js/example/lat中 index.html 地址
+  // const recorder = new RecorderManager("../../dist"); 
 
-  const recorder = new RecorderManager("../../dist");
   recorder.onStart = () => {
     changeBtnStatus("OPEN");
   }
@@ -34,7 +40,7 @@
     url = `${url}?authorization=${authorization}&date=${date}&host=${host}`;
     return url;
   }
-
+  //buffer 转 base64
   function toBase64(buffer) {
     var binary = "";
     var bytes = new Uint8Array(buffer);
@@ -43,6 +49,7 @@
       binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
+    //btoa() 函数是浏览器提供的方法，用于将一个字符串（这里是 binary）转换为 Base64 编码。
   }
 
   function countdown() {
@@ -134,7 +141,7 @@
           language: "zh_cn",
           domain: "iat",
           accent: "mandarin",
-          vad_eos: 5000,
+          vad_eos: 3000,//用于设置端点检测的静默时间，单位是毫秒。
           dwa: "wpgs",
         },
         data: {

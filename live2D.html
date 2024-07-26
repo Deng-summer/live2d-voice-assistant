@@ -41,7 +41,6 @@
     <script src="./js/element-ui.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-
     <body>
         <div class="live2dpage" id="live2dpage">
             <div id="listen-desc" style="display: none;">正在听...</div>
@@ -62,6 +61,7 @@
             <!-- <div class="black-bg"></div> -->
         </div>
         <div id="app">
+            <!-- 对话 模块 -->
             <div class="dialog-sec">
                 <div class="dialog-body">
                     <div class="dialog-question"></div>
@@ -69,6 +69,18 @@
                         <p class="dialog-answer-p"></p>
                     </div>
                 </div>
+            </div>
+            <!-- 金华 模块 -->
+            <div class="jinhua-class">
+                <br />
+                <div>浏览器录音听写：<button id="btn_control">开始录音</button></div>
+                <br />
+                <div>
+                    <span>当前模式为:</span>
+                    <span id="mode_text"></span>
+                </div>
+                <br />
+                <div id="result"></div>
             </div>
         </div>
         <script>
@@ -78,20 +90,9 @@
                 model.changeTexure(1);
             }
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
-            // 添加鼠标移动事件监听器
-            // document.addEventListener('mousemove', function(event) {
-            //     // console.log('位置',event.clientX,event.clientY)
-            //     // 当鼠标移动时触发的操作
-            // })
             connect()
-            // connectAudio()
             live2dMain()
-            // document.addEventListener('mousemove', function(event) {
-            //     console.log(1)
-            //     event.preventDefault();
-            // });
             motionTalk(false) 
-            // 创建 Vue 实例
             new Vue({
                 el: '#app',
                 methods: {
@@ -110,5 +111,10 @@
             });
 
         </script>
+        <script src="./js/iat-js/example/crypto-js.js"></script>
+        <script src="./js/iat-js/dist/index.umd.js"></script>
+        <script src="./js/iat-js/example/iat/index.js"></script>
+        <!-- 金华控制中心 -->
+        <script type="module" src="./js/jinhua/control.js"></script>
     </body>
 </html>

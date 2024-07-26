@@ -11,17 +11,21 @@
     <div>浏览器录音听写：<button id="btn_control">开始录音</button></div>
     <br />
     <div>
-      音频文件听写(16kHz, s16le, pcm)： <input type="file" id="input_file" />
+      <span>当前模式为:</span>
+      <span id="mode_text"></span>
     </div>
+    <br />
+    <!-- <div>
+      音频文件听写(16kHz, s16le, pcm)： <input type="file" id="input_file" />
+    </div> -->
     <div id="result"></div>
-    <script>
-      var APPID = "9d3bb036";
-      var API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
-      var API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
-    </script>
     <script src="../crypto-js.js"></script>
     <script src="../../dist/index.umd.js"></script>
     <script src="./index.js"></script>
-    <script src="./input-file.js"></script>
+    <!-- <script src="./input-file.js"></script> -->
+    <script type="module" src="../../../jinhua/control.js"></script>
+    <script>
+
+    </script>
   </body>
 </html>

@@ -51,7 +51,9 @@
                 ></video>
                 <canvas id="page_draw-video-canvas"></canvas>
             </div>
+            <!-- live2d audio 播放live2d 模型声音-->
             <audio id="my_audio"></audio>
+            <audio id="music_audio"></audio>
             <div class="waifu-tips"></div>
             <div>
                 <!-- <canvas id="mycanvas" width=800 height=800></canvas> -->
@@ -90,7 +92,8 @@
                 model.changeTexure(1);
             }
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
-            connect()
+            //暂时关闭连接
+            // connect()
             live2dMain()
             motionTalk(false) 
             new Vue({
@@ -111,10 +114,10 @@
             });
 
         </script>
-        <script src="./js/iat-js/example/crypto-js.js"></script>
-        <script src="./js/iat-js/dist/index.umd.js"></script>
-        <script src="./js/iat-js/example/iat/index.js"></script>
         <!-- 金华控制中心 -->
         <script type="module" src="./js/jinhua/control.js"></script>
+        <script src="./js/iat-js/example/crypto-js.js"></script>
+        <script src="./js/iat-js/dist/index.umd.js"></script>
+        <script type="module" src="./js/iat-js/example/iat/index.js"></script>
     </body>
 </html>

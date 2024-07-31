@@ -1,23 +1,24 @@
-(function () {
-  var APPID = "9d3bb036";
-  var API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
-  var API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
-  let btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"
+import { sendTextControl,latWsOnClosed } from '../../../jinhua/control.js'
+// 防止全局污染加上 lat_xxx 命名
+  var lat_APPID = "9d3bb036";
+  var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
+  var lat_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+  let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"
 
-  const btnControl = document.getElementById("btn_control");
+  const lat_btnControl = document.getElementById("btn_control");
   
   //起live2D.html 地址
-  const recorder = new RecorderManager("../js/iat-js/dist/");
+  const lat_recorder = new RecorderManager("../js/iat-js/dist/");
   //起lat-js/example/lat中 index.html 地址
-  // const recorder = new RecorderManager("../../dist"); 
+  // const lat_recorder = new RecorderManager("../../dist"); 
 
-  recorder.onStart = () => {
+  lat_recorder.onStart = () => {
     changeBtnStatus("OPEN");
   }
-  let iatWS;
-  let resultText = "";
-  let resultTextTemp = "";
-  let countdownInterval;
+  let lat_WS;
+  let lat_resultText = "";
+  let lat_resultTextTemp = "";
+  let lat_countdownInterval;
 
   /**
    * 获取websocket url
@@ -27,8 +28,8 @@
     // 请求地址根据语种不同变化
     var url = "wss://iat-api.xfyun.cn/v2/iat";
     var host = "iat-api.xfyun.cn";
-    var apiKey = API_KEY;
-    var apiSecret = API_SECRET;
+    var apiKey = lat_API_KEY;
+    var apiSecret = lat_API_SECRET;
     var date = new Date().toGMTString();
     var algorithm = "hmac-sha256";
     var headers = "host date request-line";
@@ -54,31 +55,31 @@
 
   function countdown() {
     let seconds = 60;
-    btnControl.innerText = `录音中（${seconds}s）`;
-    countdownInterval = setInterval(() => {
+    lat_btnControl.innerText = `录音中（${seconds}s）`;
+    lat_countdownInterval = setInterval(() => {
       seconds = seconds - 1;
       if (seconds <= 0) {
-        clearInterval(countdownInterval);
-        recorder.stop();
+        clearInterval(lat_countdownInterval);
+        lat_recorder.stop();
       } else {
-        btnControl.innerText = `录音中（${seconds}s）`;
+        lat_btnControl.innerText = `录音中（${seconds}s）`;
       }
     }, 1000);
   }
 
   function changeBtnStatus(status) {
-    btnStatus = status;
+    lat_btnStatus = status;
     if (status === "CONNECTING") {
-      btnControl.innerText = "建立连接中";
+      lat_btnControl.innerText = "建立连接中";
       document.getElementById("result").innerText = "";
-      resultText = "";
-      resultTextTemp = "";
+      lat_resultText = "";
+      lat_resultTextTemp = "";
     } else if (status === "OPEN") {
       countdown();
     } else if (status === "CLOSING") {
-      btnControl.innerText = "关闭连接中";
+      lat_btnControl.innerText = "关闭连接中";
     } else if (status === "CLOSED") {
-      btnControl.innerText = "开始录音";
+      lat_btnControl.innerText = "开始录音";
     }
   }
 
@@ -97,45 +98,46 @@
       if (data.pgs) {
         if (data.pgs === "apd") {
           // 将resultTextTemp同步给resultText
-          resultText = resultTextTemp;
+          lat_resultText = lat_resultTextTemp;
         }
         // 将结果存储在resultTextTemp中
-        resultTextTemp = resultText + str;
+        lat_resultTextTemp = lat_resultText + str;
       } else {
-        resultText = resultText + str;
+        lat_resultText = lat_resultText + str;
       }
       document.getElementById("result").innerText =
-        resultTextTemp || resultText || "";
+      lat_resultTextTemp || lat_resultText || "";
     }
     if (jsonData.code === 0 && jsonData.data.status === 2) {
-      iatWS.close();
+      lat_WS.close();
     }
     if (jsonData.code !== 0) {
-      iatWS.close();
+      lat_WS.close();
       console.error(jsonData);
     }
+    sendTextControl({latResult:lat_resultTextTemp || lat_resultText,latStatus:lat_btnStatus,latWS:lat_WS})
   }
 
-  function connectWebSocket() {
+  export function lat_connectWebSocket() {
     const websocketUrl = getWebSocketUrl();
     if ("WebSocket" in window) {
-      iatWS = new WebSocket(websocketUrl);
+      lat_WS = new WebSocket(websocketUrl);
     } else if ("MozWebSocket" in window) {
-      iatWS = new MozWebSocket(websocketUrl);
+      lat_WS = new MozWebSocket(websocketUrl);
     } else {
       alert("浏览器不支持WebSocket");
       return;
     }
     changeBtnStatus("CONNECTING");
-    iatWS.onopen = (e) => {
+    lat_WS.onopen = (e) => {
       // 开始录音
-      recorder.start({
+      lat_recorder.start({
         sampleRate: 16000,
         frameSize: 1280,
       });
       var params = {
         common: {
-          app_id: APPID,
+          app_id: lat_APPID,
         },
         business: {
           language: "zh_cn",
@@ -150,25 +152,26 @@
           encoding: "raw",
         },
       };
-      iatWS.send(JSON.stringify(params));
+      lat_WS.send(JSON.stringify(params));
     };
-    iatWS.onmessage = (e) => {
+    lat_WS.onmessage = (e) => {
       renderResult(e.data);
     };
-    iatWS.onerror = (e) => {
+    lat_WS.onerror = (e) => {
       console.error(e);
-      recorder.stop();
+      lat_recorder.stop();
       changeBtnStatus("CLOSED");
     };
-    iatWS.onclose = (e) => {
-      recorder.stop();
+    lat_WS.onclose = (e) => {
+      lat_recorder.stop();
       changeBtnStatus("CLOSED");
+      latWsOnClosed()
     };
   }
 
-  recorder.onFrameRecorded = ({ isLastFrame, frameBuffer }) => {
-    if (iatWS.readyState === iatWS.OPEN) {
-      iatWS.send(
+  lat_recorder.onFrameRecorded = ({ isLastFrame, frameBuffer }) => {
+    if (lat_WS.readyState === lat_WS.OPEN) {
+      lat_WS.send(
         JSON.stringify({
           data: {
             status: isLastFrame ? 2 : 1,
@@ -183,16 +186,18 @@
       }
     }
   };
-  recorder.onStop = () => {
-    clearInterval(countdownInterval);
+  lat_recorder.onStop = () => {
+    clearInterval(lat_countdownInterval);
   };
 
-  btnControl.onclick = function () {
-    if (btnStatus === "UNDEFINED" || btnStatus === "CLOSED") {
-      connectWebSocket();
-    } else if (btnStatus === "CONNECTING" || btnStatus === "OPEN") {
+  lat_btnControl.onclick = function () {
+    if (lat_btnStatus === "UNDEFINED" || lat_btnStatus === "CLOSED") {
+      //开始录音
+      lat_connectWebSocket();
+    } else if (lat_btnStatus === "CONNECTING" || lat_btnStatus === "OPEN") {
       // 结束录音
-      recorder.stop();
+      lat_recorder.stop();
     }
   };
-})();
+
+

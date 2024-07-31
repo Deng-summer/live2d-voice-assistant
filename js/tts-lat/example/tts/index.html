@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <textarea
+        id="textarea"
+        style="height: 200px; width: 500px"
+        placeholder="请输入您要合成的文本"
+      >
+          春江花月夜
+        春江潮水连海平，海上明月共潮生。
+      </textarea>
+    </div>
+    <div>
+      <div>语速([0-100])：<input id="speed" value="50" /></div>
+      <div>音量([0-100])：<input id="volume" value="50" /></div>
+      <div>音高([0-100])：<input id="pitch" value="50" /></div>
+      <div>发音人：<input id="vcn" value="xiaoyan" /></div>
+      <!-- x4_lingxiaolu_en -->
+      <div>小语种(泰语)：<input id="tte" type="checkbox" /></div>
+      <div>注意：发音人与语种会关联，小语种需要开通指定发音人</div>
+    </div>
+    <div>
+      <button id="controll_tts">立即合成</button>
+      <button id="download_pcm">下载pcm</button>
+      <button id="download_wav">下载wav</button>
+    </div>
+
+    <div id="result"></div>
+    <script src="../base64.js"></script>
+    <script src="../crypto-js.js"></script>
+    <script src="../../dist/index.umd.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>

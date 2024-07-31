@@ -103,14 +103,6 @@ function disconnect() {
     }
 }
 
-function showWKText(text, timeout, flag) {
-    // console.log(101,text)
-    $('.waifu-tips').stop();
-    $('.waifu-tips').html(text).fadeTo(200, 1);
-    $('.dialog-question').html(text).fadeTo(200, 1);
-    $('.dialog-answer-p').html(text).fadeTo(200, 1);
-    if (timeout === undefined) timeout = 5000;
-}
 // 在页面关闭之前执行销毁操作
 window.addEventListener('beforeunload', function(event) {
     disconnect(); // 页面关闭前销毁 WebSocket 连接

@@ -115,7 +115,12 @@ import { latResultOnChange,latWsOnClosed } from '../../../jinhua/control.js'
       lat_WS.close();
       console.error(jsonData);
     }
-    latResultOnChange({latResult:lat_resultTextTemp || lat_resultText,latStatus:lat_btnStatus,latWS:lat_WS})
+    latResultOnChange({
+      latResult:lat_resultTextTemp || lat_resultText,
+      latStatus:lat_btnStatus,
+      latWS:lat_WS,
+      lat_recorder
+    })
   }
 
   export function lat_connectWebSocket() {

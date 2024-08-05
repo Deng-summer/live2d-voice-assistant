@@ -43,11 +43,14 @@ export function formatNowTime(date) {
     
     return `${hours}:${minutes}:${seconds}`;
 }
+
+
 //判断最后是 。结尾移除
 export function removeTrailingPeriod(str) {
+    // 假设 "Noise" 是需要去除的子字符串，使用 replace() 方法将其替换为空字符串
+    str = str.replace("Noise", "");
     // 使用 trim() 方法去除字符串两端的空格（如果有的话）
     str = str.trim();
-    
     // 判断字符串是否以中文句号结尾（Unicode编码为 \u3002）
     if (str.endsWith('。')) {
         // 使用 slice() 方法移除最后一个字符（即中文句号）

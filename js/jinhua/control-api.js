@@ -8,6 +8,7 @@ export const control_request = {
     getMultiDialogue:getMultiDialogue,
     getMusic:getMusic,
 }
+const timeout = 3000
 
 function getDialogue(content){
     return axios({
@@ -15,7 +16,7 @@ function getDialogue(content){
         method: 'POST',
         url:'http://localhost:3000/process_dialogue',
         responseType: 'json',
-        timeout: 0, // 默认值是 `0` (永不超时)
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
         console.log('getDialogue',res)
         const {code ,data,message} = res?.data || {}
@@ -30,15 +31,21 @@ function getDialogue(content){
         reject(err)
     })
 }
-function getMultiDialogue(){
+function getMultiDialogue(content){
     return axios({
-        data:{content:''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
         url:'http://localhost:3000/process_continue_dialogue',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
         console.log('getMultiDialogue',res)
+        const {code ,data,message} = res?.data || {}
+        if(code == 200){
+            return data
+        }else{
+            console.log('getDialogue',message)
+        }
     }).catch(err =>{
 
         reject(err)
@@ -49,8 +56,8 @@ function getMusic(){
         data:{content:''}, //参数
         method: 'POST',
         url:'process_generate_music',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout,
     }).then( res =>{
         console.log('getMusic',res)
     }).catch(err =>{
@@ -66,8 +73,8 @@ function sentTextF(){
         data:{"content":''}, //参数
         method: 'POST',
         url:'back_end_control',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
 
     }).catch(err =>{
@@ -83,8 +90,8 @@ function checkProcessF(){
         data:{content:''}, //参数
         method: 'POST',
         url:'check_process',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
     
     }).catch(err =>{
@@ -102,8 +109,8 @@ function receiveGpsF(){
         data:{content:''}, //参数
         method: 'POST',
         url:'gps',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
 
     }).catch(err =>{
@@ -118,8 +125,8 @@ function receiveGpsAreaF(){
         data:{content:''}, //参数
         method: 'POST',
         url:'gps/area',
-        responseType: 'arraybuffer', // 默认值
-        timeout: 0, // 默认值是 `0` (永不超时)
+        responseType: 'json',
+        timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
     
     }).catch(err =>{

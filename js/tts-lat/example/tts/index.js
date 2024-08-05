@@ -1,6 +1,9 @@
   const tts_APPID = "9d3bb036";
   const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
   const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+import { ttsWsOnClosed } from '../../../jinhua/control-singel-talk.js'
+import { ttsWsOnClosed_Multi } from '../../../jinhua/control-multi-talk.js'
+import { control_mode } from '../../../jinhua/control.js'
 
   let tts_btnControl = document.getElementById("controll_tts");
   let tts_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
@@ -21,9 +24,17 @@
   tts_audioPlayer.onPlay = () => {
     tts_changeBtnStatus("PLAY");
   };
+  //播放完成
   tts_audioPlayer.onStop = (audioDatas) => {
-    console.log(audioDatas);
+    // console.log(audioDatas);
     tts_btnStatus === "PLAY" && tts_changeBtnStatus("STOP");
+    if(control_mode == 'SINGEL'){
+      //通知control-singel-talk 模块
+      ttsWsOnClosed()
+    }else if(control_mode == 'MULTI'){
+      //通知control-multi-talk 模块
+      ttsWsOnClosed_Multi()
+    }
   };
   function tts_getWebSocketUrl(apiKey, apiSecret) {
     var url = "wss://tts-api.xfyun.cn/v2/tts";
@@ -97,9 +108,9 @@
           aue: "raw",
           auf: "audio/L16;rate=16000",
           vcn: 'xiaoyan', //发音人
-          speed: +document.getElementById("speed").value || 50,
-          volume: +document.getElementById("volume").value || 50,
-          pitch: +document.getElementById("pitch").value || 50,
+          speed: 50,//语速([0-100]
+          volume: 50,//音量([0-100])
+          pitch: 50,//音高([0-100])
           bgs: 1,
           tte, //小语种为unicode 中文为UTF8
         },
@@ -128,9 +139,17 @@
       }
     };
     ttsWS.onerror = (e) => {
+      // if(control_mode == 'SINGEL'){
+      //   //通知control-singel-talk 模块
+      //   ttsWsOnClosed()
+      // }else if(control_mode == 'MULTI'){
+      //   //通知control-multi-talk 模块
+      //   ttsWsOnClosed_Multi()
+      // }
       console.error(e);
     };
     ttsWS.onclose = (e) => {
+      
       // console.log(e);
     };
   }

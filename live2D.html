@@ -40,7 +40,7 @@
     <!-- 引入组件库 -->
     <script src="./js/element-ui.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./css/element-ui.css">
     <body>
         <div class="live2dpage" id="live2dpage">
             <div id="listen-desc" style="display: none;">正在听...</div>
@@ -63,7 +63,7 @@
             <!-- <div class="black-bg"></div> -->
         </div>
         <div id="app">
-            <!-- 对话 模块 -->
+            <!-- 字幕 模块 -->
             <div class="dialog-sec">
                 <div class="dialog-body">
                     <div class="dialog-question"></div>
@@ -74,6 +74,7 @@
             </div>
             <!-- 金华 模块 -->
             <div class="jinhua-class">
+                <!-- 语音识别 -->
                 <br />
                 <div>浏览器录音听写：<button id="btn_control">开始录音</button></div>
                 <br />
@@ -83,6 +84,22 @@
                 </div>
                 <br />
                 <div id="result"></div>
+                <!-- 语音合成 -->
+                <div class="tts-lat-class">
+                    <!-- <textarea
+                        id="textarea"
+                        style="height: 200px; width: 500px"
+                        placeholder="请输入您要合成的文本"
+                    >
+                        春江潮水连海平，海上明月共潮生。
+                    </textarea> -->
+                    <div>语速([0-100])：<input id="speed" value="50" /></div>
+                    <div>音量([0-100])：<input id="volume" value="50" /></div>
+                    <div>音高([0-100])：<input id="pitch" value="50" /></div>
+                    <!-- <div>发音人：<input id="vcn" value="xiaoyan" /></div> -->
+                    <!-- x4_lingxiaolu_en -->
+                    <button id="controll_tts">立即合成</button>
+                </div>
             </div>
         </div>
         <script>
@@ -116,8 +133,17 @@
         </script>
         <!-- 金华控制中心 -->
         <script type="module" src="./js/jinhua/control.js"></script>
+        <!-- 语音识别 -->
         <script src="./js/iat-js/example/crypto-js.js"></script>
         <script src="./js/iat-js/dist/index.umd.js"></script>
         <script type="module" src="./js/iat-js/example/iat/index.js"></script>
+        <!-- 语音合成 -->
+        <script src="./js/tts-lat/example/base64.js"></script>
+        <script src="./js/tts-lat/example/crypto-js.js"></script>
+        <script src="./js/tts-lat/dist/index.umd.js"></script>
+        <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
+
     </body>
+    <script>
+    </script>
 </html>

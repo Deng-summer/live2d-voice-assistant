@@ -1,4 +1,4 @@
-import { sendTextControl,latWsOnClosed } from '../../../jinhua/control.js'
+import { latResultOnChange,latWsOnClosed } from '../../../jinhua/control.js'
 // 防止全局污染加上 lat_xxx 命名
   var lat_APPID = "9d3bb036";
   var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
@@ -115,7 +115,7 @@ import { sendTextControl,latWsOnClosed } from '../../../jinhua/control.js'
       lat_WS.close();
       console.error(jsonData);
     }
-    sendTextControl({latResult:lat_resultTextTemp || lat_resultText,latStatus:lat_btnStatus,latWS:lat_WS})
+    latResultOnChange({latResult:lat_resultTextTemp || lat_resultText,latStatus:lat_btnStatus,latWS:lat_WS})
   }
 
   export function lat_connectWebSocket() {

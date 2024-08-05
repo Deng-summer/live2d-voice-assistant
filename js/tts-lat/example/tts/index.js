@@ -1,32 +1,31 @@
-(function () {
-  const APPID = "9d3bb036";
-  const API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
-  const API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+  const tts_APPID = "9d3bb036";
+  const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
+  const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
 
-  let btnControl = document.getElementById("controll_tts");
-  let btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
-  function changeBtnStatus(status) {
-    btnStatus = status;
+  let tts_btnControl = document.getElementById("controll_tts");
+  let tts_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
+  function tts_changeBtnStatus(status) {
+    tts_btnStatus = status;
     if (status === "UNDEFINED") {
-      btnControl.innerText = "立即合成";
+      tts_btnControl.innerText = "立即合成";
     } else if (status === "CONNECTING") {
-      btnControl.innerText = "正在合成";
+      tts_btnControl.innerText = "正在合成";
     } else if (status === "PLAY") {
-      btnControl.innerText = "停止播放";
+      tts_btnControl.innerText = "停止播放";
     } else if (status === "STOP") {
-      btnControl.innerText = "重新播放";
+      tts_btnControl.innerText = "重新播放";
     }
   }
 
-  const audioPlayer = new AudioPlayer("../../dist");
-  audioPlayer.onPlay = () => {
-    changeBtnStatus("PLAY");
+  const tts_audioPlayer = new AudioPlayer("/js/tts-lat/dist/");
+  tts_audioPlayer.onPlay = () => {
+    tts_changeBtnStatus("PLAY");
   };
-  audioPlayer.onStop = (audioDatas) => {
+  tts_audioPlayer.onStop = (audioDatas) => {
     console.log(audioDatas);
-    btnStatus === "PLAY" && changeBtnStatus("STOP");
+    tts_btnStatus === "PLAY" && tts_changeBtnStatus("STOP");
   };
-  function getWebSocketUrl(apiKey, apiSecret) {
+  function tts_getWebSocketUrl(apiKey, apiSecret) {
     var url = "wss://tts-api.xfyun.cn/v2/tts";
     var host = location.host;
     var date = new Date().toGMTString();
@@ -60,8 +59,8 @@
   }
 
   let ttsWS;
-  function connectWebSocket() {
-    const url = getWebSocketUrl(API_KEY, API_SECRET);
+  export function tts_connectWebSocket(tts_text) {
+    const url = tts_getWebSocketUrl(tts_API_KEY, tts_API_SECRET);
     if ("WebSocket" in window) {
       ttsWS = new WebSocket(url);
     } else if ("MozWebSocket" in window) {
@@ -70,32 +69,39 @@
       alert("浏览器不支持WebSocket");
       return;
     }
-    changeBtnStatus("CONNECTING");
+    tts_changeBtnStatus("CONNECTING");
     
     ttsWS.onopen = (e) => {
-      audioPlayer.start({
+      tts_audioPlayer.start({
         autoPlay: true,
         sampleRate: 16000,
         resumePlayDuration: 1000
       });
-      changeBtnStatus("PLAY");
-      var text =
-        document.getElementById("textarea").value.trim() ||
-        "请输入您要合成的文本";
-      var tte = document.getElementById("tte").checked ? "unicode" : "UTF8";
+      tts_changeBtnStatus("PLAY");
+
+      // let text_test = `
+      //     春江花月夜
+      //   春江潮水连海平，海上明月共潮生。
+      // `
+      let text_test = `
+        介绍一下你自己吧
+      `
+      var text = tts_text;
+      // var tte = document.getElementById("tte").checked ? "unicode" : "UTF8";
+      var tte = 'UTF8'
       var params = {
         common: {
-          app_id: APPID,
+          app_id: tts_APPID,
         },
         business: {
           aue: "raw",
           auf: "audio/L16;rate=16000",
-          vcn: document.getElementById("vcn").value,
-          speed: +document.getElementById("speed").value,
-          volume: +document.getElementById("volume").value,
-          pitch: +document.getElementById("pitch").value,
+          vcn: 'xiaoyan', //发音人
+          speed: +document.getElementById("speed").value || 50,
+          volume: +document.getElementById("volume").value || 50,
+          pitch: +document.getElementById("pitch").value || 50,
           bgs: 1,
-          tte,
+          tte, //小语种为unicode 中文为UTF8
         },
         data: {
           status: 2,
@@ -109,10 +115,10 @@
       // 合成失败
       if (jsonData.code !== 0) {
         console.error(jsonData);
-        changeBtnStatus("UNDEFINED");
+        tts_changeBtnStatus("UNDEFINED");
         return;
       }
-      audioPlayer.postMessage({
+      tts_audioPlayer.postMessage({
         type: "base64",
         data: jsonData.data.audio,
         isLastData: jsonData.data.status === 2,
@@ -128,91 +134,20 @@
       // console.log(e);
     };
   }
-
-
-  document.getElementById("textarea").onchange =
-    document.getElementById("speed").onchange =
-    document.getElementById("volume").onchange =
-    document.getElementById("pitch").onchange =
-    document.getElementById("vcn").onchange =
-      () => {
-        changeBtnStatus("UNDEFINED");
-        ttsWS?.close();
-        audioPlayer.reset();
-      };
-  document.getElementById("tte").onchange = (e) => {
-    let checked = e.target.checked;
-    let text = `
-            春江花月夜
-    春江潮水连海平，海上明月共潮生。
-    滟滟随波千万里，何处春江无月明。
-    江流宛转绕芳甸，月照花林皆似霰。
-    空里流霜不觉飞，汀上白沙看不见。
-    江天一色无纤尘，皎皎空中孤月轮。
-    江畔何人初见月？江月何年初照人？
-    人生代代无穷已，江月年年望相似。
-    不知江月待何人，但见长江送流水。
-    白云一片去悠悠，青枫浦上不胜愁。
-    谁家今夜扁舟子？何处相思明月楼？
-    可怜楼上月徘徊，应照离人妆镜台。
-    玉户帘中卷不去，捣衣砧上拂还来。
-    此时相望不相闻，愿逐月华流照君。
-    鸿雁长飞光不度，鱼龙潜跃水成文。
-    昨夜闲潭梦落花，可怜春半不还家。
-    江水流春去欲尽，江潭落月复西斜。
-    斜月沉沉藏海雾，碣石潇湘无限路。
-    不知乘月几人归，落月摇情满江树。`;
-    document.getElementById("vcn").value = "xiaoyan";
-    if (checked) {
-      document.getElementById("vcn").value = "yingying";
-      text =
-        "สวัสดียินดีต้อนรับทุกท่านสู่การใช้ระบบการสังเคราะห์เสียงพูดในเที่ยวบินของมหาวิทยาลัยวิทยาศาสตร์และเทคโนโลยี";
-    }
-    document.getElementById("textarea").value = text;
-    changeBtnStatus("UNDEFINED");
-    ttsWS?.close();
-    audioPlayer.reset();
-  };
   document.getElementById("controll_tts").onclick = function () {
-    
-    if (btnStatus === "UNDEFINED") {
+    if (tts_btnStatus === "UNDEFINED") {
       // 开始合成
-      connectWebSocket();
-    } else if (btnStatus === "CONNECTING") {
+      tts_connectWebSocket();
+    } else if (tts_btnStatus === "CONNECTING") {
       // 停止合成
-      changeBtnStatus("UNDEFINED");
+      tts_changeBtnStatus("UNDEFINED");
       ttsWS?.close();
-      audioPlayer.reset();
+      tts_audioPlayer.reset();
       return;
-    } else if (btnStatus === "PLAY") {
-      audioPlayer.stop();
-    } else if (btnStatus === "STOP") {
-      audioPlayer.play();
+    } else if (tts_btnStatus === "PLAY") {
+      tts_audioPlayer.stop();
+    } else if (tts_btnStatus === "STOP") {
+      tts_audioPlayer.play();
     }
   };
-  document.getElementById("download_pcm").onclick = function () {
-    const blob = audioPlayer.getAudioDataBlob("pcm")
-    if (!blob) {
-      return
-    }
-    let defaultName = new Date().getTime();
-    let node = document.createElement("a");
-    node.href = window.URL.createObjectURL(blob);
-    node.download = `${defaultName}.pcm`;
-    node.click();
-    node.remove();
-  };
-  
-  document.getElementById("download_wav").onclick = function () {
-    const blob = audioPlayer.getAudioDataBlob("wav")
-  if (!blob) {
-    return
-  }
-    let defaultName = new Date().getTime();
-    let node = document.createElement("a");
-    node.href = window.URL.createObjectURL(blob);
-    node.download = `${defaultName}.wav`;
-    node.click();
-    node.remove();
-  };
-})();
+

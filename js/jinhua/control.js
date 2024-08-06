@@ -27,12 +27,6 @@ function wakeupDetect(event){
     }
 }
 
-function enterMode(mode){
-    control_mode = mode
-    control_modeText = document.getElementById("mode_text");
-    control_modeText.innerText = `${control_modeMap[mode]}`;
-    onModeChange(control_mode)
-}
 
 
 
@@ -60,29 +54,47 @@ export function latResultOnChange({latResult,latStatus,latWS,lat_recorder}){
 }
 
 
-//判断进入 what 模式
+//判断进入 what 模式 control 核心
 function jugeMode(tts_res) {
-
     const keywordToMode = {
-        '退出': 'BUS',//静默
-        '退下': 'BUS',//静默
+        '退出': 'BUS',//报站
+        '退下': 'BUS',//报站
+        '结束': 'BUS',//报站
         '音乐': 'MUSIC',//音乐
+        '唱歌': 'MUSIC',//音乐
+        '播放':'MUSIC',//音乐
+        '唱首歌': 'MUSIC',//音乐
+        '的歌': 'MUSIC',//音乐
+        '小可': 'MULTI',//多轮
+        '小客': 'MULTI',//多轮
+        '肖克': 'MULTI',//多轮
+        '即刻': 'MULTI',//多轮
+        '极客': 'MULTI',//多轮
+        '模式': 'MULTI',//多轮
         '聊天': 'MULTI',//多轮
-        '我聊聊天吧': 'MULTI',//多轮
-        '跟我聊聊天吧': 'MULTI',//多轮
-        '和我聊聊天吧': 'MULTI',//多轮
     };
     let incluesKeyWord = false
-
+    
     //优先级高
     // 遍历映射对象，检查输入中是否包含关键词
-    for (const keyword in keywordToMode) {
-        if (tts_res.includes(keyword)) {
-            incluesKeyWord = true
-            debouncedEnterMode(keywordToMode[keyword]);
-            return; // 找到匹配的关键词后立即返回，避免继续检查
+    //只有唤醒模式能够进入 切换到其他模式
+    if(control_mode == 'READY'){
+        for (const keyword in keywordToMode) {
+            if (tts_res.includes(keyword)) {
+                incluesKeyWord = true
+                if(keywordToMode[keyword] == 'BUS'){
+                    //直接退出
+                    enterMode(model)
+                }
+                else{
+                    //防抖处理 音乐/多轮
+                    debouncedEnterMode(keywordToMode[keyword]);
+                }
+                return; // 找到匹配的关键词后立即返回，避免继续检查
+            }
         }
     }
+
     //优先级二 再次进入多轮问题
     if(!incluesKeyWord && control_mode == 'MULTI'  ){ //多轮
         
@@ -92,10 +104,10 @@ function jugeMode(tts_res) {
         return
     }
 
-    //优先级二
+    //优先级二 
     if(!incluesKeyWord && control_mode == 'READY'){
         if(hasNChinese(tts_res,3)){ //单轮
-            // 2s后触发进入单轮对话模式
+            // 防抖处理 单轮
             debouncedEnterMode('SINGEL');     
         }
         return
@@ -171,28 +183,34 @@ function keepLatConnectOrExit(){
     }
 }
 
-const debouncedEnterMode_Long = debounce((model) => {
-    enterMode(model)
-},60000);
 
 import { singelModuleStart } from './control-singel-talk.js'
 import { multiModuleStart } from './control-multi-talk.js'
+import { musicModuleStart } from './control-music.js'
 
+
+function enterMode(mode){
+    control_mode = mode
+    control_modeText = document.getElementById("mode_text");
+    control_modeText.innerText = `${control_modeMap[mode]}`;
+    onModeChange(control_mode)
+}
 
 function onModeChange(control_mode){
-    if(control_mode === 'BUS'){
+    if(control_mode == 'BUS'){
 
-    }else if(control_mode === 'SINGEL'){
+    }else if(control_mode == 'SINGEL'){
         //关掉lat
         latClose()
 
         singelModuleStart(control_lat_result)
-    }else if(control_mode === 'MULTI'){
+    }else if(control_mode == 'MULTI'){
 
         toMultiMoudle()
         
+    }else if(control_mode == 'MUSIC'){
+        musicModuleStart(control_lat_result)
     }
-    // control_request
 }
 
 function toMultiMoudle(){
@@ -208,7 +226,7 @@ function toMultiMoudle(){
 //模块处理完成触发的回调函数
 
 //音乐播放完成回调
-export function onMusicEnd(){
+export function onMusicModuleEnd(){
     console.log('onMusicEnd','音乐播放结束')
     //回到报站模式
     enterMode('BUS')

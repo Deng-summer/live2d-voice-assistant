@@ -6,7 +6,7 @@ export const control_request = {
     receiveGpsArea:receiveGpsAreaF,
     getDialogue:getDialogue,
     getMultiDialogue:getMultiDialogue,
-    getMusic:getMusic,
+    getMusicUrl:getMusicUrl,
 }
 const timeout = 3000
 
@@ -51,15 +51,21 @@ function getMultiDialogue(content){
         reject(err)
     })
 }
-function getMusic(){
+function getMusicUrl(content){
     return axios({
-        data:{content:''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
-        url:'process_generate_music',
+        url:'http://localhost:3000/process_generate_music',
         responseType: 'json',
-        timeout: timeout,
+        timeout: 1000*6,
     }).then( res =>{
-        console.log('getMusic',res)
+        console.log('getMusicUrl',res)
+        const {code ,data,message} = res?.data || {}
+        if(code == 200){
+            return data
+        }else{
+            console.log('getMusicUrl',message)
+        }
     }).catch(err =>{
 
         reject(err)
@@ -68,11 +74,11 @@ function getMusic(){
 
 
 //1. 用于接收识别后的文本接口
-function sentTextF(){
+function sentTextF(content){
     return axios({
-        data:{"content":''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
-        url:'back_end_control',
+        url:'http://localhost:3000/back_end_control',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
@@ -85,11 +91,11 @@ function sentTextF(){
 
 
 //2. 用于检测程序是否挂掉的接口
-function checkProcessF(){
+function checkProcessF(content){
     return axios({
-        data:{content:''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
-        url:'check_process',
+        url:'http://localhost:3000/check_process',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
@@ -104,11 +110,11 @@ function checkProcessF(){
 }
 
 //3. 用于接收实时gps
-function receiveGpsF(){
+function receiveGpsF(content){
     return axios({
-        data:{content:''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
-        url:'gps',
+        url:'http://localhost:3000/gps',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
@@ -120,11 +126,11 @@ function receiveGpsF(){
     
 
 //4. 用于接收电子围栏
-function receiveGpsAreaF(){
+function receiveGpsAreaF(content){
     return axios({
-        data:{content:''}, //参数
+        data:{"content":content}, //参数
         method: 'POST',
-        url:'gps/area',
+        url:'http://localhost:3000/gps/area',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{

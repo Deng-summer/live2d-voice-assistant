@@ -1,14 +1,33 @@
-import { onMusicEnd } from './control.js'
-const control_audioPlayer = null
-let control_audioQueue = null
+import { onMusicModuleEnd } from './control.js'
+import { control_request } from './control-api.js'
+let control_audioPlayer //播放器
+let control_audioData //音乐音频数据
+let control_music_timeout = 1000 * 60 //下载音乐超时时间
+
+loadPlayer()
+
+export function musicModuleStart(control_lat_result){
+    
+    control_request.getMusicUrl(control_lat_result).then((res)=>{
+        let { text } = res
+        console.log(text)
+        let filePath = text
+        downMusicAudio(filePath).then().catch((err)=>{
+            //通知 控制中心control
+            onMusicModuleEnd()
+        })
+    })
+}
 
 export function loadPlayer(){
+    console.log('loadPlayer init')
     control_audioPlayer = document.getElementById('music_audio');
     // 监听播放出错时的处理
     control_audioPlayer.addEventListener('error', function(event) {
         const error = audioPlayer.error;
+        console.log('error',error)
         let errorMessage;
-        switch (error.code) {
+        switch (error?.code) {
             case error.MEDIA_ERR_ABORTED:
                 errorMessage = '播放被中止';
                 break;
@@ -36,10 +55,9 @@ export function loadPlayer(){
 }
 
 
-
 function playMusic(){
     if(control_audioPlayer){
-        control_audioPlayer.src = audioQueue[pathSequenceNow] //顺序播放的关键
+        control_audioPlayer.src = control_audioData
         
         control_audioPlayer.play();
 
@@ -48,20 +66,21 @@ function playMusic(){
 
 function playMusicEnd(){
     //处理音乐播放结束逻辑
-    onMusicEnd() //通知 控制中心control
+    onMusicModuleEnd() //通知 控制中心control
 }
 
 //下载音频
-async function downAudio(filePath,fileNum){
+async function downMusicAudio(filePath){
     
     return await new Promise((resolve,reject)=>{
-        let url = 'http://192.168.192.13:7999/down_load'
+        // let url = 'http://192.168.192.13:7999/down_load'
         axios({
-            data:{filepath:filePath},
-            method: 'POST',
-            url,
+            data:{},
+            method: 'GET',//后端是POST
+            // method: 'POST',//后端是POST
+            url:filePath,
             responseType: 'arraybuffer', // 默认值
-            timeout: 0, // 默认值是 `0` (永不超时)
+            timeout: control_music_timeout, // 默认值是 `0` (永不超时)
         }).then(async res =>{
             await handleArrayBuffer(res.data).then(()=>{
                 resolve(res)
@@ -69,6 +88,7 @@ async function downAudio(filePath,fileNum){
                 playMusic()
             })
         }).catch(err =>{
+            showEleMessage('网络超时下载音乐失败,请稍等重试～')
             reject(err)
         })
     })
@@ -81,7 +101,7 @@ async function handleArrayBuffer(arrayBuffer) {
             const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' }); // 创建 Blob 对象
             const audioData = URL.createObjectURL(blob); // 生成 Blob URL
             // 将音频 URL 加入音频队列
-            control_audioQueue = audioData;
+            control_audioData = audioData;
             // model.motion('talk',0) //这段 触发自定义Tap动作
             // 如果当前没有正在播放的音频，则播放队列中的第一个音频
             

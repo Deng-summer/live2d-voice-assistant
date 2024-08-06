@@ -10,7 +10,9 @@ export function singelModuleStart(tts_result){
         const { text } = data
         tts_connectWebSocket(text)
     }).catch((err) => {
-        console.log('单轮对话接口出错')
+        console.log('单轮对话接口出错/超时')
+        showEleMessage('单轮对话接口出错/超时','error')
+        // showEleMessage('网络超时，请重试','error')
         onSingleModuleEnd()
     })
 }

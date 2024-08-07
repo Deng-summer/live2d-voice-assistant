@@ -1,4 +1,4 @@
-import { latResultOnChange,latWsOnClosed } from '../../../jinhua/control.js'
+import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/control.js'
 // 防止全局污染加上 lat_xxx 命名
   var lat_APPID = "9d3bb036";
   var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
@@ -148,7 +148,7 @@ import { latResultOnChange,latWsOnClosed } from '../../../jinhua/control.js'
           language: "zh_cn",
           domain: "iat",
           accent: "mandarin",
-          vad_eos: 3000,//用于设置端点检测的静默时间，单位是毫秒。
+          vad_eos: 1000 * 60,//用于设置端点检测的静默时间，单位是毫秒。
           dwa: "wpgs",
         },
         data: {
@@ -172,6 +172,7 @@ import { latResultOnChange,latWsOnClosed } from '../../../jinhua/control.js'
       changeBtnStatus("CLOSED");
       latWsOnClosed()
     };
+    latOnload({latWS:lat_WS,lat_recorder})
   }
 
   lat_recorder.onFrameRecorded = ({ isLastFrame, frameBuffer }) => {

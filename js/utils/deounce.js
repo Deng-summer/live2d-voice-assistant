@@ -8,7 +8,7 @@ export function debounce(func, delay) {
 
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => {
-            console.log('debounce执行');
+            // console.log('debounce执行');
             func.apply(context, args);
         }, delay);
     };

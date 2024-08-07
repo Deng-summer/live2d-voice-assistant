@@ -1,12 +1,11 @@
 //金华 接口
 export const control_request = {
-    sendText:sentTextF,
-    checkProcess:checkProcessF,
-    receiveGps:receiveGpsF,
-    receiveGpsArea:receiveGpsAreaF,
     getDialogue:getDialogue,
     getMultiDialogue:getMultiDialogue,
     getMusicUrl:getMusicUrl,
+    getStation:getStation,
+    finishCurStation:finishCurStation,
+    heartBeat:heartBeat,
 }
 const timeout = 3000
 
@@ -19,7 +18,7 @@ function getDialogue(content){
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
         console.log('getDialogue',res)
-        const {code ,data,message} = res?.data || {}
+        const {code,data,message} = res?.data || {}
         if(code == 200){
             return data
         }else{
@@ -31,6 +30,7 @@ function getDialogue(content){
         reject(err)
     })
 }
+
 function getMultiDialogue(content){
     return axios({
         data:{"content":content}, //参数
@@ -51,6 +51,7 @@ function getMultiDialogue(content){
         reject(err)
     })
 }
+
 function getMusicUrl(content){
     return axios({
         data:{"content":content}, //参数
@@ -72,69 +73,65 @@ function getMusicUrl(content){
     })
 }
 
-
-//1. 用于接收识别后的文本接口
-function sentTextF(content){
+//获取站点
+function getStation(){
     return axios({
-        data:{"content":content}, //参数
+        data:{}, //参数
         method: 'POST',
-        url:'http://localhost:3000/back_end_control',
+        url:'http://localhost:3000/get_station_info',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
-
-    }).catch(err =>{
-
-        reject(err)
-    })
-}
-
-
-//2. 用于检测程序是否挂掉的接口
-function checkProcessF(content){
-    return axios({
-        data:{"content":content}, //参数
-        method: 'POST',
-        url:'http://localhost:3000/check_process',
-        responseType: 'json',
-        timeout: timeout, // 默认值是 `0` (永不超时)
-    }).then( res =>{
-    
-    }).catch(err =>{
-        showEleMessage({
-            message: JSON.stringify(err),
-            type: 'error',  
-        })
-        reject(err)
-    })
-}
-
-//3. 用于接收实时gps
-function receiveGpsF(content){
-    return axios({
-        data:{"content":content}, //参数
-        method: 'POST',
-        url:'http://localhost:3000/gps',
-        responseType: 'json',
-        timeout: timeout, // 默认值是 `0` (永不超时)
-    }).then( res =>{
-
+        console.log('getStation',res)
+        const {code,data,message} = res?.data || {}
+        if(code == 200){
+            return data
+        }else{
+            console.log('getStation',message)
+        }
     }).catch(err =>{
         reject(err)
     })
 }
     
 
-//4. 用于接收电子围栏
-function receiveGpsAreaF(content){
+// 播放完成上报
+function finishCurStation(content){
     return axios({
         data:{"content":content}, //参数
         method: 'POST',
-        url:'http://localhost:3000/gps/area',
+        url:'http://localhost:3000/station_report_status',
         responseType: 'json',
         timeout: timeout, // 默认值是 `0` (永不超时)
     }).then( res =>{
-    
+        console.log('finishCurStation',res)
+        const {code,data,message} = res?.data || {}
+        if(code == 200){
+            return data
+        }else{
+            console.log('finishCurStation',message)
+        }
+    }).catch(err =>{
+        reject(err)
+    })
+}
+
+// 心跳接口
+function heartBeat(status,reason){
+    return axios({
+        data:{"status":status,"reason":reason},
+        method: 'POST',
+        url:'http://localhost:3000/web_status',
+        responseType: 'json',
+        timeout: timeout,
+    }).then( res =>{
+        console.log('heartBeat',res)
+        const {code,data,message} = res?.data || {}
+        if(code == 200){
+            return data
+        }else{
+            console.log('heartBeat',message)
+        }
     }).catch(err =>{
         reject(err)
     })

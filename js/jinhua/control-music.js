@@ -4,14 +4,13 @@ let control_audioPlayer //播放器
 let control_audioData //音乐音频数据
 let control_music_timeout = 1000 * 60 //下载音乐超时时间
 
-loadPlayer()
+loadMusicPlayer()
 
 export function musicModuleStart(control_lat_result){
     
     control_request.getMusicUrl(control_lat_result).then((res)=>{
-        let { text } = res
-        console.log(text)
-        let filePath = text
+        let { music_tos_play_link } = res
+        let filePath = music_tos_play_link
         downMusicAudio(filePath).then().catch((err)=>{
             //通知 控制中心control
             onMusicModuleEnd()
@@ -19,8 +18,8 @@ export function musicModuleStart(control_lat_result){
     })
 }
 
-export function loadPlayer(){
-    console.log('loadPlayer init')
+function loadMusicPlayer(){
+    console.log('loadMusicPlayer init')
     control_audioPlayer = document.getElementById('music_audio');
     // 监听播放出错时的处理
     control_audioPlayer.addEventListener('error', function(event) {
@@ -44,7 +43,7 @@ export function loadPlayer(){
                 errorMessage = '未知错误';
                 break;
         }
-        console.error(`Audio playback error: ${errorMessage}`);
+        console.error(`Music Audio playback error: ${errorMessage}`);
         showEleMessage(errorMessage,'error')
     });
     //监听音乐播放结束

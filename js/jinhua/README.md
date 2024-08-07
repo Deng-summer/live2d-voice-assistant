@@ -8,7 +8,8 @@
 3. control-music 音乐处理模块
 4. control-station 站点播报模块
 5. control-singel-talk 单轮对话模块
-5. control-multi-talk 多轮对话模块
+6. control-multi-talk 多轮对话模块
+7. control-station 报站模块
 
 
 # 讯飞语音识别模块 lat-js
@@ -36,4 +37,78 @@ control_modeMap = {
 
 ​```
 
-## 
+## 后端接口
+### control.js 核心控制模块 集中处理控制状态的流转 识别tts结果判断 调用开启各个模块间的开启
+
+​```
+function jugeMode() {
+    let tts_res = control_lat_result
+    //指令
+    const keywordToMode = {
+        '坐下': 'BUS',
+        '退出': 'BUS',
+        '退下': 'BUS',
+        '结束': 'BUS',
+        '音乐': 'MUSIC',
+        '唱歌': 'MUSIC',
+        '播放':'MUSIC',
+        '唱首歌': 'MUSIC',
+        '的歌': 'MUSIC',
+        '小可': 'MULTI',
+        '小客': 'MULTI',
+        '肖克': 'MULTI',
+        '即刻': 'MULTI',
+        '极客': 'MULTI',
+        '模式': 'MULTI',
+        '聊天': 'MULTI',
+    };
+    let incluesKeyWord = false
+    
+    //优先级高
+    // 遍历映射对象，检查输入中是否包含关键词
+    for (const keyword in keywordToMode) {
+        if (tts_res.includes(keyword)) {
+            incluesKeyWord = true
+            if(keywordToMode[keyword] == 'BUS'){
+                //直接退出
+                debouncedEnterMode(keywordToMode[keyword]);
+                latClose()
+                // enterMode(keywordToMode[keyword])
+                showEleMessage('小可已退下','success')
+                console.log('指令匹配退出')
+                return; //退出当前函数
+            }
+            else{
+                //只能从唤醒模式进入 多轮 或者 音乐
+                if(keywordToMode[keyword] == 'MULTI' || keywordToMode[keyword] == 'MUSIC'){
+                    if(control_mode == 'READY'){
+                        //防抖处理 音乐/多轮
+                        debouncedEnterMode(keywordToMode[keyword]);
+                        console.log('指令匹配进入功能模式')
+                        return; //退出当前函数
+                    }
+                }
+            }
+        }
+    }
+
+    //优先级二 再次进入多轮问题
+    if(!incluesKeyWord && control_mode == 'MULTI'  ){ //多轮
+        if(hasNChinese(tts_res,3)){ //有效文字 
+            debouncedToMultiMoudle()
+            console.log('多轮提问')
+        }
+        return
+    }
+
+    //优先级二 
+    if(!incluesKeyWord && control_mode == 'READY'){
+        if(hasNChinese(tts_res,3)){ //单轮
+            // 防抖处理 单轮
+            debouncedEnterMode('SINGEL');  
+            console.log('单轮提问')
+        }
+        return
+    }
+}
+​```

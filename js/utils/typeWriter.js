@@ -20,7 +20,8 @@ let typeWriter_timer_arr = []
 let typeWriter_answer_format = []
 let typeWriter_Inx = 0;
 
-function typeWriter_formatAnswer(origin_answer){
+
+export function typeWriter_formatAnswer(origin_answer){
   // let answer_origin = [
   //   '你好',
   //   '你好，我是小仙女',
@@ -33,6 +34,8 @@ function typeWriter_formatAnswer(origin_answer){
     typeWriter_timer_arr = []
     typeWriter_answer_format = []
     typeWriter_Inx = 0
+    $('.dialog-answer-p')[0].innerText = origin_answer
+    
   }else{
     let str = origin_answer
     // 遍历原始字符串的每个字符
@@ -44,13 +47,14 @@ function typeWriter_formatAnswer(origin_answer){
 
         let timer = setTimeout(()=>{
           $('.dialog-answer-p')[0].innerText = typeWriter_answer_format[typeWriter_Inx++];
-          console.log(typeWriter_Inx)
+          // console.log(typeWriter_Inx)
         },100 * typeWriter_answer_format.length)
-
         typeWriter_timer_arr.push(timer)
-        console.log(typeWriter_timer_arr)
       }
     }
   }
+}
+export function changeQuestionText(question){
+  $('.dialog-question')[0].innerText = question
 }
 

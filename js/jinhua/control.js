@@ -3,6 +3,7 @@ import './control-music.js'
 import './control-station.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
+import { control_tts_show, control_answer_show } from './control-page.js'
 //金华  模式控制中心
 
 let control_modeMap = {
@@ -51,13 +52,15 @@ export function latResultOnChange({latResult,latStatus,latWS,lat_recorder}){
         console.log(formatNowTime(new Date()),'接收到lat语音识别结果为',control_lat_result)
         //指令有可能少于3个字
         debouncedjugeModeMode()
+        control_tts_show(latResult)
+        control_answer_show('')
     }
     // console.log('接收lat状态',status)
     // console.log('接收latWs',latWS)
 }
 const debouncedjugeModeMode = debounce(() => {
     jugeMode()
-},2000);
+},1300);
 
 
 //判断进入 what 模式 control 核心
@@ -87,8 +90,8 @@ function jugeMode() {
     // 遍历映射对象，检查输入中是否包含关键词
     for (const keyword in keywordToMode) {
         if (tts_res.includes(keyword)) {
-            incluesKeyWord = true
             if(keywordToMode[keyword] == 'BUS'){
+                incluesKeyWord = true
                 //直接退出
                 debouncedEnterMode(keywordToMode[keyword]);
                 latClose()
@@ -101,6 +104,8 @@ function jugeMode() {
                 //只能从唤醒模式进入 多轮 或者 音乐
                 if(keywordToMode[keyword] == 'MULTI' || keywordToMode[keyword] == 'MUSIC'){
                     if(control_mode == 'READY'){
+                        //符合条件的指令
+                        incluesKeyWord = true
                         //防抖处理 音乐/多轮
                         debouncedEnterMode(keywordToMode[keyword]);
                         console.log('指令匹配进入功能模式')
@@ -244,6 +249,9 @@ function enterMode(mode){
 function onModeChange(control_mode){
     if(control_mode == 'BUS'){
         stationModuleStart()
+        //清空对话框
+        control_tts_show('')
+        control_answer_show('')
 
     }else if(control_mode == 'SINGEL'){
         //关掉lat

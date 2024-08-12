@@ -56,15 +56,18 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
   function countdown() {
     let seconds = 60;
     lat_btnControl.innerText = `录音中（${seconds}s）`;
-    lat_countdownInterval = setInterval(() => {
-      seconds = seconds - 1;
-      if (seconds <= 0) {
-        clearInterval(lat_countdownInterval);
-        lat_recorder.stop();
-      } else {
-        lat_btnControl.innerText = `录音中（${seconds}s）`;
-      }
-    }, 1000);
+    // if(!lat_countdownInterval){
+      lat_countdownInterval = setInterval(() => {
+        seconds = seconds - 1;
+        if (seconds <= 0) {
+          clearInterval(lat_countdownInterval);
+          lat_countdownInterval = null
+          lat_recorder.stop();
+        } else {
+          lat_btnControl.innerText = `录音中（${seconds}s）`;
+        }
+      }, 1000);
+    // }
   }
 
   function changeBtnStatus(status) {
@@ -124,6 +127,10 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
   }
 
   export function lat_connectWebSocket() {
+    //开启前检查 检查状态
+    // if(lat_WS && lat_WS.readyState === lat_WS.OPEN){
+    //   return
+    // }
     const websocketUrl = getWebSocketUrl();
     if ("WebSocket" in window) {
       lat_WS = new WebSocket(websocketUrl);

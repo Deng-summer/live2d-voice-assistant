@@ -4,6 +4,7 @@ import './control-station.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
 import { control_tts_show, control_answer_show } from './control-page.js'
+
 //金华  模式控制中心
 
 let control_modeMap = {
@@ -30,9 +31,10 @@ function wakeupDetect(event){
 }
 
 
-let control_lat_ws
-let control_lat_result = ''
-let control_lat_recorder 
+let control_lat_ws  // latws 连接
+let control_lat_result = '' //lat 识别结果
+let control_lat_recorder  // lat 录音起
+const control_lat_time = 1600 // lat 断整句时间
 
 export function latOnload({latWS,lat_recorder}){
     control_lat_ws = latWS
@@ -58,9 +60,11 @@ export function latResultOnChange({latResult,latStatus,latWS,lat_recorder}){
     // console.log('接收lat状态',status)
     // console.log('接收latWs',latWS)
 }
+
+//断句判断处理
 const debouncedjugeModeMode = debounce(() => {
     jugeMode()
-},1300);
+},control_lat_time);
 
 
 //判断进入 what 模式 control 核心
@@ -118,7 +122,7 @@ function jugeMode() {
 
     //优先级二 再次进入多轮问题
     if(!incluesKeyWord && control_mode == 'MULTI'  ){ //多轮
-        if(hasNChinese(tts_res,3)){ //有效文字 
+        if(hasNChinese(tts_res,1)){ //有效文字 
             debouncedToMultiMoudle()
             console.log('多轮提问')
         }

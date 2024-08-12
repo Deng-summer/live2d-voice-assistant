@@ -50,7 +50,6 @@ function loadMusicPlayer(){
     control_audioPlayer.addEventListener('ended', function(event) {
         playMusicEnd()
     })
-
 }
 
 
@@ -75,11 +74,11 @@ async function downMusicAudio(filePath){
         // let url = 'http://192.168.192.13:7999/down_load'
         axios({
             data:{},
-            method: 'GET',//后端是POST
-            // method: 'POST',//后端是POST
+            method: 'GET',
             url:filePath,
+            // url:'http://localhost:3000/api' + filePath,
             responseType: 'arraybuffer', // 默认值
-            timeout: control_music_timeout, // 默认值是 `0` (永不超时)
+            timeout: control_music_timeout,
         }).then(async res =>{
             await handleArrayBuffer(res.data).then(()=>{
                 resolve(res)

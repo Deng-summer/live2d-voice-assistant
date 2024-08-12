@@ -2,7 +2,9 @@
 import { control_request } from './control-api.js'
 import { control_mode  } from './control.js'
 import { stop_audio_address, stop_introduce} from './bus-stop-audio/stop-info.js'
-let control_station_time = 1000 * 30 //获取站点 间隔时间  
+import { control_answer_show } from './control-page.js'
+
+let control_station_time = 1000 * 60 //获取站点 间隔时间  
 let control_station_timer = null //定时器
 let control_audioPlayer
 let control_station_current //当前站点
@@ -19,7 +21,9 @@ function getLoopStation(){
             const { station, status } = data
             if(status === '未到站点' && station && control_mode == 'BUS'){
                 control_station_current = station
+                //播报站点
                 playStationAudio(station)
+                
             }
 
         }).catch((error)=>{
@@ -53,6 +57,12 @@ function playStationAudio(station){
         // 播放音频（可选）
         control_audioPlayer.play();
     }
+
+    // 显示站点
+    let cur_station_info =  stop_introduce[station]
+    if(cur_station_info){
+        control_answer_show(cur_station_info)
+    }
 }
 
 //播放完成
@@ -60,7 +70,6 @@ function playStationAudioEnd(){
     //上报当前站点播放完成
     control_request.finishCurStation(control_station_current)
 }
-
 
 loadStationPlayer()
 

@@ -49,7 +49,7 @@ export function formatNowTime(date) {
 export function removeTrailingPeriod(str) {
     // 假设 "Noise" 是需要去除的子字符串，使用 replace() 方法将其替换为空字符串
     str = str.replace("Noise", "");
-
+    str = str.replace("noise", "");
     // 使用 trim() 方法去除字符串两端的空格（如果有的话）
     str = str.trim();
     // 判断字符串是否以中文句号结尾（Unicode编码为 \u3002）
@@ -73,3 +73,37 @@ function lastCharacterIsChinese(str) {
     // 使用正则表达式匹配是否是中文字符
     return /[\u4e00-\u9fa5]/.test(lastChar);//是输出true
 }
+
+// 输入数据（注意修正了格式）
+// const receivedData = `{"code": 200, "message":"成功","data":{"content":"好啊,你想聊些什么呢?","status":"done!"}}{"code":200,"message":"成功","好啊,你想聊些什么呢?"}{"code":200,"message":"成功","data":{"content":"好啊,你想聊些什么呢?"}}`;
+
+// 函数用于解析并提取最后一个有效的 JSON 对象
+export function extractLastJSONObject(data) {
+    try {
+        // 定义一个变量存储最后一个有效的 JSON 对象
+        let lastJSONObject = null;
+
+        // 尝试从末尾向前搜索有效的 JSON 对象
+        for (let i = data.length - 1; i >= 0; i--) {
+            try {
+            // 从第 i 个位置开始向前找到第一个 '{'
+            if (data[i] === '{') {
+                // 尝试解析从第 i 个位置到末尾的字符串
+                lastJSONObject = JSON.parse(data.substring(i));
+                break;
+            }
+            } catch (error) {
+            // 如果解析失败，继续搜索下一个 '{'
+            continue;
+            }
+        }
+
+        return lastJSONObject;
+    }catch{
+        return {};
+    }
+}
+
+// 示例用法
+// const lastJSONObject = extractLastJSONObject(receivedData);
+// console.log(lastJSONObject);//{code: 200, message: '成功', data: {…}}

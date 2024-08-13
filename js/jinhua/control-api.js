@@ -25,6 +25,8 @@ function getMusicUrl(content){
         if(code == 200){
             return data
         }else{
+            debugger
+            reject(message)
             console.log('getMusicUrl',message)
         }
     }).catch(err =>{

@@ -1,9 +1,10 @@
   const tts_APPID = "9d3bb036";
   const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
   const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
-import { ttsWsOnClosed } from '../../../jinhua/control-singel-talk.js'
-import { ttsWsOnClosed_Multi, recoder_tts_content_play, recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'
-import { control_mode } from '../../../jinhua/control.js'
+  import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
+  import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'
+  import { control_mode } from '../../../jinhua/control.js'
+
 
   let tts_btnControl = document.getElementById("controll_tts");
   let tts_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
@@ -28,15 +29,17 @@ import { control_mode } from '../../../jinhua/control.js'
   tts_audioPlayer.onStop = (audioDatas) => {
     // console.log(audioDatas);
     //判断是否还有文本没有播放
-    if(recoder_tts_content_play<recoder_tts_content_origin){
+    if(multi_recoder_tts_content_play<multi_recoder_tts_content_origin && control_mode == 'MULTI'){
       // 继续合成流式下一段语音
       multi_follow_tts_conntectWebSoket()
-
-    }else{
+    }else if(singel_recoder_tts_content_play<singel_recoder_tts_content_origin && control_mode == 'SINGEL'){
+      singel_follow_tts_conntectWebSoket()
+    }
+    else{
       tts_btnStatus === "PLAY" && tts_changeBtnStatus("STOP");
       if(control_mode == 'SINGEL'){
         //通知control-singel-talk 模块
-        ttsWsOnClosed()
+        ttsWsOnClosed_Singel()
       }else if(control_mode == 'MULTI'){
         //通知control-multi-talk 模块
         ttsWsOnClosed_Multi()
@@ -75,32 +78,6 @@ import { control_mode } from '../../../jinhua/control.js'
     } else {
       return Base64.encode(text);
     }
-  }
-  function tts_sendTextWebSocket(tts_text){
-    var text = tts_text;
-    var tte = 'UTF8'
-    var params = {
-      common: {
-        app_id: tts_APPID,
-      },
-      business: {
-        aue: "raw",
-        auf: "audio/L16;rate=16000",
-        vcn: 'xiaofeng', //发音人
-        speed: 70,//语速([0-100]
-        volume: 60,//音量([0-100])
-        pitch: 50,//音高([0-100])
-        bgs: 1,
-        tte, //小语种为unicode 中文为UTF8
-        reg:"2",//1：所有英文按字母发音 2：自动判断处理，如果不确定将按照字母朗读
-      },
-      data: {
-        status: 2,
-        text: encodeText(text, tte),
-      },
-    };
-    console.log('tts_send 2',tts_text)
-    ttsWS.send(JSON.stringify(params));
   }
   
   let ttsWS;
@@ -141,13 +118,15 @@ import { control_mode } from '../../../jinhua/control.js'
         business: {
           aue: "raw",
           auf: "audio/L16;rate=16000",
-          vcn: 'xiaofeng', //发音人
-          speed: 70,//语速([0-100]
-          volume: 60,//音量([0-100])
+          // vcn: 'xiaofeng', //发音人
+          vcn: 'x4_yezi', //发音人
+          speed: 50,//语速([0-100]
+          volume: 50,//音量([0-100])
           pitch: 50,//音高([0-100])
-          bgs: 1,
+          bgs: 0,
           tte, //小语种为unicode 中文为UTF8
           reg:"2",//1：所有英文按字母发音 2：自动判断处理，如果不确定将按照字母朗读
+          rdn:"1",//合成音频数字发音方式
         },
         data: {
           status: 2,
@@ -174,11 +153,6 @@ import { control_mode } from '../../../jinhua/control.js'
         isLastData: jsonData.data.status === 2,
       });
 
-      // console.log('tts_audioPlayer',tts_audioPlayer.resumePlayDuration)
-      // console.log('tts_audioPlayer',tts_audioPlayer.playAudioTime)
-      // console.log('tts_audioPlayer',tts_audioPlayer.isAudioDataEnded)
-      // console.log('tts_audioPlayer',tts_audioPlayer)
-
       if (jsonData.code === 0 && jsonData.data.status === 2) {
         ttsWS.close()
       }
@@ -186,13 +160,13 @@ import { control_mode } from '../../../jinhua/control.js'
     };
     
     ttsWS.onerror = (e) => {
-      // if(control_mode == 'SINGEL'){
-      //   //通知control-singel-talk 模块
-      //   ttsWsOnClosed()
-      // }else if(control_mode == 'MULTI'){
-      //   //通知control-multi-talk 模块
-      //   ttsWsOnClosed_Multi()
-      // }
+      if(control_mode == 'SINGEL'){
+        //通知control-singel-talk 模块
+        ttsWsOnClosed_Singel()
+      }else if(control_mode == 'MULTI'){
+        //通知control-multi-talk 模块
+        ttsWsOnClosed_Multi()
+      }
       console.error(e);
     };
     ttsWS.onclose = (e) => {

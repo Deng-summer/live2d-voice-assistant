@@ -7,15 +7,28 @@ let control_music_timeout = 1000 * 60 //下载音乐超时时间
 loadMusicPlayer()
 
 export function musicModuleStart(control_lat_result){
+
+    // playMusic("https://bytevdn.chekkk.com/temp/heal_project/music/%E5%BF%AB%E4%B9%90/006e764e-9e1c-4b41-bc25-26b95545cb56.mp3?auth_key=1723486491-ZcOjE40tkuyNris4-0-e7456fce9d8679b10350e0f9ab25a401")
     
     control_request.getMusicUrl(control_lat_result).then((res)=>{
         let { music_tos_play_link } = res
         let filePath = music_tos_play_link
-        downMusicAudio(filePath).then().catch((err)=>{
-            //通知 控制中心control
-            onMusicModuleEnd()
-        })
+
+        if(filePath){
+            control_audioPlayer.src = filePath
+            playMusic(filePath)
+        }
+
+        // downMusicAudio(filePath).then().catch((err)=>{
+        //     //通知 控制中心control
+        //     onMusicModuleEnd()
+        // })
+        
+    }).catch((err)=>{
+        showEleMessage(err,'error')
+        onMusicModuleEnd()
     })
+
 }
 
 function loadMusicPlayer(){
@@ -52,10 +65,11 @@ function loadMusicPlayer(){
     })
 }
 
+function playMusic(src){
 
-function playMusic(){
     if(control_audioPlayer){
-        control_audioPlayer.src = control_audioData
+
+        control_audioPlayer.src = src
         
         control_audioPlayer.play();
 

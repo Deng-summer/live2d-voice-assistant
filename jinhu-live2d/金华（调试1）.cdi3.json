@@ -1,0 +1,206 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "ParamGroup",
+			"Name": "角度 X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "ParamGroup",
+			"Name": "角度 Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "ParamGroup",
+			"Name": "角度 Z"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "ParamGroup",
+			"Name": "身体旋转　Z"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "ParamGroup",
+			"Name": "左眼　开闭"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "ParamGroup",
+			"Name": "右眼  开闭"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "ParamGroup",
+			"Name": "眼珠 X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "ParamGroup",
+			"Name": "眼珠 Y"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "ParamGroup",
+			"Name": "左眉上下"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "ParamGroup",
+			"Name": "右眉　上下"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "ParamGroup",
+			"Name": "嘴　变形"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "ParamGroup",
+			"Name": "嘴　张开和闭合"
+		},
+		{
+			"Id": "ParamMouthOpenY2",
+			"GroupId": "ParamGroup",
+			"Name": "嘴　张开和闭合2"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "ParamGroup",
+			"Name": "呼吸"
+		},
+		{
+			"Id": "expressionList",
+			"GroupId": "ParamGroup2",
+			"Name": "表情切换"
+		},
+		{
+			"Id": "glassesButton",
+			"GroupId": "ParamGroup2",
+			"Name": "护目镜开关"
+		},
+		{
+			"Id": "WaveButton",
+			"GroupId": "ParamGroup2",
+			"Name": "招手动画开关"
+		},
+		{
+			"Id": "talk1Button",
+			"GroupId": "ParamGroup2",
+			"Name": "说话2秒动画开关"
+		},
+		{
+			"Id": "talk5Button2",
+			"GroupId": "ParamGroup2",
+			"Name": "说话5秒动画开关"
+		},
+		{
+			"Id": "talk10Button3",
+			"GroupId": "ParamGroup2",
+			"Name": "说话10秒动画开关"
+		},
+		{
+			"Id": "ANwave",
+			"GroupId": "ParamGroup2",
+			"Name": "招收动画参数"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "基础"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "其他"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part12",
+			"Name": "output2.psd"
+		},
+		{
+			"Id": "Part",
+			"Name": "挥手"
+		},
+		{
+			"Id": "Part2",
+			"Name": "眼睛"
+		},
+		{
+			"Id": "Part3",
+			"Name": "耳朵"
+		},
+		{
+			"Id": "Part16",
+			"Name": "嘴"
+		},
+		{
+			"Id": "Part4",
+			"Name": "嘴"
+		},
+		{
+			"Id": "Part13",
+			"Name": "嘴2"
+		},
+		{
+			"Id": "Part7",
+			"Name": "右臂"
+		},
+		{
+			"Id": "Part8",
+			"Name": "左臂"
+		},
+		{
+			"Id": "Part9",
+			"Name": "文件夹1"
+		},
+		{
+			"Id": "Part17",
+			"Name": "上嘴唇"
+		},
+		{
+			"Id": "Part18",
+			"Name": "下嘴唇"
+		},
+		{
+			"Id": "Part5",
+			"Name": "上嘴唇"
+		},
+		{
+			"Id": "Part6",
+			"Name": "下嘴唇"
+		},
+		{
+			"Id": "Part14",
+			"Name": "上嘴唇"
+		},
+		{
+			"Id": "Part15",
+			"Name": "下嘴唇"
+		},
+		{
+			"Id": "Part10",
+			"Name": "右腿"
+		},
+		{
+			"Id": "Part11",
+			"Name": "左腿"
+		}
+	]
+}

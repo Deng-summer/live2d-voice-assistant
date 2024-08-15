@@ -4,7 +4,8 @@ import { control_request } from './control-api.js'
 import { control_request_stream } from './control-api-stream.js'
 
 import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
-import { control_answer_show } from './control-page.js'
+import { control_answer_show,page_changeState } from './control-page.js'
+
 import { extractLastJSONObject } from '../utils/deounce.js'
 
 export let multi_recoder_tts_content_origin = '' //记录接收的语音部分
@@ -33,6 +34,7 @@ export function multiModuleStart(tts_result){
 }
 
 export function ttsWsOnClosed_Multi(){
+    //通知控制中心结束
     onMultiModuleEnd()
 }
 
@@ -61,6 +63,9 @@ export function chunkMultiReceived(data){
 
             //断句判断 后开始 tts
             if(content.includes('，') || content.includes('。') || content.includes('？')){
+
+                page_changeState('talking')
+
                 multi_tts_start = false
 
                 let content_play = dealContentPlay(multi_recoder_tts_content_origin,multi_recoder_tts_content_play)

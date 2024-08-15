@@ -6,18 +6,18 @@
   import { control_mode } from '../../../jinhua/control.js'
 
 
-  let tts_btnControl = document.getElementById("controll_tts");
+  // let tts_btnControl = document.getElementById("controll_tts");
   let tts_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
   function tts_changeBtnStatus(status) {
     tts_btnStatus = status;
     if (status === "UNDEFINED") {
-      tts_btnControl.innerText = "立即合成";
+      // tts_btnControl.innerText = "立即合成";
     } else if (status === "CONNECTING") {
-      tts_btnControl.innerText = "正在合成";
+      // tts_btnControl.innerText = "正在合成";
     } else if (status === "PLAY") {
-      tts_btnControl.innerText = "停止播放";
+      // tts_btnControl.innerText = "停止播放";
     } else if (status === "STOP") {
-      tts_btnControl.innerText = "重新播放";
+      // tts_btnControl.innerText = "重新播放";
     }
   }
 
@@ -82,7 +82,8 @@
   
   let ttsWS;
   export function tts_connectWebSocket(tts_text) {
-    console.log('tts_connectWebSocket',tts_text)
+    // console.log('tts_connectWebSocket',tts_text)
+
     const url = tts_getWebSocketUrl(tts_API_KEY, tts_API_SECRET);
 
     //连接已存在 直接发送消息
@@ -174,20 +175,20 @@
       // console.log(e);
     };
   }
-  document.getElementById("controll_tts").onclick = function () {
-    if (tts_btnStatus === "UNDEFINED") {
-      // 开始合成
-      tts_connectWebSocket();
-    } else if (tts_btnStatus === "CONNECTING") {
-      // 停止合成
-      tts_changeBtnStatus("UNDEFINED");
-      ttsWS?.close();
-      tts_audioPlayer.reset();
-      return;
-    } else if (tts_btnStatus === "PLAY") {
-      tts_audioPlayer.stop();
-    } else if (tts_btnStatus === "STOP") {
-      tts_audioPlayer.play();
-    }
-  };
+  // document.getElementById("controll_tts").onclick = function () {
+  //   if (tts_btnStatus === "UNDEFINED") {
+  //     // 开始合成
+  //     tts_connectWebSocket();
+  //   } else if (tts_btnStatus === "CONNECTING") {
+  //     // 停止合成
+  //     tts_changeBtnStatus("UNDEFINED");
+  //     ttsWS?.close();
+  //     tts_audioPlayer.reset();
+  //     return;
+  //   } else if (tts_btnStatus === "PLAY") {
+  //     tts_audioPlayer.stop();
+  //   } else if (tts_btnStatus === "STOP") {
+  //     tts_audioPlayer.play();
+  //   }
+  // };
 

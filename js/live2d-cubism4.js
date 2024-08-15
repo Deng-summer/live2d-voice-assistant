@@ -12,7 +12,7 @@ async function live2dMain() {
         view: document.getElementById("canvaslive2d4"),
         autoStart: true,
         resizeTo: window,
-        backgroundColor: 0x90b1f6,
+        backgroundColor: 0xf0f2f5,
         interactive:false,
         focus:false,
     });

@@ -2,7 +2,7 @@
 import { onSingleModuleEnd } from './control.js'
 import { control_request_stream } from './control-api-stream.js'
 import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
-import { control_answer_show } from './control-page.js'
+import { control_answer_show,page_changeState } from './control-page.js'
 import { extractLastJSONObject } from '../utils/deounce.js'
 
 export let singel_recoder_tts_content_origin = '' //记录接收的语音部分
@@ -59,7 +59,10 @@ export function chunkSingelReceived(data){
 
             //断句判断 后开始 tts
             if(content.includes('，') || content.includes('。') || content.includes('？')){
+
                 singel_tts_start = false
+
+                page_changeState('talking')
 
                 let content_play = dealContentPlay(singel_recoder_tts_content_origin,singel_recoder_tts_content_play)
 

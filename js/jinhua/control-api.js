@@ -13,26 +13,26 @@ const timeout = 3000 //接口超时时间
 const base_url = 'http://1.95.87.50:9000' //生产环境
 
 function getMusicUrl(content){
-    return axios({
-        data:{"content":content}, //参数
-        method: 'POST',
-        url:base_url + '/process_generate_music',
-        responseType: 'json',
-        timeout: 1000*6,
-    }).then( res =>{
-        console.log('getMusicUrl',res)
-        const {code ,data,message} = res?.data || {}
-        if(code == 200){
-            return data
-        }else{
-            debugger
-            reject(message)
-            console.log('getMusicUrl',message)
-        }
-    }).catch(err =>{
-
-        reject(err)
-    })
+    return new Promise((resolve,reject)=>{
+        axios({
+            data:{"content":content}, //参数
+            method: 'POST',
+            url:base_url + '/process_generate_music',
+            responseType: 'json',
+            timeout: 1000*6,
+        }).then( res =>{
+            console.log('getMusicUrl',res)
+            const {code ,data,message} = res?.data || {}
+            if(code == 200){
+                return resolve(data)
+            }else{
+                return reject(message)
+            }
+        }).catch(err =>{
+            let message = err ? err.message : '网络出错'
+            return reject(message)
+        })
+    }) 
 }
 
 //获取站点

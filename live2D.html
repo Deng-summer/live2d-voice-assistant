@@ -74,6 +74,20 @@
                     <div class="dialog-answer">
                         <p class="dialog-answer-p"></p>
                     </div>
+                    <div id="music-moudle">
+                        <div class="music-left">
+                            <div class="music-left-1"></div>
+                            <div class="music-left-2"></div>
+                            <div class="music-left-3">
+                                <p class="music-title">金漪湖之歌</p>
+                                <p>AI创作</p>
+                            </div>
+                        </div>
+                        <div id="music-progress">
+                            <div id="music-progress-bar"></div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <!-- 金华 模块 -->
@@ -87,7 +101,7 @@
                     <span id="mode_text"></span>
                 </div>
                 <br />
-                <div id="result"></div>
+                <!-- <div id="result"></div> -->
                 <!-- 语音合成 -->
                 <div class="tts-lat-class">
                     <!-- <textarea
@@ -102,7 +116,11 @@
                     <div>音高([0-100])：<input id="pitch" value="50" /></div> -->
                     <!-- <div>发音人：<input id="vcn" value="xiaoyan" /></div> -->
                     <!-- x4_lingxiaolu_en -->
-                    <button id="controll_tts"></button>
+                    <!-- <button id="controll_tts"></button> -->
+                </div>
+                <div class="jinhua-state-div">
+                    <img id="jinhua_state_git"  src="./css/transparent.png"/>
+                    <p id="listening-text">正在听...</p>
                 </div>
             </div>
         </div>
@@ -137,6 +155,7 @@
         </script>
         <!-- 金华控制中心 -->
         <script type="module" src="./js/jinhua/control.js"></script>
+        <!-- <script type="module" src="./js/jinhua/control-page.js"></script> -->
         <!-- 语音识别 -->
         <script src="./js/iat-js/example/crypto-js.js"></script>
         <script src="./js/iat-js/dist/index.umd.js"></script>
@@ -146,8 +165,13 @@
         <script src="./js/tts-lat/example/crypto-js.js"></script>
         <script src="./js/tts-lat/dist/index.umd.js"></script>
         <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
+        <!-- <script type="module">
+            import {controlStateGif} from './js/jinhua/control-page.js'
+            controlStateGif('start-listening')
+        </script> -->
 
     </body>
     <script>
     </script>
 </html>
+

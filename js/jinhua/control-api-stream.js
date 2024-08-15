@@ -35,10 +35,8 @@ function getDialogue(content){
                 signal: signal
             };
             try {
-    
-                let response = await fetch(base_url+'/process_dialogue', requestOptions);
+                let response = await fetch(base_url+'/process_dialogue', requestOptions)
                 clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
-
                 if (!response.ok) {
                     reject('请求失败')
                     throw new Error('Network response was not ok');
@@ -60,9 +58,12 @@ function getDialogue(content){
                         // console.log('Received chunk:', chunkText);
                         chunkSingelReceived(output)
                         return readChunk(); // 继续读取下一个块
+                    }).catch((err) => {
+                        console.error('读取流时发生错误')
+                        // 处理读取流时的错误
+                        reject(`读取流时发生错误: ${err?.message}`);
                     });
                 }
-    
                 return readChunk();
             } catch (e) {
                 reject(e)
@@ -102,10 +103,9 @@ function getMultiDialogue(content){
                 signal: signal
             };
             try {
-    
-                let response = await fetch(base_url + '/process_continue_dialogue', requestOptions);
-                clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
+                let response = await fetch(base_url + '/process_continue_dialogue', requestOptions)
 
+                clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
                 if (!response.ok) {
                     reject('请求失败')
                     throw new Error('Network response was not ok');
@@ -127,6 +127,10 @@ function getMultiDialogue(content){
                         // console.log('Received chunk:', chunkText);
                         chunkMultiReceived(output)
                         return readChunk(); // 继续读取下一个块
+                    }).catch((err) => {
+                        console.error('读取流时发生错误')
+                        // 处理读取流时的错误
+                        reject(`读取流时发生错误: ${err?.message}`);
                     });
                 }
     

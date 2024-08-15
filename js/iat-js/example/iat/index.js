@@ -1,4 +1,4 @@
-import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/control.js'
+import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } from '../../../jinhua/control.js'
 // 防止全局污染加上 lat_xxx 命名
   var lat_APPID = "9d3bb036";
   var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
@@ -74,7 +74,7 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
     lat_btnStatus = status;
     if (status === "CONNECTING") {
       lat_btnControl.innerText = "建立连接中";
-      document.getElementById("result").innerText = "";
+      // document.getElementById("result").innerText = "";
       lat_resultText = "";
       lat_resultTextTemp = "";
     } else if (status === "OPEN") {
@@ -108,8 +108,9 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
       } else {
         lat_resultText = lat_resultText + str;
       }
-      document.getElementById("result").innerText =
-      lat_resultTextTemp || lat_resultText || "";
+      //原始识别结果
+      // document.getElementById("result").innerText =
+      // lat_resultTextTemp || lat_resultText || "";
     }
     if (jsonData.code === 0 && jsonData.data.status === 2) {
       lat_WS.close();
@@ -165,6 +166,7 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
         },
       };
       lat_WS.send(JSON.stringify(params));
+      latWsOnOpened()
     };
     lat_WS.onmessage = (e) => {
       renderResult(e.data);
@@ -173,6 +175,7 @@ import { latResultOnChange,latWsOnClosed,latOnload } from '../../../jinhua/contr
       console.error(e);
       lat_recorder.stop();
       changeBtnStatus("CLOSED");
+      latWsOnError()
     };
     lat_WS.onclose = (e) => {
       lat_recorder.stop();

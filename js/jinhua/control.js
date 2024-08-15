@@ -1,6 +1,7 @@
 import { control_request } from './control-api.js'
 import './control-music.js'
 import './control-station.js'
+import { page_changeState } from './control-page.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
 import { control_tts_show, control_answer_show } from './control-page.js'
@@ -24,6 +25,7 @@ enterMode('BUS')
 //唤醒检测
 function wakeupDetect(event){
     if(event.key === 'Enter' && control_mode == 'BUS'){
+        showEleMessage('正在唤醒','success',1500)
         enterMode('READY')
         //开启识别
         latConnectWebSocket()
@@ -138,6 +140,7 @@ function jugeMode() {
         }
         return
     }
+
 }
 
 //统一放到debouncedjugeModeMode中处理了
@@ -172,6 +175,19 @@ export function latWsOnClosed(){
     latConnectWebSocket()
 }
 
+//lat连接成功 回调
+export function latWsOnOpened(){
+    page_changeState('listening')
+}
+
+//lat连接错误 回调
+export function latWsOnError(){
+    page_changeState('')
+    enterMode('BUS')
+    showEleMessage('lat 连接断开','error')
+}
+
+
 let control_delay_time_READY = 60000 //READY模式 保持lat连接的最大时间
 let control_delay_timer_READY = null //READY模式 保持连接的定时器
 let control_singel_answing = false //正在等待询问单轮的答案
@@ -184,6 +200,7 @@ let control_multi_answing = false //正在等待询问多轮的答案
 
 
 function latConnectWebSocket(){
+
     if(control_mode === 'READY'){ //唤醒模式
         //继续开启识别
         lat_connectWebSocket()
@@ -202,6 +219,7 @@ function latConnectWebSocket(){
     if(control_mode === 'MULTI' && control_multi_answing == false){
         //继续开启识别
         lat_connectWebSocket()
+
         // 60s 后 退出多轮模式 到 静默状态   
         if(!control_delay_timer_MULTI){
             control_delay_timer_MULTI = setTimeout(()=>{
@@ -219,6 +237,7 @@ function latConnectWebSocket(){
     if(control_mode == 'SINGEL' || control_mode == 'BUS' || control_mode == 'MUSIC'){
         checkClearTimer()
     }
+
 }
 
 function checkClearTimer(){
@@ -247,10 +266,18 @@ function enterMode(mode){
     control_mode = mode
     control_modeText = document.getElementById("mode_text");
     control_modeText.innerText = `${control_modeMap[mode]}`;
+
+    if(mode === 'BUS'){
+        page_changeState('')
+    }else if( mode === 'MUSIC' || mode === 'MULTI' || mode === 'SINGEL'){
+        page_changeState('thinking')
+    }
+
     onModeChange(control_mode)
 }
 
 function onModeChange(control_mode){
+
     if(control_mode == 'BUS'){
         stationModuleStart()
         //清空对话框
@@ -260,8 +287,8 @@ function onModeChange(control_mode){
     }else if(control_mode == 'SINGEL'){
         //关掉lat
         latClose()
-
         singelModuleStart(control_lat_result)
+
     }else if(control_mode == 'MULTI'){
 
         toMultiMoudle()
@@ -273,6 +300,7 @@ function onModeChange(control_mode){
         musicModuleStart(control_lat_result)
         
     }
+
 }
 
 function toMultiMoudle(){
@@ -280,6 +308,7 @@ function toMultiMoudle(){
     control_multi_answing = true
     //关掉lat
     latClose()
+    page_changeState('thinking')
 
     //进入多轮对话中
     multiModuleStart(control_lat_result)
@@ -304,6 +333,9 @@ export function onSingleModuleEnd(){
 export function onMultiModuleEnd(){
     //回到报站模式
     if(control_mode === 'MULTI'){//保险起见
+
+        control_tts_show('')
+
         //回答结束
         control_multi_answing = false 
         //lat被主动关闭 lat主动开启

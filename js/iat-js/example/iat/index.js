@@ -82,7 +82,7 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } 
     } else if (status === "CLOSING") {
       lat_btnControl.innerText = "关闭连接中";
     } else if (status === "CLOSED") {
-      lat_btnControl.innerText = "开始录音";
+      lat_btnControl.innerText = "录音状态";
     }
   }
 

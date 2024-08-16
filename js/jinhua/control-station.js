@@ -23,7 +23,6 @@ function getLoopStation(){
                 control_station_current = station
                 //播报站点
                 playStationAudio(station)
-                
             }
 
         }).catch((error)=>{

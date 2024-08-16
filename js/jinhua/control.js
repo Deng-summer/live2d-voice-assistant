@@ -37,7 +37,7 @@ function wakeupDetect(event){
 let control_lat_ws  // latws 连接
 let control_lat_result = '' //lat 识别结果
 let control_lat_recorder  // lat 录音起
-const control_lat_time = 1600 // lat 断整句时间
+const control_lat_time = 1800 // lat 断整句时间
 
 export function latOnload({latWS,lat_recorder}){
     control_lat_ws = latWS

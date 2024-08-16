@@ -322,7 +322,7 @@ button.inactive {
     color: #fff;
 }
 .dialog-answer{
-    /* min-height: 42px; */
+    min-height: 42px;
     border: 0px solid;
     margin-top: 28px;
     padding:10px 9px 10px 17px;
@@ -334,13 +334,17 @@ button.inactive {
     border-radius: 0px 20px 20px 20px;
     /* opacity: 0.5; */
     background-size: 100% 100%;
+    margin-right: auto;
+    line-height: 30px;
 }
 .dialog-answer-p{
     color: rgba(0, 0, 0, 1); /* 文字颜色不透明 */
     opacity: 1 ;
-    line-height: 32px;
     mix-blend-mode: normal; /* 确保文字颜色正常混合 */
-
+    margin-top: 0;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
 }
 .start-p{
     position: relative;

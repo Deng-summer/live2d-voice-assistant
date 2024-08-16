@@ -81,7 +81,7 @@ export function control_answer_show(text){
 // thinking.gif
 
 function controlStateGif(state){
-    console.log('controlStateGif',state)
+    // console.log('controlStateGif',state)
     let stateImg
     switch (state) {
         case 'start-listening':

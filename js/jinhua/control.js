@@ -1,7 +1,7 @@
 import { control_request } from './control-api.js'
 import './control-music.js'
 import './control-station.js'
-// import './control-heart.js'
+// import './control-heart.js' //暂时不用
 import { page_changeState } from './control-page.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
@@ -54,7 +54,7 @@ export function latResultOnChange({latResult,latStatus,latWS,lat_recorder}){
     let remote_trail_text = removeTrailingPeriod(text)
     if(remote_trail_text !== control_lat_result){
         control_lat_result = latResult
-        console.log(formatNowTime(new Date()),'接收到lat语音识别结果为',control_lat_result)
+        // console.log(formatNowTime(new Date()),'接收到lat语音识别结果为',control_lat_result)
         //指令有可能少于3个字
         debouncedjugeModeMode()
         control_tts_show(latResult)

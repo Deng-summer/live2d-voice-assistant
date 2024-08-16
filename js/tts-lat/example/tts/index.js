@@ -134,7 +134,7 @@
           text: encodeText(text, tte),
         },
       };
-      console.log('tts_send 1',tts_text)
+      // console.log('tts_send 1',tts_text)
 
       ttsWS.send(JSON.stringify(params));
     };

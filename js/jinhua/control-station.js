@@ -19,7 +19,7 @@ function getLoopStation(){
         control_request.getStation().then((data)=>{
 
             const { station, status } = data
-            if(status === '未到站点' && station && control_mode == 'BUS'){
+            if(status === '允许报站' && station && control_mode == 'BUS'){
                 control_station_current = station
                 //播报站点
                 playStationAudio(station)
@@ -99,7 +99,9 @@ function loadStationPlayer(){
                 break;
         }
         console.error(`Station Audio playback error: ${errorMessage}`);
-        showEleMessage(errorMessage,'error')
+        showEleMessage('播放出错'+errorMessage,'error')
+        playStationAudioEnd()
+
     });
     //监听音乐播放结束
     control_audioPlayer.addEventListener('ended', function(event) {

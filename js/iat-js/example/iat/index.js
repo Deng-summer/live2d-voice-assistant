@@ -206,14 +206,14 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } 
     clearInterval(lat_countdownInterval);
   };
 
-  lat_btnControl.onclick = function () {
-    if (lat_btnStatus === "UNDEFINED" || lat_btnStatus === "CLOSED") {
-      //开始录音
-      lat_connectWebSocket();
-    } else if (lat_btnStatus === "CONNECTING" || lat_btnStatus === "OPEN") {
-      // 结束录音
-      lat_recorder.stop();
-    }
-  };
+  // lat_btnControl.onclick = function () {
+  //   if (lat_btnStatus === "UNDEFINED" || lat_btnStatus === "CLOSED") {
+  //     //开始录音
+  //     lat_connectWebSocket();
+  //   } else if (lat_btnStatus === "CONNECTING" || lat_btnStatus === "OPEN") {
+  //     // 结束录音
+  //     lat_recorder.stop();
+  //   }
+  // };
 
 

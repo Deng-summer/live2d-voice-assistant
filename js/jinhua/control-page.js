@@ -1,14 +1,74 @@
 import { typeWriter_formatAnswer,changeQuestionText } from '../utils/typeWriter.js'
+import { debounce } from '../utils/deounce.js'
+
+
+
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function(...args) {
+        const context = this;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            if (lastFunc) clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
+}
+
+let jinhuaStateImg = document.getElementById("jinhua_state_git");
+let listening_text = document.getElementById("listening-text");
+let dialog_body = document.querySelector(".dialog-body")
+
+const handleScrollToEnd = throttle(
+    () => {
+        if (dialog_body) {
+            // console.log(dialog_body.scrollTop,dialog_body.scrollHeight)
+            dialog_body.scrollTop = dialog_body.scrollHeight;
+        }
+    },
+    300
+);
 
 export function control_tts_show(text){
     changeQuestionText(text)
 }
 
+
+let page_observe_flag = false
+const dialog_answer = document.querySelector(".dialog-answer");
+let dialog_answer_lastHeight = dialog_answer.offsetHeight;
+
 export function control_answer_show(text){
     typeWriter_formatAnswer(text)
+
+    //ResizeObserver 监听元素变化
+    if(!page_observe_flag){
+
+        page_observe_flag = true
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const currentHeight = entry.contentRect.height;
+                if (currentHeight !== dialog_answer_lastHeight) {
+                    dialog_answer_lastHeight = currentHeight;
+                    // console.log('Height changed:', currentHeight);
+                    handleScrollToEnd();
+                }
+            }
+        });
+        
+        if (dialog_answer) {
+            resizeObserver.observe(dialog_answer);
+        }
+    }
 }
-let jinhuaStateImg = document.getElementById("jinhua_state_git");
-let listening_text = document.getElementById("listening-text");
 
 // finish-listening.gif
 // finish-talking.gif
@@ -161,3 +221,5 @@ export function page_changeState(state) {
     
     control_gif_state = state;
 }
+
+

@@ -224,6 +224,24 @@ button.inactive {
     background-image: url('../css/dialog-bg.png');
     background-size: 100% 100%;
     z-index:1000;
+
+     /* 隐藏滚动条 */
+    ::-webkit-scrollbar {
+        /* display: none; */
+    }
+    /* 自定义滚动条宽度和颜色 */
+    ::-webkit-scrollbar {
+        width: 2px;
+        height: 2px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 50%;
+    }
+    /* 隐藏滚动条轨道 */
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
 }
 .dialog-body{
     padding:22px 22px;
@@ -232,6 +250,9 @@ button.inactive {
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
+    max-height: 500px;
+    overflow-y: auto;
+
     #music-moudle{
         display: none;
         font-size: 14px;
@@ -289,33 +310,37 @@ button.inactive {
 }
 .dialog-question{
     min-height: 42px;
-    padding:17px 9px 6px 17px;
+    padding:10px 9px 0px 17px;
     background: linear-gradient( 135deg, #A3BAE8 0%, #1C7195 100%);
     border-radius: 10px 0px 10px 10px;
     border: 0px solid;
     border-image: linear-gradient(156deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)) 0 0;
     max-width: 80%;
     margin-left: auto;
+    font-size: 20px;
+    line-height: 30px;
+    color: #fff;
 }
 .dialog-answer{
-    min-height: 42px;
-    background: linear-gradient( 136deg, #FFFFFF 0%, rgba(255,255,255,0.3) 100%);
-    border-radius: 0px 10px 10px 10px;
+    /* min-height: 42px; */
     border: 0px solid;
     margin-top: 28px;
-    padding:7px 9px 6px 17px;
+    padding:10px 9px 10px 17px;
     border-radius: 0px 10px 10px 10px;
-    font-size: #fff;
+    font-size: 20px;
     max-width: 80%;
-    background: linear-gradient( 136deg, #FFFFFF 0%, rgba(255,255,255,0.48) 100%);
+    background: linear-gradient(136deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.24) 100%);
     border: 1px solid;
     border-radius: 0px 20px 20px 20px;
-    opacity: 0.5;
+    /* opacity: 0.5; */
     background-size: 100% 100%;
 }
 .dialog-answer-p{
-    color: #fff;
+    color: rgba(0, 0, 0, 1); /* 文字颜色不透明 */
     opacity: 1 ;
+    line-height: 32px;
+    mix-blend-mode: normal; /* 确保文字颜色正常混合 */
+
 }
 .start-p{
     position: relative;

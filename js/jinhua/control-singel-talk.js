@@ -39,7 +39,7 @@ export function chunkSingelReceived(data){
     let parse_data = extractLastJSONObject(data)
     let content = parse_data?.data?.content //该包的文字内容
     let status = parse_data?.data?.status  //该包的状态
-    console.log('parse_data',content)
+    // console.log('parse_data',content)
     
     //流式包结束帧
     if(status === 'done!'){

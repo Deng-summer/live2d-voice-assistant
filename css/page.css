@@ -322,7 +322,7 @@ button.inactive {
     color: #fff;
 }
 .dialog-answer{
-    min-height: 42px;
+    /* min-height: 42px; */
     border: 0px solid;
     margin-top: 28px;
     padding:10px 9px 10px 17px;

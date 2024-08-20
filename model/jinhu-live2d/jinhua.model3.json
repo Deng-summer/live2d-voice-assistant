@@ -1,11 +1,11 @@
 {
 	"Version": 3,
 	"FileReferences": {
-		"Moc": "金华（调试1）.moc3",
+		"Moc": "jinhua.moc3",
 		"Textures": [
-			"金华（调试1）.2048/texture_00.png"
+			"jinhua.2048/texture_00.png"
 		],
-		"DisplayInfo": "金华（调试1）.cdi3.json"
+		"DisplayInfo": "jinhua.cdi3.json"
 	},
 	"Groups": [
 		{

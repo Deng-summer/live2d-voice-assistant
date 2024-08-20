@@ -288,9 +288,11 @@ function onModeChange(control_mode){
 
     if(control_mode == 'BUS'){
         stationModuleStart()
+        let default_question_text = '通过遥控器可跟我对话哦,试试"跟我聊聊天吧",或者"你退"下吧"。'
+        let dfault_answer_text = '还可以试试"给我唱首关于金华的歌吧"。'
         //清空对话框
-        control_tts_show('')
-        control_answer_show('')
+        control_tts_show(default_question_text)
+        control_answer_show(dfault_answer_text)
 
     }else if(control_mode == 'SINGEL'){
         //关掉lat

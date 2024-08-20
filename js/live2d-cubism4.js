@@ -1,8 +1,8 @@
-const mikongModel = '../../../rourou/rourou.model3.json'
-const mikongMotionIdle = '../../../rourou/IDLE.motion3.json'
+const mikongModel = '../../../model/rourou/rourou.model3.json'
+const mikongMotionIdle = '../../../model/rourou/IDLE.motion3.json'
 
-const haruModel = '../../../haru/haru_greeter_t03.model3.json'
-// const haruMotionM05 = '../../../haru/motion/haru_g_m05.motion3.json'
+const haruModel = '../../../model/haru/haru_greeter_t03.model3.json'
+// const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
 
 const live2d = PIXI.live2d;
 var model = {}

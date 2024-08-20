@@ -13,8 +13,7 @@
         <link rel="stylesheet" type="text/css" href="css/page.css?v=1.4.2"/>
         <style></style>
     </head>
-    <script src="./js/cdn/axios.min.js"></script>
-    <script src="./js/jquery.min.js"></script>
+ 
 
     <!-- live2d sdk2 sdk4版本支持 -->
     <script src="./js/cdn/live2dcubismcore.min.js"></script>
@@ -23,16 +22,16 @@
     <script src="./js/cdn/index.min.js"></script>
     <script src="./js/cdn/extra.min.js"></script>
     <script src="./js/live2d-cubism4.js"></script>
-
+    <script src="./js/cdn/axios.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <!-- live2d 配置 -->
+    <script src="js/LAppDefine.js"></script>
     <!-- 眼球追踪控制 -->
     <script src="./js/move-eye.js"></script>
     <script src="./js/face-api.min.js"></script>
-    <!-- live2d 配置 -->
-    <script src="js/LAppDefine.js"></script>
+    
     <!-- 人脸检测 -->
-    <!-- <script src="./js/face-detector.js"></script> -->
-    <!-- 处理接收音频 -->
-    <script src="js/audioLoad.js"></script> 
+    <script src="./js/face-detector.js"></script>
     <!-- 处理接收消息-->
     <script src="./js/websocket.js"></script>
     <!-- <script src="./js/live2d.min.js"></script>  -->
@@ -136,8 +135,10 @@
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
             //暂时关闭连接
             // connect()
-            live2dMain()
-            motionTalk(false) 
+            (async ()=>{
+                await live2dMain()
+            })()
+            // motionTalk(false) 
             new Vue({
                 el: '#app',
                 methods: {

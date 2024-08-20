@@ -1,5 +1,6 @@
 import { typeWriter_formatAnswer,changeQuestionText } from '../utils/typeWriter.js'
 import { debounce } from '../utils/deounce.js'
+import { control_mode } from './control.js';
 
 
 
@@ -81,39 +82,37 @@ export function control_answer_show(text){
 // thinking.gif
 
 function controlStateGif(state){
-    // console.log('controlStateGif',state)
+    console.log('controlStateGif',state)
     let stateImg
     switch (state) {
         case 'start-listening':
-            stateImg = './js/jinhua/state-gif/start-listening.gif'
+                stateImg = './js/jinhua/state-gif/start-listening.gif'
             break;
         case 'listening':
-            stateImg = './js/jinhua/state-gif/listening.gif'
+                stateImg = './js/jinhua/state-gif/listening.gif'
             break;
         case 'finish-listening':
-            stateImg = './js/jinhua/state-gif/finish-listening.gif'
-            break;
-        case 'talking-to-thinking':
-            stateImg = './js/jinhua/state-gif/talking-to-thinking.gif'
+                stateImg = './js/jinhua/state-gif/finish-listening.gif'
             break;
         case 'start-thinking':
-            stateImg = './js/jinhua/state-gif/start-thinking.gif'
+                stateImg = './js/jinhua/state-gif/start-thinking.gif'
             break;
         case 'thinking':
-            stateImg = './js/jinhua/state-gif/thinking.gif'
+                stateImg = './js/jinhua/state-gif/thinking.gif'
             break;
         case 'thinking-to-talking':
-            stateImg = './js/jinhua/state-gif/thinking-to-talking.gif'
+                stateImg = './js/jinhua/state-gif/thinking-to-talking.gif'
             break;
         case 'talking':
-            stateImg = './js/jinhua/state-gif/talking.gif'
+                stateImg = './js/jinhua/state-gif/talking.gif'
             break;
         case 'finish-talking':
-            stateImg = './js/jinhua/state-gif/finish-talking.gif'
+                stateImg = './js/jinhua/state-gif/finish-talking.gif'
             break;
         default:
-            // stateImg = './js/jinhua/state-gif/talking.gif'
+            // stateImg = './js/jinhua/state-gif/start-listening.gif'
             // stateImg = './js/jinhua/state-gif/listening.gif'
+            // stateImg = './js/jinhua/state-gif/start-thinking.gif'
 
             stateImg = '../../css/transparent.png';
             break;
@@ -122,43 +121,62 @@ function controlStateGif(state){
     // Fade out the image
     jinhuaStateImg.classList.add('fade-out');
             
-    // Handle image loading
+    // // Handle image loading
     const newImg = new Image();
     newImg.src = stateImg;
     
     newImg.onload = function() {
-        // Update the image source and remove the fade-out class to fade in the new image
+     // Update the image source and remove the fade-out class to fade in the new image
+    
+        // thinking 类图 
+        if(stateImg.includes('thinking.gif')){
+            jinhuaStateImg.style.width = '126px';
+            jinhuaStateImg.style.height = '126px';
+        // listening 类图 
+        }else if(stateImg.includes('listening.gif')){
+            jinhuaStateImg.style.width = '240px';
+            jinhuaStateImg.style.height = '240px';
+        // talking 类图 
+        }else if(stateImg.includes('talking.gif')){
+            jinhuaStateImg.style.width = '90px';
+            jinhuaStateImg.style.height = '90px';
+        }
         jinhuaStateImg.src = stateImg;
         jinhuaStateImg.onload = () => jinhuaStateImg.classList.remove('fade-out');
     };
 }
 
-let control_gif_state; //保存当前状态判断gif
-let control_state_timerId = null; // 用于存储定时器 ID
+let control_gif_state; //保存当前状态判断gif 4种状态 thingking listening talking ''
+// 用于存储定时器 ID 的数组
+const timerIds = [];
+
 let contrl_gif_time = 800 //gif 中间帧的间隔时间
 
-function clearExistingTimeout() {
-    if (control_state_timerId !== null) {
-        clearTimeout(control_state_timerId);
-        control_state_timerId = null;
-    }
+function clearAllTimeouts() {
+    // 遍历数组中的所有定时器 ID 并清除
+    timerIds.forEach(timerId => clearTimeout(timerId));
+    // 清空定时器 ID 数组
+    timerIds.length = 0;
 }
 
 function delayExecution(fn, delay) {
-    clearExistingTimeout();
-    control_state_timerId = setTimeout(() => {
+    clearAllTimeouts();
+    // 设置新的定时器，并将其 ID 添加到数组中
+    const timerId = setTimeout(() => {
         fn();
-        control_state_timerId = null;
+        // 执行完毕后从数组中移除定时器 ID
+        const index = timerIds.indexOf(timerId);
+        if (index > -1) {
+            timerIds.splice(index, 1);
+        }
     }, delay);
+    // 记录定时器 ID
+    timerIds.push(timerId);
 }
 
 
 export function page_changeState(state) {
-    if(state === 'listening'){
-        listening_text.style.display = 'block' 
-    }else{
-        listening_text.style.display = 'none' 
-    }
+    listening_text.style.display = 'none' 
     switch (state) {
         case 'listening':
             if (control_gif_state === 'talking') {
@@ -167,19 +185,18 @@ export function page_changeState(state) {
                     controlStateGif('start-listening');
                     delayExecution(() => {
                         controlStateGif('listening');
+                        listening_text.style.display = 'block' 
+
                     }, contrl_gif_time);
                 }, contrl_gif_time);
+                
             } else {
-
-                controlStateGif('start-listening');
+                controlStateGif('start-listening')
                 delayExecution(() => {
                     controlStateGif('listening');
+                    listening_text.style.display = 'block' 
                 }, contrl_gif_time);
-
             }
-            jinhuaStateImg.className = '';
-            jinhuaStateImg.classList.add('state-listening')
-
             break;
         
         case 'thinking':
@@ -187,7 +204,7 @@ export function page_changeState(state) {
                 break;
             }else{
                 controlStateGif('finish-listening');
-
+                
                 delayExecution(() => {
                     controlStateGif('start-thinking');
                     delayExecution(() => {
@@ -195,8 +212,7 @@ export function page_changeState(state) {
                     }, contrl_gif_time);
                 }, contrl_gif_time);
     
-                jinhuaStateImg.className = '';
-                jinhuaStateImg.classList.add('state-thinking')
+                
                 break;
             }
         
@@ -207,14 +223,12 @@ export function page_changeState(state) {
                 controlStateGif('talking');
             }, contrl_gif_time);
 
-            jinhuaStateImg.className = '';
-            jinhuaStateImg.classList.add('state-talking')
             break;
         
         default:
 
             controlStateGif('');
-            clearExistingTimeout();
+            clearAllTimeouts();
             break;
             
     }

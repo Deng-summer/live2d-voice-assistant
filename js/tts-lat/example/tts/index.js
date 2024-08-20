@@ -92,14 +92,15 @@
     //   return
     // }
 
-    if ("WebSocket" in window) {
-      ttsWS = new WebSocket(url);
-    } else if ("MozWebSocket" in window) {
-      ttsWS = new MozWebSocket(url);
-    } else {
-      alert("浏览器不支持WebSocket");
-      return;
-    }
+      if ("WebSocket" in window) {
+        ttsWS = new WebSocket(url);
+      } else if ("MozWebSocket" in window) {
+        ttsWS = new MozWebSocket(url);
+      } else {
+        alert("浏览器不支持WebSocket");
+        return;
+      }
+    
     tts_changeBtnStatus("CONNECTING");
     
     ttsWS.onopen = (e) => {

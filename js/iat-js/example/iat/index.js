@@ -1,4 +1,4 @@
-import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } from '../../../jinhua/control.js'
+import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,latRecorderOnstart } from '../../../jinhua/control.js'
 // 防止全局污染加上 lat_xxx 命名
   var lat_APPID = "9d3bb036";
   var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
@@ -14,6 +14,7 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } 
 
   lat_recorder.onStart = () => {
     changeBtnStatus("OPEN");
+    latRecorderOnstart()
   }
   let lat_WS;
   let lat_resultText = "";
@@ -128,10 +129,22 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError } 
   }
 
   export function lat_connectWebSocket() {
-    //开启前检查 检查状态
-    // if(lat_WS && lat_WS.readyState === lat_WS.OPEN){
-    //   return
-    // }
+
+    //开启前检查 检查状态 避免出现多条连接的情况
+    if(lat_WS){
+      if(lat_WS.readyState == lat_WS.OPEN){
+        return
+      }
+      if(lat_WS.readyState == lat_WS.CONNECTING){
+        return
+      }
+      if(lat_WS.readyState == lat_WS.CLOSING){
+        //关闭后会由control.js判断是否发起重连
+        return
+      }
+      console.log('已有lat_ws websocket连接')
+    }
+
     const websocketUrl = getWebSocketUrl();
     if ("WebSocket" in window) {
       lat_WS = new WebSocket(websocketUrl);

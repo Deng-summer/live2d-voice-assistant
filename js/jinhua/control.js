@@ -52,12 +52,13 @@ export function latResultOnChange({latResult,latStatus,latWS,lat_recorder}){
     // control_lat_recorder = lat_recorder
 
     let remote_trail_text = removeTrailingPeriod(text)
+    //判断是有变化
     if(remote_trail_text !== control_lat_result){
-        control_lat_result = latResult
+        control_lat_result = remote_trail_text
         // console.log(formatNowTime(new Date()),'接收到lat语音识别结果为',control_lat_result)
         //指令有可能少于3个字
         debouncedjugeModeMode()
-        control_tts_show(latResult)
+        control_tts_show(control_lat_result)
         control_answer_show('')
     }
     // console.log('接收lat状态',status)
@@ -90,6 +91,7 @@ function jugeMode() {
         '极客': 'MULTI',
         '模式': 'MULTI',
         '聊天': 'MULTI',
+        '聊聊': 'MULTI',
     };
     let incluesKeyWord = false
     
@@ -173,12 +175,13 @@ function latClose(){
 
 //lat断开语音识别的 回调
 export function latWsOnClosed(){
+    console.log('latWsOnClosed 断开语音识别')
     latConnectWebSocket()
 }
 
 //lat连接成功 回调
 export function latWsOnOpened(){
-    page_changeState('listening')
+    // page_changeState('listening')
 }
 
 //lat连接错误 回调
@@ -188,6 +191,10 @@ export function latWsOnError(){
     showEleMessage('lat 连接断开','error')
 }
 
+//lat Recorder连接成功 回调
+export function latRecorderOnstart(){
+    page_changeState('listening')
+}
 
 let control_delay_time_READY = 60000 //READY模式 保持lat连接的最大时间
 let control_delay_timer_READY = null //READY模式 保持连接的定时器
@@ -309,10 +316,11 @@ function toMultiMoudle(){
     control_multi_answing = true
     //关掉lat
     latClose()
-    page_changeState('thinking')
 
     //进入多轮对话中
     multiModuleStart(control_lat_result)
+    page_changeState('thinking')
+
 }
 
 //模块处理完成触发的回调函数
@@ -338,7 +346,8 @@ export function onMultiModuleEnd(){
         control_tts_show('')
 
         //回答结束
-        control_multi_answing = false 
+        control_multi_answing = false
+        console.log('onMultiModuleEnd 多轮对话结束') 
         //lat被主动关闭 lat主动开启
         latConnectWebSocket() //继续下一轮多轮
     }

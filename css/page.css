@@ -383,6 +383,7 @@ button.inactive {
         transition: opacity 1s ease-in-out;
     }
     #listening-text{
+        display: none;
         font-weight: 400;
         font-size: 18px;
         color: #000000;
@@ -392,18 +393,5 @@ button.inactive {
     }
     .fade-out {
         opacity: 0;
-    }
-    
-    #jinhua_state_git.state-listening{
-        width: 240px;
-        height: 240px;
-    }
-    #jinhua_state_git.state-thinking{
-        width: 126px;
-        height: 127px;
-    }
-    #jinhua_state_git.state-talking{
-        width: 90px;
-        height: 89px;
     }
 }

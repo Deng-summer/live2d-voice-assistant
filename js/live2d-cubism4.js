@@ -85,6 +85,7 @@ async function live2dMain() {
 // setTimeout(()=>{
 //     motionTalk(true)
 // },3000)
+
 var timerTalk = null
 function motionTalk(start){
     let switchFlag = false

@@ -11,7 +11,7 @@ const timeout = 4000 //接口超时时间
 // const base_url = 'http://localhost:3000' //node_webservice测试环境
 const base_url = 'http://1.95.87.50:9000' //生产环境
 
-function getDialogue(content){
+function getDialogue(content,sentiment){
     return new Promise(async (resolve,reject)=>{
 
         const timeoutId = setTimeout(() => {
@@ -30,7 +30,8 @@ function getDialogue(content){
                 // 如果需要发送数据，可以将数据转换为 JSON 字符串或者其他格式
                 body: JSON.stringify({
                     // 可根据服务器要求的格式设置具体的数据
-                    content: content
+                    content: content,
+                    sentiment:sentiment
                 }),
                 signal: signal
             };
@@ -79,7 +80,7 @@ const abortController = new AbortController();
 const signal = abortController.signal;
 
 
-function getMultiDialogue(content){
+function getMultiDialogue(content,sentiment){
     return new Promise(async (resolve,reject)=>{
 
         const timeoutId = setTimeout(() => {
@@ -98,7 +99,8 @@ function getMultiDialogue(content){
                 // 如果需要发送数据，可以将数据转换为 JSON 字符串或者其他格式
                 body: JSON.stringify({
                     // 可根据服务器要求的格式设置具体的数据
-                    content: content
+                    content: content,
+                    sentiment: sentiment
                 }),
                 signal: signal
             };

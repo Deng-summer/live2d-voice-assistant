@@ -4,7 +4,7 @@ import { control_request_stream } from './control-api-stream.js'
 import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
 import { control_answer_show,page_changeState } from './control-page.js'
 import { extractLastJSONObject } from '../utils/deounce.js'
-
+import { face_max_emotion } from '../face-detector.js'
 export let singel_recoder_tts_content_origin = '' //记录接收的语音部分
 export let singel_recoder_tts_content_play = '' //记录读了的语音部分
 export let singel_tts_done = false //流式是否结束
@@ -19,7 +19,7 @@ export function singelModuleStart(tts_result){
     singel_tts_done = false
     singel_tts_start = true
 
-    control_request_stream.getDialogue(tts_result).then((data)=>{
+    control_request_stream.getDialogue(tts_result,face_max_emotion).then((data)=>{
     
     }).catch((err) => {
         console.log('单轮对话接口出错/超时')

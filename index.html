@@ -31,7 +31,7 @@
     <script src="./js/face-api.min.js"></script>
     
     <!-- 人脸检测 -->
-    <script src="./js/face-detector.js"></script>
+    <script type="module" src="./js/face-detector.js"></script>
     <!-- 处理接收消息-->
     <script src="./js/websocket.js"></script>
     <!-- <script src="./js/live2d.min.js"></script>  -->
@@ -129,10 +129,10 @@
         </div>
         <script>
             //切换皮肤
-            function changeTexure() {
-                var model = new LAppModel();
-                model.changeTexure(1);
-            }
+            // function changeTexure() {
+            //     var model = new LAppModel();
+            //     model.changeTexure(1);
+            // }
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
             //暂时关闭连接
             // connect()

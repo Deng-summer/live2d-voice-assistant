@@ -2,6 +2,7 @@
 import { onMultiModuleEnd } from './control.js'
 import { control_request } from './control-api.js'
 import { control_request_stream } from './control-api-stream.js'
+import { face_max_emotion } from '../face-detector.js'
 
 import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
 import { control_answer_show,page_changeState } from './control-page.js'
@@ -23,7 +24,7 @@ export function multiModuleStart(tts_result){
     multi_tts_done = false
     multi_tts_start = true
 
-    control_request_stream.getMultiDialogue(tts_result).then((data)=>{
+    control_request_stream.getMultiDialogue(tts_result,face_max_emotion).then((data)=>{
         //流式结束处理
         // console.log(data)
     }).catch((err) => {

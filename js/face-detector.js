@@ -53,6 +53,7 @@ const state = {
     /**视频流 */
     stream: null,
 }
+export var face_max_emotion = '中性'
 /**初始化模型加载 */
 async function fnLoadModel() {
     // 面部轮廓模型
@@ -87,6 +88,21 @@ async function fnLoadModel() {
     // 关闭模型加载
     state.netsLoadModel = false;
     console.log('fnLoadModel 初始化模型加载')
+}
+// 获取最大值对应的键
+function findMaxEmotion(emotions) {
+    // 确保传入的是一个对象且不是数组
+    if (typeof emotions !== 'object' || Array.isArray(emotions) || emotions === null) {
+        throw new TypeError('Expected an object as parameter');
+    }
+
+    // 获取最大值对应的键
+    const maxEmotion = Object.entries(emotions).reduce((max, [key, value]) => 
+        value > max.value ? { key, value } : max, 
+        { key: '', value: -Infinity }
+    );
+
+    return maxEmotion.key;
 }
 
 /**根据模型参数识别绘制 */
@@ -135,7 +151,26 @@ async function fnRedraw() {
         // 需引入面部表情模型
         faceapi.draw.drawFaceExpressions(state.canvasEl, result, 0.05);
     }
-    console.log('expression',result)
+    let face_emotion
+    if(result[0] && result[0].expressions){
+        face_emotion = findMaxEmotion(result[0].expressions)
+    }
+    let chinese_exmotion = {
+        angry: '生气',
+        disgusted: '厌恶',
+        fearful: '害怕',
+        happy: '开心',
+        neutral: '中性',
+        sad: '难过',
+        surprised: '惊奇',
+    }
+    if(face_emotion && chinese_exmotion[face_emotion]){
+        face_max_emotion = chinese_exmotion[face_emotion]
+    }else{
+        face_max_emotion = '中性'
+    }
+
+    console.log('当前识别情绪为',face_max_emotion)
     // 年龄性别
     // if (state.draws.includes("ageGender")) {
     //     // 需引入年龄性别模型模型
@@ -157,7 +192,8 @@ async function fnRedraw() {
     //     }
     // }
     // 定时器句柄
-    state.timer = setTimeout(() => fnRedraw(), 5000);
+    const redraw_time = 2000
+    state.timer = setTimeout(() => fnRedraw(), redraw_time);
     let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
     if(x>0 && y>0){

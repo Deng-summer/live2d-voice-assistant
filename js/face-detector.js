@@ -206,19 +206,20 @@ async function fnRedraw() {
         x = window.innerWidth/2
         y = window.innerHeight/2
     }
-    if (Number.isNaN(x) || Number.isNaN(y)) {
-        console.log('isNaN')
-        x = parseInt(window.innerWidth/2)
-        y = parseInt(window.innerHeight/2)
-    }
-    if (x<0 || y<0) {
-        console.log('负数')
-        x = parseInt(window.innerWidth/2)
-        y = parseInt(window.innerHeight/2)
-    }
+    // if (Number.isNaN(x) || Number.isNaN(y)) {
+    //     console.log('没有人脸')
+    //     x = parseInt(window.innerWidth/2)
+    //     y = parseInt(window.innerHeight/2)
+    // }
+    // if (x<0 || y<0) {
+    //     console.log('负数')
+    //     x = parseInt(window.innerWidth/2)
+    //     y = parseInt(window.innerHeight/2)
+    // }
     // console.log(x,y)
     // debugger
     if(x>0 && y>0){
+        // console.log(x,y)
         //节流版
         throttledEyeMove(Math.floor(x), Math.floor(y));
         //不节流版

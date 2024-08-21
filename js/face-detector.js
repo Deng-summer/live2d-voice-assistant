@@ -219,7 +219,7 @@ async function fnRedraw() {
     // console.log(x,y)
     // debugger
     if(x>0 && y>0){
-        // console.log(x,y)
+        console.log(x,y)
         //节流版
         throttledEyeMove(Math.floor(x), Math.floor(y));
         //不节流版

@@ -194,8 +194,30 @@ async function fnRedraw() {
     // 定时器句柄
     const redraw_time = 100
     state.timer = setTimeout(() => fnRedraw(), redraw_time);
-    let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
-    let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标
+    let x,y
+    try{
+        x = window.innerWidth - (result[0]?.detection.box.topLeft._x + result[0]?.detection.box.topRight._x)/2//获取 人脸绘制结果的x坐标
+        y = (result[0]?.detection.box.bottomLeft._y + result[0]?.detection.box.bottomRight._y) / 2 //获取 人脸绘制结果的y坐标
+        
+        x = parseInt(x)
+        y = parseInt(y)
+    
+    }catch{
+        x = window.innerWidth/2
+        y = window.innerHeight/2
+    }
+    if (Number.isNaN(x) || Number.isNaN(y)) {
+        console.log('isNaN')
+        x = parseInt(window.innerWidth/2)
+        y = parseInt(window.innerHeight/2)
+    }
+    if (x<0 || y<0) {
+        console.log('负数')
+        x = parseInt(window.innerWidth/2)
+        y = parseInt(window.innerHeight/2)
+    }
+    // console.log(x,y)
+    // debugger
     if(x>0 && y>0){
         //节流版
         throttledEyeMove(Math.floor(x), Math.floor(y));

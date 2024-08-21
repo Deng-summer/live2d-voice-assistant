@@ -170,7 +170,7 @@ async function fnRedraw() {
         face_max_emotion = '中性'
     }
 
-    console.log('当前识别情绪为',face_max_emotion)
+    // console.log('当前识别情绪为',face_max_emotion)
     // 年龄性别
     // if (state.draws.includes("ageGender")) {
     //     // 需引入年龄性别模型模型
@@ -192,7 +192,7 @@ async function fnRedraw() {
     //     }
     // }
     // 定时器句柄
-    const redraw_time = 2000
+    const redraw_time = 100
     state.timer = setTimeout(() => fnRedraw(), redraw_time);
     let x = window.innerWidth - result[0]?.detection.box.x +  result[0]?.detection.box._width/2//获取 人脸绘制结果的x坐标
     let y = result[0]?.detection.box.y +  result[0]?.detection.box._height/2//获取 人脸绘制结果的y坐标

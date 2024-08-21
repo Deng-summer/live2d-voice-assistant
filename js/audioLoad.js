@@ -154,30 +154,35 @@ window.onload = function() {
         })
         // 播放出错时的处理
         audioPlayer.addEventListener('error', function(event) {
-            const error = audioPlayer.error;
-            let errorMessage;
-            switch (error.code) {
-                case error.MEDIA_ERR_ABORTED:
-                    errorMessage = '播放被中止';
-                    break;
-                case error.MEDIA_ERR_NETWORK:
-                    errorMessage = '网络错误';
-                    break;
-                case error.MEDIA_ERR_DECODE:
-                    errorMessage = '解码错误';
-                    break;
-                case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                    errorMessage = '媒体资源不支持';
-                    break;
-                default:
-                    errorMessage = '未知错误';
-                    break;
+            try{
+                const error = control_audioPlayer.error;
+                let errorMessage;
+                switch (error.code) {
+                    case error.MEDIA_ERR_ABORTED:
+                        errorMessage = '播放被中止';
+                        break;
+                    case error.MEDIA_ERR_NETWORK:
+                        errorMessage = '网络错误';
+                        break;
+                    case error.MEDIA_ERR_DECODE:
+                        errorMessage = '解码错误';
+                        break;
+                    case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                        errorMessage = '媒体资源不支持';
+                        break;
+                    default:
+                        errorMessage = '未知错误';
+                        break;
+                }
+                console.error(`Audio playback error: ${errorMessage}`);
+                showEleMessage(errorMessage,'error')
+                isPlaying = false; // 标记播放结束，即使是因为错误
+                pathSequenceNow++;
+                playNextAudio();
+            }catch{
+                showEleMessage(errorMessage,'error')
+                isPlaying = false; // 标记播放结束，即使是因为错误
             }
-            console.error(`Audio playback error: ${errorMessage}`);
-            showEleMessage(errorMessage,'error')
-            isPlaying = false; // 标记播放结束，即使是因为错误
-            pathSequenceNow++;
-            playNextAudio();
         });
     
     } else {

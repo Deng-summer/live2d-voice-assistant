@@ -52,30 +52,35 @@ function loadMusicPlayer(){
     control_audioPlayer = document.getElementById('music_audio');
     // 监听播放出错时的处理
     control_audioPlayer.addEventListener('error', function(event) {
-        const error = audioPlayer.error;
-        console.log('error',error)
-        let errorMessage;
-        switch (error?.code) {
-            case error.MEDIA_ERR_ABORTED:
-                errorMessage = '播放被中止';
-                break;
-            case error.MEDIA_ERR_NETWORK:
-                errorMessage = '网络错误';
-                break;
-            case error.MEDIA_ERR_DECODE:
-                errorMessage = '解码错误';
-                break;
-            case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-                errorMessage = '媒体资源不支持';
-                break;
-            default:
-                errorMessage = '未知错误';
-                break;
+        try{
+            const error = control_audioPlayer.error;
+            console.log('error',error)
+            let errorMessage;
+            switch (error?.code) {
+                case error.MEDIA_ERR_ABORTED:
+                    errorMessage = '播放被中止';
+                    break;
+                case error.MEDIA_ERR_NETWORK:
+                    errorMessage = '网络错误';
+                    break;
+                case error.MEDIA_ERR_DECODE:
+                    errorMessage = '解码错误';
+                    break;
+                case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    errorMessage = '媒体资源不支持';
+                    break;
+                default:
+                    errorMessage = '未知错误';
+                    break;
+            }
+            console.error(`Music Audio playback error: ${errorMessage}`);
+            showEleMessage(errorMessage,'error')
+            playMusicEnd()
+        }catch(err){
+            console.error(`Music Audio playback error: ${err}`);
+            showEleMessage(errorMessage,'error')
+            playMusicEnd()
         }
-        console.error(`Music Audio playback error: ${errorMessage}`);
-        showEleMessage(errorMessage,'error')
-        playMusicEnd()
-
     });
     //监听音乐播放结束
     control_audioPlayer.addEventListener('ended', function(event) {

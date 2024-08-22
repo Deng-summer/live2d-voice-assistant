@@ -25,6 +25,8 @@ function throttle(func, limit) {
 }
 
 let jinhuaStateImg = document.getElementById("jinhua_state_git");
+let jinhuaStateDiv = document.getElementById("jinhua-state-div");
+
 let listening_text = document.getElementById("listening-text");
 let dialog_body = document.querySelector(".dialog-body")
 
@@ -132,14 +134,20 @@ function controlStateGif(state){
         if(stateImg.includes('thinking.gif')){
             jinhuaStateImg.style.width = '126px';
             jinhuaStateImg.style.height = '126px';
+            jinhuaStateDiv.style.top = '50px'
+            jinhuaStateDiv.style.bottom = 'unset'
         // listening 类图 
         }else if(stateImg.includes('listening.gif')){
             jinhuaStateImg.style.width = '240px';
             jinhuaStateImg.style.height = '240px';
+            jinhuaStateDiv.style.bottom = '77px'
+            jinhuaStateDiv.style.top = 'unset'
         // talking 类图 
         }else if(stateImg.includes('talking.gif')){
             jinhuaStateImg.style.width = '90px';
             jinhuaStateImg.style.height = '90px';
+            jinhuaStateDiv.style.bottom = '77px'
+            jinhuaStateDiv.style.top = 'unset'
         }
         jinhuaStateImg.src = stateImg;
         jinhuaStateImg.onload = () => jinhuaStateImg.classList.remove('fade-out');

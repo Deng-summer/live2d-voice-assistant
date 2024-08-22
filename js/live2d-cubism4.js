@@ -1,3 +1,4 @@
+
 const mikongModel = '../../../model/rourou/rourou.model3.json'
 const mikongMotionIdle = '../../../model/rourou/IDLE.motion3.json'
 const jinhuaModel = '../../../model/jinhua/jinhua.model3.json'
@@ -8,7 +9,9 @@ const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
 
 const live2d = PIXI.live2d;
 var model = {}
+const useModelJson = jinhuaModel //使用的皮套模型
 
+//设置参数
 function triggerTalkAnimation() {
     // 假设"talk10Button3"对应的参数是一个布尔值（0或1）
     // console.log(model.internalModel.coreModel.setParameterValueById)
@@ -25,7 +28,6 @@ function triggerTalkAnimation() {
     // }, 10000); // 10秒后关闭
 }
 
-
 async function live2dMain() {
     
     const app = new PIXI.Application({
@@ -38,7 +40,7 @@ async function live2dMain() {
     });
     //测试haru Tap动作 成功
     // const model = await live2d.Live2DModel.from(haruModel);
-    model = await live2d.Live2DModel.from(jinhuaModel);
+    model = await live2d.Live2DModel.from(useModelJson);
     // model.focus = ()=>{} //关闭眼神追捕
     // console.log(model)
     app.stage.addChild(model);
@@ -69,7 +71,7 @@ async function live2dMain() {
     //     model.expression('招手动画开关')
     // },2000)
     // model.expression('说话2秒动画开关')
-
+    // model.focus = () => {}
 
     // 触发"说话10秒动画开关"参数
     // triggerTalkAnimation()
@@ -148,34 +150,47 @@ function motionTalk(start){
     // timerTalk && clearInterval(timerTalk)
 
 
-    // if(start){
-    //     timerTalk = setInterval(() => {
-    //         // model.expression()
-    //         // ParamMouthForm //嘴变形参数名
-    //         // model.expression('手持麦克风')
-    //         switchFlag = !switchFlag
-    //         let expressName = ''
-    //         if(switchFlag){
-    //             const options = ['说话'];
-    //             const randomIndex = Math.floor(Math.random() * options.length)
-    //             expressName = options[randomIndex];
-    //         }else{
-    //             expressName = '闭嘴'
-    //         }
-    //         model.expression(expressName)
-    //     }, 400)
-    // }else{
-    //     timerTalk = setInterval(() => {
-    //         const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',
-    //             '口水','哭','蓝泳圈','脸黑','脸红','帽子',
-    //             '眯眯眼','抹胸替换','墨镜','圈圈眼','三角嘴',
-    //             '瞳色切换','吐舌头','外套开关','星星眼','泳圈'];
-    //         // const options = ['不说话1','不说话2','不说话3','不说话4']
-    //         const randomIndex = Math.floor(Math.random() * options.length)
-    //         model.expression('爱心眼') //随机表情
-    //     },2000)
-    // }
+    if(start){
+        
+        // model.expression('说话')
+
+        // timerTalk = setInterval(() => {
+        //     // model.expression()
+        //     // ParamMouthForm //嘴变形参数名
+        //     // model.expression('手持麦克风')
+        //     // switchFlag = !switchFlag
+        //     // let expressName = ''
+        //     // if(switchFlag){
+        //     //     const options = ['说话'];
+        //     //     const randomIndex = Math.floor(Math.random() * options.length)
+        //     //     expressName = options[randomIndex];
+        //     // }else{
+        //     //     expressName = '闭嘴'
+        //     // }
+        //     model.expression('说话')
+        // }, 400)
+    
+    }else{
+
+        // model.expression('不说话1')
+
+
+        // timerTalk = setInterval(() => {
+        //     const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',
+        //         '口水','哭','蓝泳圈','脸黑','脸红','帽子',
+        //         '眯眯眼','抹胸替换','墨镜','圈圈眼','三角嘴',
+        //         '瞳色切换','吐舌头','外套开关','星星眼','泳圈'];
+        //     // const options = ['不说话1','不说话2','不说话3','不说话4']
+        //     const randomIndex = Math.floor(Math.random() * options.length)
+        //     model.expression('爱心眼') //随机表情
+        // },2000)
+    }
 }
+
+
+
+
+
 // async function live2dMain() {
 //     console.log(live2d)
 //     const priority = live2d.MotionPriority //FORCE: 3IDLE: 1NONE: 0NORMAL: 2

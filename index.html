@@ -93,14 +93,16 @@
             <div class="jinhua-class">
                 <!-- 语音识别 -->
                 <br />
-                <div>
-                    <!-- 浏览器录音听写： -->
-                    <button id="btn_control">录音状态</button>
-                </div>
-                <br />
-                <div>
-                    <span>当前模式为:</span>
-                    <span id="mode_text"></span>
+                <div style="visibility: hidden;">
+                    <div>
+                        <!-- 浏览器录音听写： -->
+                        <button id="btn_control">录音状态</button>
+                    </div>
+                    <br />
+                    <div>
+                        <span>当前模式为:</span>
+                        <span id="mode_text"></span>
+                    </div>
                 </div>
                 <br />
                 <!-- <div id="result"></div> -->
@@ -120,7 +122,7 @@
                     <!-- x4_lingxiaolu_en -->
                     <!-- <button id="controll_tts"></button> -->
                 </div>
-                <div class="jinhua-state-div">
+                <div class="jinhua-state-div" id="jinhua-state-div">
                     <img id="jinhua_state_git"  src="./css/transparent.png"/>
                     <p id="listening-text">正在听...</p>
                 </div>
@@ -169,9 +171,39 @@
         <script src="./js/tts-lat/example/crypto-js.js"></script>
         <script src="./js/tts-lat/dist/index.umd.js"></script>
         <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
-        <!-- <script type="module">
-           
-        </script> -->
+        <script type="module" >
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const myAudio = document.getElementById('my_audio');
+                const musicAudio = document.getElementById('music_audio');
+                const stationAudio = document.getElementById('station_audio');
+
+                
+                addListeners(myAudio);
+                addListeners(musicAudio);
+                addListeners(stationAudio);
+
+                // 检查是否有音频正在播放
+                function checkAudioPlaying() {
+                    const isAnyAudioPlaying = [myAudio, musicAudio, stationAudio].some(audio => !audio.paused);
+                    
+                    // console.log('isAnyAudioPlaying',isAnyAudioPlaying)
+                    if (isAnyAudioPlaying) {
+                        motionTalk(true);
+                    } else {
+                        motionTalk(false);
+                    }
+                }
+
+
+                function addListeners(audioElement) {
+                    audioElement.addEventListener('play', checkAudioPlaying);
+                    audioElement.addEventListener('pause', checkAudioPlaying);
+                }
+            });
+        
+        
+        </script>
 
     </body>
     <script>

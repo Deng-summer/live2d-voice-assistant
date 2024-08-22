@@ -28,7 +28,7 @@ export function multiModuleStart(tts_result){
         //流式结束处理
         // console.log(data)
     }).catch((err) => {
-        console.log('多轮对话接口出错/超时')
+        console.log('多轮对话接口出错/超时',err)
         showEleMessage('对话出错/网络超时','error')
         onMultiModuleEnd() 
     })

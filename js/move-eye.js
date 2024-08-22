@@ -10,6 +10,7 @@ function eyeMove(clientX,clientY){
     });
     // 触发鼠标移动事件
     // document.dispatchEvent(event);
+    // console.log(clientX, clientY)
     model.focus(clientX, clientY)
 }
 

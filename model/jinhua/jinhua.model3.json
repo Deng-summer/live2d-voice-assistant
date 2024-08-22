@@ -5,7 +5,24 @@
 		"Textures": [
 			"jinhua.2048/texture_00.png"
 		],
-		"DisplayInfo": "jinhua.cdi3.json"
+		"DisplayInfo": "jinhua.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "说话2秒动画开关",
+				"File": "expressions/说话2秒动画开关.exp3.json"
+			},
+			{
+				"Name": "招手动画开关",
+				"File": "expressions/招手动画开关.exp3.json"
+			}
+		],
+		"Motions": {
+			"": [
+				{
+					"File": "IDLE.motion3.json"
+				}
+			]
+		}
 	},
 	"Groups": [
 		{
@@ -18,5 +35,6 @@
 			"Name": "LipSync",
 			"Ids": []
 		}
-	]
+	],
+	"HitAreas": []
 }

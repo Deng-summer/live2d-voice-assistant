@@ -22,7 +22,7 @@ export function singelModuleStart(tts_result){
     control_request_stream.getDialogue(tts_result,face_max_emotion).then((data)=>{
     
     }).catch((err) => {
-        console.log('单轮对话接口出错/超时')
+        console.log('单轮对话接口出错/超时',err)
         showEleMessage('对话出错/网络超时','error')
         // showEleMessage('网络超时，请重试','error')
         onSingleModuleEnd()

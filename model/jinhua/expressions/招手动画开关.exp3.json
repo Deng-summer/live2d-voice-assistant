@@ -1,0 +1,10 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "talk1Button",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

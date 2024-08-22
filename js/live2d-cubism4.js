@@ -4,10 +4,28 @@ const jinhuaModel = '../../../model/jinhua/jinhua.model3.json'
 const jinhuaMotionIdle = '../../../model/jinhua/IDLE.motion3.json'
 
 const haruModel = '../../../model/haru/haru_greeter_t03.model3.json'
-// const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
+const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
 
 const live2d = PIXI.live2d;
 var model = {}
+
+function triggerTalkAnimation() {
+    // 假设"talk10Button3"对应的参数是一个布尔值（0或1）
+    // console.log(model.internalModel.coreModel.setParameterValueById)
+    console.log(model.internalModel.coreModel.getParameterValueById());
+    console.log(model.internalModel.coreModel)
+    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById("talk10Button3"));
+
+    model.internalModel.coreModel.setParameterValueById("WaveButton", 1);
+
+    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById("talk10Button3"));
+    // 如果需要在10秒后关闭动画，可以使用setTimeout
+    // setTimeout(() => {
+    //     model.internalModel.coreModel.setParameterValueById("talk10Button3", 0);
+    // }, 10000); // 10秒后关闭
+}
+
+
 async function live2dMain() {
     
     const app = new PIXI.Application({
@@ -25,20 +43,42 @@ async function live2dMain() {
     // console.log(model)
     app.stage.addChild(model);
 
+    // console.log(model)
+    // console.log(live2d)
+
     const scaleX = (innerWidth * 0.8) / model.width;
     const scaleY = (innerHeight * 0.8) / model.height;
     model.scale.set(Math.min(scaleX, scaleY)); //缩放大小 
     model.x = 100;
     model.y = 100;
 
-    console.log(live2d)
+
     // debugger
     var idleMotion = null;
-    // 加载 IDLE 动作
-    // idleMotion = await live2d.Live2DMotion.from(jinhuaMotionIdle);
 
-    // 播放 IDLE 动作
-    model.motion("IDLE", 0, true); 
+    // 加载 Tap 动作  优先级0
+    model.motion("Tap", 0); 
+
+    //循环播放动作Tap
+    // debugger
+    // model.motionManager.startMotion("Tap", {
+    //     loop: true, // 循环播放
+    // });
+    // debugger
+    // setTimeout(()=>{
+    //     model.expression('招手动画开关')
+    // },2000)
+    // model.expression('说话2秒动画开关')
+
+
+    // 触发"说话10秒动画开关"参数
+    // triggerTalkAnimation()
+
+    // 确保模型完全加载并渲染完成后再设置参数
+    // model.on('complete', () => {
+        // 触发参数
+        // triggerParameter("talk10Button3", 1.0);
+    // });
 
     //     idleMotion 是加载的动作对象。
     //0    表示默认优先级，true 表示循环播放

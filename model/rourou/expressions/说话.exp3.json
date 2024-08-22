@@ -3,7 +3,7 @@
 	"Parameters": [
 		{
 			"Id": "maozi_ButtonMW",
-			"Value": 1,
+			"Value": 0,
 			"Blend": "Add"
 		},
 		{

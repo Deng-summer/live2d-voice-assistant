@@ -13,10 +13,14 @@ const base_url = 'http://1.95.87.50:9000' //生产环境
 
 function getDialogue(content,sentiment){
     return new Promise(async (resolve,reject)=>{
+        
+        const abortController = new AbortController();
+        const signal = abortController.signal;
 
         const timeoutId = setTimeout(() => {
             abortController.abort(); // 在超时后中止请求
             reject('getDialogue超时')
+            timeoutId && clearTimeout(timeoutId)
         }, timeout); // 设置超时时间为 10 秒（单位为毫秒）
 
         try {
@@ -37,7 +41,7 @@ function getDialogue(content,sentiment){
             };
             try {
                 let response = await fetch(base_url+'/process_dialogue', requestOptions)
-                clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
+                timeoutId && clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
                 if (!response.ok) {
                     reject('请求失败')
                     throw new Error('Network response was not ok');
@@ -71,20 +75,24 @@ function getDialogue(content,sentiment){
             }
         }
         catch (error) {
+            timeoutId && clearTimeout(timeoutId)
             reject(error)
         }
     })
 }
 
-const abortController = new AbortController();
-const signal = abortController.signal;
 
 
 function getMultiDialogue(content,sentiment){
+    
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     return new Promise(async (resolve,reject)=>{
 
         const timeoutId = setTimeout(() => {
             abortController.abort(); // 在超时后中止请求
+            timeoutId && clearTimeout(timeoutId); 
             reject('getMultiDialogue超时')
         }, timeout); // 设置超时时间为 10 秒（单位为毫秒）
 
@@ -107,7 +115,7 @@ function getMultiDialogue(content,sentiment){
             try {
                 let response = await fetch(base_url + '/process_continue_dialogue', requestOptions)
 
-                clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
+                timeoutId && clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
                 if (!response.ok) {
                     reject('请求失败')
                     throw new Error('Network response was not ok');
@@ -142,6 +150,7 @@ function getMultiDialogue(content,sentiment){
             }
         }
         catch (error) {
+            timeoutId && clearTimeout(timeoutId); 
             reject(error)
         }
     })

@@ -52,7 +52,7 @@ async function live2dMain() {
     const scaleY = (innerHeight * 0.8) / model.height;
     model.scale.set(Math.min(scaleX, scaleY)); //缩放大小 
     model.x = innerWidth * 0.1;
-    model.y = innerHeight * 0.1;
+    model.y = innerHeight * 0.2;
 
 
     // debugger

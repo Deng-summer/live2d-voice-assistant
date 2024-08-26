@@ -125,7 +125,7 @@
           // vcn: 'xiaofeng', //发音人
           // vcn: 'x4_yezi', //发音人
           vcn:'x4_xiaoling',
-          speed: 55,//语速([0-100]
+          speed: 60,//语速([0-100]
           volume: 50,//音量([0-100])
           pitch: 50,//音高([0-100])
           bgs: 0,

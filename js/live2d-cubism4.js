@@ -72,7 +72,7 @@ async function live2dMain() {
     // },2000)
     // model.expression('说话2秒动画开关')
     model.focus = () => {}
-
+    motionTalk(false)
     // 触发"说话10秒动画开关"参数
     // triggerTalkAnimation()
 
@@ -144,36 +144,41 @@ async function live2dMain() {
 //     motionTalk(true)
 // },3000)
 
-var timerTalk = null
+var live2d_timerTalk = null
+let live2d_expressName
 function motionTalk(start){
-    // let switchFlag = false
-    // timerTalk && clearInterval(timerTalk)
-
-
+    if(live2d_timerTalk){
+        clearInterval(live2d_timerTalk)
+        live2d_timerTalk = null
+    }
     if(start){
-        
-        model.expression('说话')
-        // timerTalk = setInterval(() => {
-        //     // model.expression()
-        //     // ParamMouthForm //嘴变形参数名
-        //     // model.expression('手持麦克风')
-        //     // switchFlag = !switchFlag
-        //     // let expressName = ''
-        //     // if(switchFlag){
-        //     //     const options = ['说话'];
-        //     //     const randomIndex = Math.floor(Math.random() * options.length)
-        //     //     expressName = options[randomIndex];
-        //     // }else{
-        //     //     expressName = '闭嘴'
-        //     // }
-        //     model.expression('说话')
-        // }, 400)
+        live2d_expressName = '说话'
+        model.expression(live2d_expressName)
+        live2d_timerTalk = setInterval(() => {
+            // model.expression()
+            // ParamMouthForm //嘴变形参数名
+            // model.expression('手持麦克风')
+            // switchFlag = !switchFlag
+            // let expressName = ''
+            // if(switchFlag){
+            //     const options = ['说话'];
+            //     const randomIndex = Math.floor(Math.random() * options.length)
+            //     expressName = options[randomIndex];
+            // }else{
+            //     expressName = '闭嘴'
+            // }
+            live2d_expressName = live2d_expressName === '说话' ? '闭嘴' : '说话'
+            model.expression(live2d_expressName)
+        }, 600)
     
     }else{
-
+        if(live2d_timerTalk){
+            clearInterval(live2d_timerTalk)
+            live2d_timerTalk = null
+        }
         model.expression('不说话1')
 
-        // timerTalk = setInterval(() => {
+        // live2d_timerTalk = setInterval(() => {
         //     const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',
         //         '口水','哭','蓝泳圈','脸黑','脸红','帽子',
         //         '眯眯眼','抹胸替换','墨镜','圈圈眼','三角嘴',

@@ -1,6 +1,11 @@
-  const tts_APPID = "9d3bb036";
-  const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
-  const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+  // const tts_APPID = "9d3bb036";
+  // const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
+  // const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+
+  var tts_APPID = "371291e2";
+  var tts_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
+  var tts_API_KEY = "15cef8aebda3f263918938388219c6ea";
+  
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
   import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'
   import { control_mode } from '../../../jinhua/control.js'
@@ -123,7 +128,8 @@
           aue: "raw",
           auf: "audio/L16;rate=16000",
           // vcn: 'xiaofeng', //发音人
-          vcn: 'x4_yezi', //发音人
+          // vcn: 'x4_yezi', //发音人
+          vcn:'x4_panting',//潘婷
           // vcn:'x4_xiaoling',//志玲
           speed: 55,//语速([0-100]
           volume: 50,//音量([0-100])

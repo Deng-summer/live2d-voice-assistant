@@ -1,8 +1,13 @@
 import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,latRecorderOnstart } from '../../../jinhua/control.js'
 // 防止全局污染加上 lat_xxx 命名
-  var lat_APPID = "9d3bb036";
-  var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
-  var lat_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+  // var lat_APPID = "9d3bb036";
+  // var lat_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
+  // var lat_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
+
+  var lat_APPID = "371291e2";
+  var lat_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
+  var lat_API_KEY = "15cef8aebda3f263918938388219c6ea";
+
   let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"
 
   const lat_btnControl = document.getElementById("btn_control");

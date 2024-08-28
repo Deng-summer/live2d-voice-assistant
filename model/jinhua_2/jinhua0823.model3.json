@@ -1,0 +1,111 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "jinhua0823.moc3",
+		"Textures": [
+			"jinhua0823.2048/texture_00.png"
+		],
+		"Physics": "jinhua0823.physics3.json",
+		"DisplayInfo": "jinhua0823.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "expression13",
+				"File": "expressions/expression13.exp3.json"
+			},
+			{
+				"Name": "expression6",
+				"File": "expressions/expression6.exp3.json"
+			},
+			{
+				"Name": "expression12",
+				"File": "expressions/expression12.exp3.json"
+			},
+			{
+				"Name": "expression1",
+				"File": "expressions/expression1.exp3.json"
+			},
+			{
+				"Name": "expression7",
+				"File": "expressions/expression7.exp3.json"
+			},
+			{
+				"Name": "expression11",
+				"File": "expressions/expression11.exp3.json"
+			},
+			{
+				"Name": "expression2",
+				"File": "expressions/expression2.exp3.json"
+			},
+			{
+				"Name": "expression9",
+				"File": "expressions/expression9.exp3.json"
+			},
+			{
+				"Name": "expression4",
+				"File": "expressions/expression4.exp3.json"
+			},
+			{
+				"Name": "expression10",
+				"File": "expressions/expression10.exp3.json"
+			},
+			{
+				"Name": "expression3",
+				"File": "expressions/expression3.exp3.json"
+			},
+			{
+				"Name": "expression8",
+				"File": "expressions/expression8.exp3.json"
+			},
+			{
+				"Name": "expression5",
+				"File": "expressions/expression5.exp3.json"
+			}
+		],
+		"Motions": {
+			"": [
+				{
+					"File": "motions/IDLE.motion3.json"
+				},
+				{
+					"File": "motions/talk5s.motion3.json"
+				},
+				{
+					"File": "motions/nod.motion3.json"
+				},
+				{
+					"File": "motions/song.motion3.json"
+				},
+				{
+					"File": "motions/wave.motion3.json"
+				},
+				{
+					"File": "motions/think.motion3.json"
+				},
+				{
+					"File": "motions/talk3s.motion3.json"
+				},
+				{
+					"File": "motions/talk10s.motion3.json"
+				}
+			],
+			"Song": [
+				{
+					"File": "motions/song.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

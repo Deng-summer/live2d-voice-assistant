@@ -1,8 +1,17 @@
 
 const mikongModel = '../../../model/rourou/rourou.model3.json'
 const mikongMotionIdle = '../../../model/rourou/IDLE.motion3.json'
-const jinhuaModel = '../../../model/jinhua/jinhua.model3.json'
-const jinhuaMotionIdle = '../../../model/jinhua/IDLE.motion3.json'
+// const jinhuaModel = '../../../model/jinhua/jinhua.model3.json'
+// const jinhuaMotionIdle = '../../../model/jinhua/IDLE.motion3.json'
+
+const jinhuaModel = '../../../model/jinhua_2/jinhua0823.model3.json'
+const jinhua_Idle = '../../../model/jinhua_2/motions/IDLE.motion3.json'
+const jinhua_Nod = '../../../model/jinhua_2/motions/nod.motion3.json'
+const jinhua_Song = '../../../model/jinhua_2/motions/song.motion3.json'
+const jinhua_Talk = '../../../model/jinhua_2/motions/talk10s.motion3.json'
+const jinhua_Think = '../../../model/jinhua_2/motions/think.motion3.json'
+const jinhua_Wave = '../../../model/jinhua_2/motions/wave.motion3.json'
+
 
 const haruModel = '../../../model/haru/haru_greeter_t03.model3.json'
 const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
@@ -10,23 +19,6 @@ const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
 const live2d = PIXI.live2d;
 var model = {}
 const useModelJson = jinhuaModel //使用的皮套模型
-
-//设置参数
-function triggerTalkAnimation() {
-    // 假设"talk10Button3"对应的参数是一个布尔值（0或1）
-    // console.log(model.internalModel.coreModel.setParameterValueById)
-    console.log(model.internalModel.coreModel.getParameterValueById());
-    console.log(model.internalModel.coreModel)
-    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById("talk10Button3"));
-
-    model.internalModel.coreModel.setParameterValueById("WaveButton", 1);
-
-    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById("talk10Button3"));
-    // 如果需要在10秒后关闭动画，可以使用setTimeout
-    // setTimeout(() => {
-    //     model.internalModel.coreModel.setParameterValueById("talk10Button3", 0);
-    // }, 10000); // 10秒后关闭
-}
 
 async function live2dMain() {
     
@@ -53,13 +45,7 @@ async function live2dMain() {
     model.scale.set(Math.min(scaleX, scaleY)); //缩放大小 
     model.x = innerWidth * 0.1;
     model.y = innerHeight * 0.2;
-
-
-    // debugger
-    var idleMotion = null;
-
-    // 加载 Tap 动作  优先级0
-    model.motion("Tap", 0); 
+   
 
     //循环播放动作Tap
     // debugger
@@ -73,26 +59,6 @@ async function live2dMain() {
     // model.expression('说话2秒动画开关')
     // model.focus = () => {}
 
-    // 触发"说话10秒动画开关"参数
-    // triggerTalkAnimation()
-
-    // 确保模型完全加载并渲染完成后再设置参数
-    // model.on('complete', () => {
-        // 触发参数
-        // triggerParameter("talk10Button3", 1.0);
-    // });
-
-    //     idleMotion 是加载的动作对象。
-    //0    表示默认优先级，true 表示循环播放
-    //true 表示循环播放该动作。如果你不希望循环播放，可以将其设为 false。
-
-    
-    // model.width = 800
-    // model.height = 700
-
-    // model.scale.set(0.7);
-    
-    // draggable(model);
     //表情触发
     // setInterval(() => {
         // model.expression()
@@ -102,12 +68,6 @@ async function live2dMain() {
         // model.focus(0, 0)
     // }, 5000);
 
-    // Set mouth parameter periodically
-    // setInterval(() => {
-        //没用的代码
-        // model.defaultMotionGroup.parameterValues.setParameter('ParamMouthForm', 1);
-        // model.setParameterValueById("ParamMouthForm", 1);
-    // }, 5000);
 
     // const settings = {
     //     motions: {
@@ -139,53 +99,115 @@ async function live2dMain() {
         // model.focus(0, 0)
     // }, 100);
 }
-// 控制说话和不说话状态
-// setTimeout(()=>{
-//     motionTalk(true)
-// },3000)
 
-var timerTalk = null
+//触发表情
+function triggerExpression(express_name){
+    model.expression(express_name)
+}
+setTimeout(() => {
+    // triggerExpression('expression1')
+    // triggerMotion('Song')
+}, 3000);
 function motionTalk(start){
-    // let switchFlag = false
-    // timerTalk && clearInterval(timerTalk)
-
-
     if(start){
         
         // model.expression('说话')
-
-        // timerTalk = setInterval(() => {
-        //     // model.expression()
-        //     // ParamMouthForm //嘴变形参数名
-        //     // model.expression('手持麦克风')
-        //     // switchFlag = !switchFlag
-        //     // let expressName = ''
-        //     // if(switchFlag){
-        //     //     const options = ['说话'];
-        //     //     const randomIndex = Math.floor(Math.random() * options.length)
-        //     //     expressName = options[randomIndex];
-        //     // }else{
-        //     //     expressName = '闭嘴'
-        //     // }
-        //     model.expression('说话')
-        // }, 400)
     
     }else{
-
         // model.expression('不说话1')
-
-
-        // timerTalk = setInterval(() => {
-        //     const options = ['爱心眼', '抱住贝壳手','带虎牙闭嘴','带虎牙闭嘴','高光消失',
-        //         '口水','哭','蓝泳圈','脸黑','脸红','帽子',
-        //         '眯眯眼','抹胸替换','墨镜','圈圈眼','三角嘴',
-        //         '瞳色切换','吐舌头','外套开关','星星眼','泳圈'];
-        //     // const options = ['不说话1','不说话2','不说话3','不说话4']
-        //     const randomIndex = Math.floor(Math.random() * options.length)
-        //     model.expression('爱心眼') //随机表情
-        // },2000)
     }
 }
+
+//设置模型参数
+function triggerMotionParams(params_name) {
+    // 假设"talk10Button3"对应的参数是一个布尔值（0或1）
+    // console.log(model.internalModel.coreModel.setParameterValueById)
+    console.log(model.internalModel.coreModel.getParameterValueById());
+    console.log(model.internalModel.coreModel)
+    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById(params_name));
+
+    model.internalModel.coreModel.setParameterValueById(params_name, 1);
+
+    console.log("Parameter Value:", model.internalModel.coreModel.getParameterValueById(params_name));
+    // 如果需要在10秒后关闭动画，可以使用setTimeout
+    // setTimeout(() => {
+    //     model.internalModel.coreModel.setParameterValueById("talk10Button3", 0);
+    // }, 10000); // 10秒后关闭
+}
+function triggerMotion(motion_name){
+    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
+    // 加载 Tap 动作  0 重复次数  优先级 FORCE
+    model.motion(motion_name, 0 ,priority.FORCE,{ loop: true }).then(() => {
+        console.log(`${motion_name} motion started successfully with loop = `);
+    })
+    .catch(err => {
+        console.error(`Error playing motion ${motion_name}:`, err);
+    });
+
+    // motion.setFadeInTime(1.0);
+    // motion.setFadeOutTime(1.0);
+    console.log(model.motion)
+    // model.setIsLoop(true);
+
+    // const settings = {
+    //     motions: {
+    //         Idle: [
+    //             { file: jinhua_Idle, fade_in: 0.5, fade_out: 0.5 },
+    //         ],
+    //         Nod: [
+    //             { file: jinhua_Nod, fade_in: 0.5, fade_out: 0.5 },
+    //         ],
+    //         Talk: [
+    //             { file: jinhua_Talk, fade_in: 0.5, fade_out: 0.5 },
+    //         ],
+    //         Song: [
+    //             { file: jinhua_Song, fade_in: 0.5, fade_out: 0.5 },
+    //         ],
+    //     },
+    //     expressions: true // 表情是否可用，根据你的需求设置
+    // };
+    // const customParameters = {
+    //     Idle: jinhua_Idle,
+    //     Nod: jinhua_Nod,
+    //     Talk: jinhua_Talk,
+    //     Think: jinhua_Think,
+    //     Wave: jinhua_Wave,
+    //     Song:jinhua_Song
+    // };
+    // const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
+    // // console.log('Starting Nod motion...');
+    // // motionManager.startMotion('Song',{ loop:1 }).then(() => {
+    // //     console.log('Nod motion started successfully.');
+    // // }).catch(err => {
+    // //     console.error('Error starting Nod motion:', err);
+    // // });
+    // console.log(motionManager)
+    // 使用示例
+    logModelLoopProperties();
+
+     // 监听动作播放完成事件
+    model.internalModel.motionManager.addListener('motionFinished', () => {
+        if (true) {
+            debugger
+            // playMotion(); // 如果启用了循环，则再次播放动作
+        }
+    });
+}
+
+// 获取并打印model对象的所有属性和方法
+function logModelLoopProperties() {
+    const modelProperties = Object.getOwnPropertyNames(model);
+    
+    console.log("Properties and Methods containing 'loop':");
+    modelProperties.forEach(prop => {
+        if (prop.toLowerCase().includes('loop')) {
+            debugger
+            console.log(prop);
+        }
+    });
+}
+
+
 
 
 
@@ -242,8 +264,8 @@ function motionTalk(start){
 //         setInterval(() => {
 //             console.log('sleepy')
 //             // modelMikong.motion(sleepyMotionData);
-//             modelMikong.motion('Sleepy', 0,priority.FORCE)
-//             modelMikong.motion('SLEEPY', 0,priority.FORCE)
+//             modelMikong.motion('Sleepy', 0, priority.FORCE)
+//             modelMikong.motion('SLEEPY', 0, priority.FORCE)
 
 //         }, 4000);
 //     });
@@ -265,42 +287,3 @@ function draggable(model) {
     model.on("pointerupoutside", () => (model.dragging = false));
     model.on("pointerup", () => (model.dragging = false));
 }
-
-// function addFrame(model) {
-//     const foreground = PIXI.Sprite.from(PIXI.Texture.WHITE);
-//     foreground.width = model.internalModel.width;
-//     foreground.height = model.internalModel.height;
-//     foreground.alpha = 0.2;
-
-//     model.addChild(foreground);
-
-//     checkbox("Model Frames", (checked) => (foreground.visible = checked));
-// }
-
-// function addHitAreaFrames(model) {
-//     const hitAreaFrames = new live2d.HitAreaFrames();
-
-//     model.addChild(hitAreaFrames);
-
-//     checkbox("Hit Area Frames", (checked) => (hitAreaFrames.visible = checked));
-// }
-
-// function checkbox(name, onChange) {
-//     const id = name.replace(/\W/g, "").toLowerCase();
-
-//     let checkbox = document.getElementById(id);
-
-//     if (!checkbox) {
-//         const p = document.createElement("p");
-//         p.innerHTML = `<input type="checkbox" id="${id}"> <label for="${id}">${name}</label>`;
-
-//         document.getElementById("control").appendChild(p);
-//         checkbox = p.firstChild;
-//     }
-
-//     checkbox.addEventListener("change", () => {
-//         onChange(checkbox.checked);
-//     });
-
-//     onChange(checkbox.checked);
-// }

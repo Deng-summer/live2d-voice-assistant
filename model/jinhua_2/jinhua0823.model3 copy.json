@@ -1,0 +1,73 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "jinhua0823.moc3",
+		"Textures": [
+			"jinhua0823.2048/texture_00.png"
+		],
+		"Physics": "jinhua0823.physics3.json",
+		"DisplayInfo": "jinhua0823.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "exp1",
+				"File": "expressions/expression1.exp3.json"
+			},{
+				"Name": "exp2",
+				"File": "expressions/expression2.exp3.json"
+			},{
+				"Name": "exp3",
+				"File": "expressions/expression3.exp3.json"
+			},{
+				"Name": "exp4",
+				"File": "expressions/expression4.exp3.json"
+			},{
+				"Name": "exp5",
+				"File": "expressions/expression5.exp3.json"
+			},{
+				"Name": "exp6",
+				"File": "expressions/expression6.exp3.json"
+			},{
+				"Name": "exp7",
+				"File": "expressions/expression7.exp3.json"
+			},{
+				"Name": "exp7",
+				"File": "expressions/expression8.exp3.json"
+			},{
+				"Name": "exp9",
+				"File": "expressions/expression9.exp3.json"
+			},{
+				"Name": "exp10",
+				"File": "expressions/expression10.exp3.json"
+			},{
+				"Name": "exp11",
+				"File": "expressions/expression11.exp3.json"
+			},{
+				"Name": "exp12",
+				"File": "expressions/expression12.exp3.json"
+			},{
+				"Name": "exp13",
+				"File": "expressions/expression13.exp3.json"
+			}
+		],
+		"Motions": {
+			"IDLE": {"File": "motions/IDLE.motion3.json"},
+			"Nod":  {"File": "motions/nod.motion3.json"},
+			"Song": {"File": "motions/song.motion3.json"},
+			"Talk": {"File": "motions/talk10s.motion3.json"},
+			"Think":{"File": "motions/think.motion3.json"},
+			"Wave": {"File": "motions/wave.motion3.json"}
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		}
+	]
+}

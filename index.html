@@ -20,13 +20,13 @@
     <script src="./js/cdn/pixi.min.js"></script>
     <script src="./js/cdn/index.min.js"></script>
     <script src="./js/cdn/extra.min.js"></script>
-    <script src="./js/live2d-cubism4.js"></script>
+    <script type="module" src="./js/live2d-cubism4.js"></script>
     <script src="./js/cdn/axios.min.js"></script>
     <script src="./js/jquery.min.js"></script>
     <!-- live2d 配置 -->
     <script src="js/LAppDefine.js"></script>
     <!-- 眼球追踪控制 -->
-    <script src="./js/move-eye.js"></script>
+    <!-- <script type="module" src="./js/move-eye.js"></script> -->
     <script src="./js/face-api.min.js"></script>
     
     <!-- 人脸检测 -->
@@ -128,7 +128,8 @@
                 </div>
             </div>
         </div>
-        <script>
+        <script type="module">
+            import { live2dMain }  from './js/live2d-cubism4.js'
             //切换皮肤
             // function changeTexure() {
             //     var model = new LAppModel();
@@ -172,7 +173,7 @@
         <script src="./js/tts-lat/dist/index.umd.js"></script>
         <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
         <script type="module" >
-
+            import { triggerRepeatMotion,triggerMotion,triggerExpression } from './js/live2d-cubism4.js'
             document.addEventListener('DOMContentLoaded', function () {
                 const myAudio = document.getElementById('my_audio');
                 const musicAudio = document.getElementById('music_audio');
@@ -189,9 +190,9 @@
                     
                     // console.log('isAnyAudioPlaying',isAnyAudioPlaying)
                     if (isAnyAudioPlaying) {
-                        motionTalk(true);
+                        triggerRepeatMotion('Talk');
                     } else {
-                        motionTalk(false);
+                        triggerMotion('Idle');
                     }
                 }
 

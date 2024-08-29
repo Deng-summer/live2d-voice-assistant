@@ -4,23 +4,36 @@ const mikongMotionIdle = '../../../model/rourou/IDLE.motion3.json'
 // const jinhuaModel = '../../../model/jinhua/jinhua.model3.json'
 // const jinhuaMotionIdle = '../../../model/jinhua/IDLE.motion3.json'
 
-const jinhuaModel = '../../../model/jinhua_2/jinhua0823.model3.json'
-const jinhua_Idle = '../../../model/jinhua_2/motions/IDLE.motion3.json'
-const jinhua_Nod = '../../../model/jinhua_2/motions/nod.motion3.json'
-const jinhua_Song = '../../../model/jinhua_2/motions/song.motion3.json'
-const jinhua_Talk = '../../../model/jinhua_2/motions/talk10s.motion3.json'
-const jinhua_Think = '../../../model/jinhua_2/motions/think.motion3.json'
-const jinhua_Wave = '../../../model/jinhua_2/motions/wave.motion3.json'
-
+const jinhuaModel = '../../../model/jinhua_3/jinhua0823.model3.json'
+const jinhua_Idle = '../../../model/jinhua_3/motions/IDLE.motion3.json'
+const jinhua_Nod = '../../../model/jinhua_3/motions/nod.motion3.json'
+const jinhua_Song = '../../../model/jinhua_3/motions/song.motion3.json'
+const jinhua_Talk = '../../../model/jinhua_3/motions/talk10s.motion3.json'
+const jinhua_Think = '../../../model/jinhua_3/motions/think.motion3.json'
+const jinhua_Wave = '../../../model/jinhua_3/motions/wave.motion3.json'
 
 const haruModel = '../../../model/haru/haru_greeter_t03.model3.json'
 const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
+//动作 Song:Talk:Nod:Idle:Think:Wave:
+//表情 
+    // 'wuyanjing':'yanjing', // 没有👓
+    // 'maohan':'maohan', //冒汗 需要idle循环
+    // 'ruizhi':'expression2', //睿智
+    // 'xuanyun':'expression3',
+    // 'gaoxing':'expression4',
+    // 'wuyu':'expression5', //无语
+    // 'shengqi':'expression6',//生气
+    // 'shuijiao':'expression7',
+    // 'daidai':'expression8',
+    // 'zusang':'expression9',//沮丧
+    // 'jingzhang':'expression10',
+    // 'yinyue':'expression11', //紧张
 
 const live2d = PIXI.live2d;
-var model = {}
+export var model = {}
 const useModelJson = jinhuaModel //使用的皮套模型
 
-async function live2dMain() {
+export async function live2dMain() {
     
     const app = new PIXI.Application({
         view: document.getElementById("canvaslive2d4"),
@@ -45,7 +58,7 @@ async function live2dMain() {
     model.scale.set(Math.min(scaleX, scaleY)); //缩放大小 
     model.x = innerWidth * 0.1;
     model.y = innerHeight * 0.2;
-   
+
 
     //循环播放动作Tap
     // debugger
@@ -98,16 +111,110 @@ async function live2dMain() {
         // model.motion('Tap',0)
         // model.focus(0, 0)
     // }, 100);
+    triggerMotion('Idle')
 }
+setTimeout(()=>{
+    triggerExpression('empty')
+},3000)
 
 //触发表情
-function triggerExpression(express_name){
-    model.expression(express_name)
+export function triggerExpression(express_name){
+    let express_name_map = {
+        'wuyanjing':'yanjing', // 没有👓
+        'maohan':'maohan', //冒汗 需要idle循环
+        'nomal':'expression1', //没有表情
+        'ruizhi':'expression2', //睿智
+        'xuanyun':'expression3',
+        'gaoxing':'expression4',
+        'wuyu':'expression5', //无语
+        'shengqi':'expression6',//生气
+        'shuijiao':'expression7',
+        'daidai':'expression8',
+        'zusang':'expression9',//沮丧
+        'jingzhang':'expression10',
+        'yinyue':'expression11', //紧张
+        'empty':'empty' //空脸 空脸在viewer生效 在这里不生效
+        // kong:'expression12', //没有脸
+    }
+    
+    let name  = express_name_map[express_name] || 'expression1'
+    if(model.expression){
+        console.log('触发 model expression',express_name)
+        model.expression(name)
+    }
 }
-setTimeout(() => {
-    // triggerExpression('expression1')
-    // triggerMotion('Song')
-}, 3000);
+
+
+let live2d_motion_timer
+let live2d_motion_name = "Idle"
+
+export function triggerRepeatMotion(motion_name){
+    //终止循环
+    if(live2d_motion_timer){
+        clearInterval(live2d_motion_timer)
+        live2d_motion_timer = null
+    }
+
+    live2d_motion_name = motion_name
+    const motion_duration = {
+        Song:7000 + 40,
+        Talk:10000 + 80,
+        Nod:3533 + 40,
+        Idle:5000 + 40,
+        Think:5000 + 40,
+        Wave:6367 + 40
+    }
+    let play_time = motion_duration[live2d_motion_name] || 3000
+
+    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
+    // 加载 Tap 动作  0 重复次数  优先级 FORCE
+    if(model.motion){
+        triggerExpression('empty')
+        console.log('触发 开始动作',live2d_motion_name)
+        model.motion(live2d_motion_name, 0 ,priority.FORCE)
+    }
+
+    if(!live2d_motion_timer){
+        live2d_motion_timer = setInterval(()=>{
+            if(model.motion){
+                console.log('触发 开始动作',live2d_motion_name)
+                model.motion(live2d_motion_name, 0 ,priority.FORCE)
+            }
+
+        },play_time)
+    }
+    
+}
+
+export function triggerMotion(motion_name){
+    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
+    // 加载 Tap 动作  0 重复次数  优先级 FORCE
+    
+    if(model.motion){
+        triggerExpression('empty')
+        console.log('触发 开始动作',live2d_motion_name)
+        if(motion_name == 'Wave'){
+            triggerExpression('nomal')
+            model.motion(motion_name, 0 ,priority.FORCE)
+        }else{
+            model.motion(motion_name, 0 ,priority.FORCE)
+        }
+    }
+
+}
+
+// 获取并打印model对象的所有属性和方法
+function logModelLoopProperties() {
+    const modelProperties = Object.getOwnPropertyNames(model);
+    
+    console.log("Properties and Methods containing 'loop':");
+    modelProperties.forEach(prop => {
+        if (prop.toLowerCase().includes('loop')) {
+            console.log(prop);
+        }
+    });
+}
+
 function motionTalk(start){
     if(start){
         
@@ -119,7 +226,7 @@ function motionTalk(start){
 }
 
 //设置模型参数
-function triggerMotionParams(params_name) {
+export function triggerMotionParams(params_name) {
     // 假设"talk10Button3"对应的参数是一个布尔值（0或1）
     // console.log(model.internalModel.coreModel.setParameterValueById)
     console.log(model.internalModel.coreModel.getParameterValueById());
@@ -133,78 +240,6 @@ function triggerMotionParams(params_name) {
     // setTimeout(() => {
     //     model.internalModel.coreModel.setParameterValueById("talk10Button3", 0);
     // }, 10000); // 10秒后关闭
-}
-function triggerMotion(motion_name){
-    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
-    // 加载 Tap 动作  0 重复次数  优先级 FORCE
-    model.motion(motion_name, 0 ,priority.FORCE,{ loop: true }).then(() => {
-        console.log(`${motion_name} motion started successfully with loop = `);
-    })
-    .catch(err => {
-        console.error(`Error playing motion ${motion_name}:`, err);
-    });
-
-    // motion.setFadeInTime(1.0);
-    // motion.setFadeOutTime(1.0);
-    console.log(model.motion)
-    // model.setIsLoop(true);
-
-    // const settings = {
-    //     motions: {
-    //         Idle: [
-    //             { file: jinhua_Idle, fade_in: 0.5, fade_out: 0.5 },
-    //         ],
-    //         Nod: [
-    //             { file: jinhua_Nod, fade_in: 0.5, fade_out: 0.5 },
-    //         ],
-    //         Talk: [
-    //             { file: jinhua_Talk, fade_in: 0.5, fade_out: 0.5 },
-    //         ],
-    //         Song: [
-    //             { file: jinhua_Song, fade_in: 0.5, fade_out: 0.5 },
-    //         ],
-    //     },
-    //     expressions: true // 表情是否可用，根据你的需求设置
-    // };
-    // const customParameters = {
-    //     Idle: jinhua_Idle,
-    //     Nod: jinhua_Nod,
-    //     Talk: jinhua_Talk,
-    //     Think: jinhua_Think,
-    //     Wave: jinhua_Wave,
-    //     Song:jinhua_Song
-    // };
-    // const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
-    // // console.log('Starting Nod motion...');
-    // // motionManager.startMotion('Song',{ loop:1 }).then(() => {
-    // //     console.log('Nod motion started successfully.');
-    // // }).catch(err => {
-    // //     console.error('Error starting Nod motion:', err);
-    // // });
-    // console.log(motionManager)
-    // 使用示例
-    logModelLoopProperties();
-
-     // 监听动作播放完成事件
-    model.internalModel.motionManager.addListener('motionFinished', () => {
-        if (true) {
-            debugger
-            // playMotion(); // 如果启用了循环，则再次播放动作
-        }
-    });
-}
-
-// 获取并打印model对象的所有属性和方法
-function logModelLoopProperties() {
-    const modelProperties = Object.getOwnPropertyNames(model);
-    
-    console.log("Properties and Methods containing 'loop':");
-    modelProperties.forEach(prop => {
-        if (prop.toLowerCase().includes('loop')) {
-            debugger
-            console.log(prop);
-        }
-    });
 }
 
 

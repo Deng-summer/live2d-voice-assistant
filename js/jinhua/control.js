@@ -6,6 +6,7 @@ import { page_changeState } from './control-page.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
 import { control_tts_show, control_answer_show } from './control-page.js'
+import { triggerExpression, triggerRepeatMotion,triggerMotion} from '../live2d-cubism4.js'
 
 //金华  模式控制中心
 
@@ -27,6 +28,7 @@ enterMode('BUS')
 function wakeupDetect(event){
     if(event.key === 'Enter' && control_mode == 'BUS'){
         showEleMessage('正在唤醒','success',1500)
+        triggerMotion('Wave')
         enterMode('READY')
         //开启识别
         latConnectWebSocket()

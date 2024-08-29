@@ -9,7 +9,7 @@
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
   import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'
   import { control_mode } from '../../../jinhua/control.js'
-
+  import { triggerMotion,triggerRepeatMotion } from '../../../live2d-cubism4.js'
 
   // let tts_btnControl = document.getElementById("controll_tts");
   let tts_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "PLAY" "STOP"
@@ -29,11 +29,11 @@
   export const tts_audioPlayer = new AudioPlayer("/js/tts-lat/dist/");
   tts_audioPlayer.onPlay = () => {
     tts_changeBtnStatus("PLAY");
-    motionTalk(true)
+    triggerRepeatMotion('Talk')
   };
   //播放完成
   tts_audioPlayer.onStop = (audioDatas) => {
-    motionTalk(false)
+    triggerMotion('Idle')
     // console.log(audioDatas);
     //判断是否还有文本没有播放
     if(multi_recoder_tts_content_play<multi_recoder_tts_content_origin && control_mode == 'MULTI'){

@@ -1,5 +1,7 @@
+import { model }  from './live2d-cubism4.js'
 
-function eyeMove(clientX,clientY){
+
+export function eyeMove(clientX,clientY){
     // console.log('eyeMove',clientX,clientY)
     var event = new MouseEvent('mousemove', {
         'view': window,
@@ -13,7 +15,7 @@ function eyeMove(clientX,clientY){
     // console.log(clientX, clientY)
 
     // console.log(model)
-    if(model){
+    if(model && model.focus){
         model.focus(clientX, clientY)
     }
 }

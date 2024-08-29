@@ -88,11 +88,37 @@
 					"File": "motions/talk10s.motion3.json"
 				}
 			],
+			"Idle": [
+				{
+					"File": "motions/IDLE.motion3.json"
+				}
+			],
 			"Song": [
 				{
 					"File": "motions/song.motion3.json"
 				}
+			],
+			"Talk": [
+				{
+					"File": "motions/talk10s.motion3.json"
+				}
+			],
+			"Nod": [
+				{
+					"File": "motions/nod.motion3.json"
+				}
+			],
+			"Think": [
+				{
+					"File": "motions/think.motion3.json"
+				}
+			],
+			"Wave": [
+				{
+					"File": "motions/wave.motion3.json"
+				}
 			]
+
 		}
 	},
 	"Groups": [

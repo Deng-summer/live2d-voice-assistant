@@ -1,7 +1,7 @@
 import { typeWriter_formatAnswer,changeQuestionText } from '../utils/typeWriter.js'
 import { debounce } from '../utils/deounce.js'
 import { control_mode } from './control.js';
-
+import { triggerExpression, triggerRepeatMotion,triggerMotion} from '../live2d-cubism4.js'
 
 
 function throttle(func, limit) {
@@ -146,12 +146,29 @@ function controlStateGif(state){
         }else if(stateImg.includes('talking.gif')){
             jinhuaStateImg.style.width = '90px';
             jinhuaStateImg.style.height = '90px';
-            jinhuaStateDiv.style.bottom = '77px'
-            jinhuaStateDiv.style.top = 'unset'
+            jinhuaStateDiv.style.top = '50px'
+            jinhuaStateDiv.style.bottom = 'unset'
         }
         jinhuaStateImg.src = stateImg;
         jinhuaStateImg.onload = () => jinhuaStateImg.classList.remove('fade-out');
     };
+}
+
+function control_model_motion(){
+    if(control_gif_state === 'thinking'){
+        triggerRepeatMotion('Think')
+
+    }else if(control_gif_state === 'talking'){
+        triggerRepeatMotion('Talk')
+
+    }else if (control_gif_state === 'listening'){
+        // triggerRepeatMotion()
+        triggerExpression('normal')
+
+    }else{
+        triggerMotion('Idle')
+        triggerExpression('shuijiao')
+    }
 }
 
 let control_gif_state; //保存当前状态判断gif 4种状态 thingking listening talking ''
@@ -242,6 +259,7 @@ export function page_changeState(state) {
     }
     
     control_gif_state = state;
+    control_model_motion()
 }
 
 

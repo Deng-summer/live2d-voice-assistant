@@ -1,5 +1,5 @@
 // import { onMounted, onUnmounted, reactive } from "vue";
-
+import { eyeMove } from './move-eye.js'
 /**属性状态 */
 const state = {
     /**初始化模型加载 */

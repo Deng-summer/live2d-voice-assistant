@@ -5,9 +5,9 @@
 		"Fps": 30.0,
 		"Loop": true,
 		"AreBeziersRestricted": false,
-		"CurveCount": 18,
-		"TotalSegmentCount": 139,
-		"TotalPointCount": 423,
+		"CurveCount": 13,
+		"TotalSegmentCount": 134,
+		"TotalPointCount": 413,
 		"UserDataCount": 0,
 		"TotalUserDataSize": 0
 	},
@@ -703,61 +703,6 @@
 				0.369,
 				6.333,
 				0.666
-			]
-		},
-		{
-			"Target": "Parameter",
-			"Id": "expression1",
-			"Segments": [
-				0,
-				0,
-				0,
-				6.333,
-				0
-			]
-		},
-		{
-			"Target": "Parameter",
-			"Id": "expression2",
-			"Segments": [
-				0,
-				0,
-				0,
-				6.333,
-				0
-			]
-		},
-		{
-			"Target": "Parameter",
-			"Id": "expression3",
-			"Segments": [
-				0,
-				0,
-				0,
-				6.333,
-				0
-			]
-		},
-		{
-			"Target": "Parameter",
-			"Id": "expression4",
-			"Segments": [
-				0,
-				1,
-				0,
-				6.333,
-				1
-			]
-		},
-		{
-			"Target": "Parameter",
-			"Id": "mouthoff",
-			"Segments": [
-				0,
-				1,
-				0,
-				6.333,
-				1
 			]
 		},
 		{

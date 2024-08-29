@@ -3,7 +3,7 @@
 	"Parameters": [
 		{
 			"Id": "expression1",
-			"Value": -1,
+			"Value": 0,
 			"Blend": "Add"
 		},
 		{
@@ -53,7 +53,22 @@
 		},
 		{
 			"Id": "mouthoff",
-			"Value": -1,
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "glassesButton",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "songButton2",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "HanButton",
+			"Value": 0,
 			"Blend": "Add"
 		}
 	]

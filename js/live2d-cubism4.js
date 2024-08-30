@@ -32,7 +32,7 @@ const haruMotionM05 = '../../../model/haru/motion/haru_g_m05.motion3.json'
 const live2d = PIXI.live2d;
 export var model = {}
 const useModelJson = jinhuaModel //使用的皮套模型
-
+let live2d_waveing = false
 export async function live2dMain() {
     
     const app = new PIXI.Application({
@@ -61,7 +61,7 @@ export async function live2dMain() {
 
     // triggerMotion('Idle')
     triggerMotion('Wave')
-
+   
 }
 //test express motion trigger
 // setTimeout(()=>{
@@ -156,13 +156,22 @@ function motionMatchFace(motion_name){
     }else if(motion_name == 'Talk'){
         triggerExpression('talk')
 
+    }else if(motion_name == 'Wave'){
+        //需要等待招手动画结束 才能执行其他motion 需要修复Wave不能被中断的问题
+        live2d_waveing = true
+        setTimeout(()=>{
+            live2d_waveing = false
+        },6500)
     }
-
-    // if(motion_name === 'Talk' && live2d_motion_name === 'Think'){
-    // }
+    
+    //需要等待招手动画结束
+    if(live2d_waveing){
+        return
+    }
 
     live2d_motion_name = motion_name
     console.log('触发 开始动作',live2d_motion_name)
+    
     model.motion(live2d_motion_name, 0 ,priority.FORCE)
 }
 

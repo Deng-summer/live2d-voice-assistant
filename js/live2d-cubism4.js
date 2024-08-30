@@ -60,6 +60,8 @@ export async function live2dMain() {
     model.y = innerHeight * 0.2;
 
     // triggerMotion('Idle')
+    triggerMotion('Wave')
+
 }
 //test express motion trigger
 // setTimeout(()=>{
@@ -153,11 +155,6 @@ function motionMatchFace(motion_name){
         triggerExpression('jingzhang')
     }else if(motion_name == 'Talk'){
         triggerExpression('talk')
-
-    }else if (motion_name == 'listening'){ //复用think 摇头动画
-
-        triggerExpression('jingzhang')
-        motion_name == 'Think'
 
     }
 

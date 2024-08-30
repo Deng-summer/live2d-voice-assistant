@@ -157,28 +157,20 @@ function controlStateGif(state){
 function control_model_motion(){
     if(control_gif_state === 'thinking'){
 
-        triggerRepeatMotion('Think')
+        triggerMotion('Think')
         
     }else if(control_gif_state === 'talking'){
 
         triggerRepeatMotion('Talk')
 
     }else if (control_gif_state === 'listening'){
-        
+
         showEleMessage('正在听...','success',1000)
 
-        if(live2d_motion_name == 'Wave'){
-            //等待挥手完成
-            setTimeout(()=>{
-                if(control_mode == 'READY'){
-                    triggerMotion('listening')
-                }
-            },6367)
-        }else{
-            if(control_mode == 'READY'){
-                triggerMotion('listening')
-            }            
-        }
+        triggerExpression('jingzhang')
+
+    }else {
+        triggerExpression('empty')
     }
 }
 

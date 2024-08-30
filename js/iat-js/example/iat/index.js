@@ -8,10 +8,10 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,la
   // var lat_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
   // var lat_API_KEY = "15cef8aebda3f263918938388219c6ea";
 
-  //jason jinhua
-  var lat_APPID = "68d6bff2";
-  var lat_API_SECRET = "YTFmYWZiZWEwOGFmMzFmNjVlNWIzOTVm";
-  var lat_API_KEY = "a0c9b7763601a9968f358f1faa6f2539";
+  //jason shuoche
+  var lat_APPID = "de599ef5";
+  var lat_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
+  var lat_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
 
 
   let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"

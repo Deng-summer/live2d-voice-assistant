@@ -8,10 +8,10 @@
   // var tts_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
   // var tts_API_KEY = "15cef8aebda3f263918938388219c6ea";
   
-  //jason jinhua
-  var tts_APPID = "68d6bff2";
-  var tts_API_SECRET = "YTFmYWZiZWEwOGFmMzFmNjVlNWIzOTVm";
-  var tts_API_KEY = "a0c9b7763601a9968f358f1faa6f2539";
+    //jason shuoche
+    var tts_APPID = "de599ef5";
+    var tts_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
+    var tts_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
 
 
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'

@@ -31,7 +31,7 @@ enterMode('BUS')
 function wakeupDetect(event){
     if(event.key === 'Enter' && control_mode == 'BUS'){
         showEleMessage('正在唤醒','success',1500)
-        triggerMotion('Wave')
+        // triggerMotion('Wave')
         enterMode('READY')
         //开启识别
         latConnectWebSocket()

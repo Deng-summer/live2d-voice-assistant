@@ -1,11 +1,19 @@
+  // 邓夏茹
   // const tts_APPID = "9d3bb036";
   // const tts_API_SECRET = "NzBkNThlMjM2YWVjNDhkOWNlN2YwOTk2";
   // const tts_API_KEY = "5010beeaa5fb401e18039ba9db4b9559";
 
-  var tts_APPID = "371291e2";
-  var tts_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
-  var tts_API_KEY = "15cef8aebda3f263918938388219c6ea";
+  //jason
+  // var tts_APPID = "371291e2";
+  // var tts_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
+  // var tts_API_KEY = "15cef8aebda3f263918938388219c6ea";
   
+  //jason jinhua
+  var tts_APPID = "68d6bff2";
+  var tts_API_SECRET = "YTFmYWZiZWEwOGFmMzFmNjVlNWIzOTVm";
+  var tts_API_KEY = "a0c9b7763601a9968f358f1faa6f2539";
+
+
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
   import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'
   import { control_mode } from '../../../jinhua/control.js'
@@ -33,7 +41,6 @@
   };
   //播放完成
   tts_audioPlayer.onStop = (audioDatas) => {
-    triggerMotion('Idle')
     // console.log(audioDatas);
     //判断是否还有文本没有播放
     if(multi_recoder_tts_content_play<multi_recoder_tts_content_origin && control_mode == 'MULTI'){
@@ -44,6 +51,7 @@
     }
     else{
       tts_btnStatus === "PLAY" && tts_changeBtnStatus("STOP");
+      triggerMotion('Idle')
       if(control_mode == 'SINGEL'){
         //通知control-singel-talk 模块
         ttsWsOnClosed_Singel()

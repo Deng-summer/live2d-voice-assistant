@@ -1,7 +1,7 @@
 import { typeWriter_formatAnswer,changeQuestionText } from '../utils/typeWriter.js'
 import { debounce } from '../utils/deounce.js'
 import { control_mode } from './control.js';
-import { triggerExpression, triggerRepeatMotion,triggerMotion} from '../live2d-cubism4.js'
+import { triggerExpression, triggerRepeatMotion,triggerMotion, live2d_motion_name} from '../live2d-cubism4.js'
 
 
 function throttle(func, limit) {
@@ -156,18 +156,29 @@ function controlStateGif(state){
 
 function control_model_motion(){
     if(control_gif_state === 'thinking'){
-        triggerRepeatMotion('Think')
 
+        triggerRepeatMotion('Think')
+        
     }else if(control_gif_state === 'talking'){
+
         triggerRepeatMotion('Talk')
 
     }else if (control_gif_state === 'listening'){
-        // triggerRepeatMotion()
-        triggerExpression('normal')
+        
+        showEleMessage('正在听...','success',1000)
 
-    }else{
-        triggerMotion('Idle')
-        triggerExpression('shuijiao')
+        if(live2d_motion_name == 'Wave'){
+            //等待挥手完成
+            setTimeout(()=>{
+                if(control_mode == 'READY'){
+                    triggerMotion('listening')
+                }
+            },6367)
+        }else{
+            if(control_mode == 'READY'){
+                triggerMotion('listening')
+            }            
+        }
     }
 }
 

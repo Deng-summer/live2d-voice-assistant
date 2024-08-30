@@ -59,94 +59,46 @@ export async function live2dMain() {
     model.x = innerWidth * 0.1;
     model.y = innerHeight * 0.2;
 
-
-    //循环播放动作Tap
-    // debugger
-    // model.motionManager.startMotion("Tap", {
-    //     loop: true, // 循环播放
-    // });
-    // debugger
-    // setTimeout(()=>{
-    //     model.expression('招手动画开关')
-    // },2000)
-    // model.expression('说话2秒动画开关')
-    // model.focus = () => {}
-
-    //表情触发
-    // setInterval(() => {
-        // model.expression()
-        // ParamMouthForm //嘴变形参数名
-        // model.expression('手持麦克风')
-        // model.expression('说话')
-        // model.focus(0, 0)
-    // }, 5000);
-
-
-    // const settings = {
-    //     motions: {
-    //         sleepy: [
-    //             { file: "../../../haru/motion/haru_g_m05.motion3.json", fade_in: 0.5, fade_out: 0.5 },
-    //         ],
-    //     },
-    //     expressions: true // 表情是否可用，根据你的需求设置
-    // };
-    // const customParameters = {
-    //     idle: haruMotionM05,
-    //     // sleepy: mikongMotionSleepy,
-    //     // talk: mikongMotionTalk
-    // };
-    // const motionManager = new live2d.Cubism2MotionManager(settings, customParameters);
-    
-    //睡眠动作触发
-    // setInterval(() => {
-        // console.log('start motion')
-        // motionManager.startMotion('sleepy');
-        // model.motion('sleepy',0) //这段 触发自定义Tap动作
-    // }, 5000);
-
-    //说话动作触发
-    // setInterval(() => {
-        // console.log('model.focus')
-        // motionManager.startMotion('sleepy');
-        // model.motion('Tap',0)
-        // model.focus(0, 0)
-    // }, 100);
-    triggerMotion('Idle')
+    // triggerMotion('Idle')
 }
-setTimeout(()=>{
-    triggerExpression('empty')
-},3000)
+//test express motion trigger
+// setTimeout(()=>{
+//     triggerExpression('empty')
+// },3000)
 
 //触发表情
-export function triggerExpression(express_name){
+export async function triggerExpression(express_name){
     let express_name_map = {
         'wuyanjing':'yanjing', // 没有👓
         'maohan':'maohan', //冒汗 需要idle循环
-        'nomal':'expression1', //没有表情
-        'ruizhi':'expression2', //睿智
+        'nomal':'expression1', //正常表情
         'xuanyun':'expression3',
         'gaoxing':'expression4',
-        'wuyu':'expression5', //无语
+        'sikao2':'expression2', //睿智
+        'sikao1':'expression5', //无语
         'shengqi':'expression6',//生气
         'shuijiao':'expression7',
         'daidai':'expression8',
         'zusang':'expression9',//沮丧
         'jingzhang':'expression10',
-        'yinyue':'expression11', //紧张
-        'empty':'empty' //空脸 空脸在viewer生效 在这里不生效
-        // kong:'expression12', //没有脸
+        'yinyue1':'expression4', //音乐脸
+        'yinyue2':'expression11', //音乐符
+        'empty':'empty', //空脸
+        'talk':'talk' //说话开关
     }
     
     let name  = express_name_map[express_name] || 'expression1'
     if(model.expression){
         console.log('触发 model expression',express_name)
-        model.expression(name)
+        live2d_express_name = name
+        await model.expression(name)
     }
 }
 
 
 let live2d_motion_timer
-let live2d_motion_name = "Idle"
+export let live2d_motion_name = "Idle"
+export let live2d_express_name = 'normal'
 
 export function triggerRepeatMotion(motion_name){
     //终止循环
@@ -155,52 +107,76 @@ export function triggerRepeatMotion(motion_name){
         live2d_motion_timer = null
     }
 
-    live2d_motion_name = motion_name
     const motion_duration = {
-        Song:7000 + 40,
-        Talk:10000 + 80,
+        Song:6500 + 40,
+        Talk:2000 + 20,
         Nod:3533 + 40,
         Idle:5000 + 40,
         Think:5000 + 40,
         Wave:6367 + 40
     }
-    let play_time = motion_duration[live2d_motion_name] || 3000
+    let play_time = motion_duration[motion_name] || 3000
 
-    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
-    // 加载 Tap 动作  0 重复次数  优先级 FORCE
-    if(model.motion){
-        triggerExpression('empty')
-        console.log('触发 开始动作',live2d_motion_name)
-        model.motion(live2d_motion_name, 0 ,priority.FORCE)
-    }
+    motionMatchFace(motion_name)
 
     if(!live2d_motion_timer){
         live2d_motion_timer = setInterval(()=>{
-            if(model.motion){
-                console.log('触发 开始动作',live2d_motion_name)
-                model.motion(live2d_motion_name, 0 ,priority.FORCE)
-            }
+
+            motionMatchFace(motion_name)
 
         },play_time)
     }
+}
+function motionMatchFace(motion_name){
+    if(!model.motion){
+        return
+    }
+    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
+    // 加载 Tap 动作  0 重复次数  优先级 FORCE
+    if(motion_name == 'Song'){
+        triggerExpression('yinyue1')
     
+    }else if(motion_name == 'Think'){
+
+        triggerExpression('sikao1')
+        
+
+    }else if(motion_name == 'Idle'){
+        
+        triggerExpression('empty')
+    }else if(motion_name == 'Wave'){
+
+        triggerExpression('empty')
+    
+    }else if(motion_name == 'Nod'){
+
+        triggerExpression('jingzhang')
+    }else if(motion_name == 'Talk'){
+        triggerExpression('talk')
+
+    }else if (motion_name == 'listening'){ //复用think 摇头动画
+
+        triggerExpression('jingzhang')
+        motion_name == 'Think'
+
+    }
+
+    // if(motion_name === 'Talk' && live2d_motion_name === 'Think'){
+    // }
+
+    live2d_motion_name = motion_name
+    console.log('触发 开始动作',live2d_motion_name)
+    model.motion(live2d_motion_name, 0 ,priority.FORCE)
 }
 
 export function triggerMotion(motion_name){
-    const priority = live2d.MotionPriority //FORCE: 3 IDLE: 1 NONE: 0 NORMAL: 2
-    // 加载 Tap 动作  0 重复次数  优先级 FORCE
-    
-    if(model.motion){
-        triggerExpression('empty')
-        console.log('触发 开始动作',live2d_motion_name)
-        if(motion_name == 'Wave'){
-            triggerExpression('nomal')
-            model.motion(motion_name, 0 ,priority.FORCE)
-        }else{
-            model.motion(motion_name, 0 ,priority.FORCE)
-        }
+    //终止循环
+    if(live2d_motion_timer){
+        clearInterval(live2d_motion_timer)
+        live2d_motion_timer = null
     }
-
+    
+    motionMatchFace(motion_name)
 }
 
 // 获取并打印model对象的所有属性和方法
@@ -213,16 +189,6 @@ function logModelLoopProperties() {
             console.log(prop);
         }
     });
-}
-
-function motionTalk(start){
-    if(start){
-        
-        // model.expression('说话')
-    
-    }else{
-        // model.expression('不说话1')
-    }
 }
 
 //设置模型参数

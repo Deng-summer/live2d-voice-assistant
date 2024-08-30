@@ -6,7 +6,7 @@ import { face_max_emotion } from '../face-detector.js'
 
 import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
 import { control_answer_show,page_changeState } from './control-page.js'
-
+import { triggerExpression } from '../live2d-cubism4.js'
 import { extractLastJSONObject } from '../utils/deounce.js'
 
 export let multi_recoder_tts_content_origin = '' //记录接收的语音部分
@@ -74,6 +74,10 @@ export function chunkMultiReceived(data){
                 tts_connectWebSocket(content_play)
                 
                 multi_recoder_tts_content_play += content_play
+
+                //触发表情
+                triggerExpression('sikao2')
+
             }
             
         }

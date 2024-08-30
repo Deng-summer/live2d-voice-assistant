@@ -21,6 +21,9 @@ export let control_mode = "BUS" ;
 let control_modeText = document.getElementById('mode_text')
 document.addEventListener('keydown', wakeupDetect);
 
+let control_bus_timer = null
+let control_bus_time = 1000 * 10
+
 //一开始为报站模式
 enterMode('BUS')
 
@@ -154,7 +157,7 @@ const debouncedEnterMode = debounce((model) => {
 },0);
 
 const debouncedToMultiMoudle = debounce(() => {
-    toMultiMoudle(model)
+    toMultiMoudle()
 },0);
     
 //主动关闭语音识别 集成清除定时器功能
@@ -272,6 +275,7 @@ import { musicModuleStart } from './control-music.js'
 import { stationModuleStart } from './control-station.js'
 
 
+
 function enterMode(mode){
     control_mode = mode
     control_modeText = document.getElementById("mode_text");
@@ -283,9 +287,25 @@ function enterMode(mode){
         page_changeState('thinking')
     }
 
+    sleepTimer(mode)
+
     onModeChange(control_mode)
 }
 
+function sleepTimer(mode){
+    if(mode === 'BUS'){
+        if(!control_bus_timer){
+            control_bus_timer = setTimeout(()=>{
+                triggerExpression('shuijiao')
+            },control_bus_time)
+        }
+    }else{
+        if(control_bus_timer){
+            clearTimeout(control_bus_timer)
+            control_bus_timer = null
+        }
+    }
+}
 function onModeChange(control_mode){
 
     if(control_mode == 'BUS'){

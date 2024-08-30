@@ -20,6 +20,7 @@ function getLoopStation(){
 
             const { station, status } = data
             if(status === '允许报站' && station && control_mode == 'BUS'){
+            // if(station && control_mode == 'BUS'){
                 control_station_current = station
                 //播报站点
                 playStationAudio(station)

@@ -174,23 +174,38 @@
         <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
         <script type="module" >
             import { triggerRepeatMotion,triggerMotion,triggerExpression } from './js/live2d-cubism4.js'
+            import { control_mode } from './js/jinhua/control.js'
             document.addEventListener('DOMContentLoaded', function () {
-                const myAudio = document.getElementById('my_audio');
+                // const myAudio = document.getElementById('my_audio');
                 const musicAudio = document.getElementById('music_audio');
                 const stationAudio = document.getElementById('station_audio');
 
                 
-                addListeners(myAudio);
-                addListeners(musicAudio);
+                // addListeners(myAudio);
+                addMusicListeners(musicAudio);
                 addListeners(stationAudio);
 
                 // 检查是否有音频正在播放
                 function checkAudioPlaying() {
-                    const isAnyAudioPlaying = [myAudio, musicAudio, stationAudio].some(audio => !audio.paused);
+                    if(control_mode!== 'BUS'){
+                        return
+                    }
+                    const isAnyAudioPlaying = [stationAudio].some(audio => !audio.paused);
                     
-                    // console.log('isAnyAudioPlaying',isAnyAudioPlaying)
+                    console.log('触发 Audio Playing',isAnyAudioPlaying)
                     if (isAnyAudioPlaying) {
                         triggerRepeatMotion('Talk');
+                    } else {
+                        triggerMotion('Idle')
+                    }
+
+                }
+
+                function checkMusicPlaying(){
+                    const isAnyAudioPlaying = [musicAudio].some(audio => !audio.paused);
+                    console.log('触发 music Playing',isAnyAudioPlaying)
+                    if (isAnyAudioPlaying) {
+                        triggerRepeatMotion('Song');
                     } else {
                         triggerMotion('Idle');
                     }
@@ -201,11 +216,14 @@
                     audioElement.addEventListener('play', checkAudioPlaying);
                     audioElement.addEventListener('pause', checkAudioPlaying);
                 }
+
+                function addMusicListeners(audioElement){
+                    audioElement.addEventListener('play', checkMusicPlaying);
+                    audioElement.addEventListener('pause', checkMusicPlaying);
+                }
             });
         
-        
         </script>
-
     </body>
     <script>
     </script>

@@ -46,7 +46,7 @@ export async function live2dMain() {
     //测试haru Tap动作 成功
     // const model = await live2d.Live2DModel.from(haruModel);
     model = await live2d.Live2DModel.from(useModelJson);
-    // model.focus = ()=>{} //关闭眼神追捕
+    model.focus = ()=>{} //关闭眼神追捕
     // console.log(model)
     app.stage.addChild(model);
 

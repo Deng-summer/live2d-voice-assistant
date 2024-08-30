@@ -136,10 +136,9 @@
           aue: "raw",
           auf: "audio/L16;rate=16000",
           // vcn: 'xiaofeng', //发音人
-          vcn: 'x4_yezi', //小露发音人
-          // vcn:'x4_panting',//潘婷
-          // vcn:'x4_xiaoling',//志玲
-          speed: 55,//语速([0-100]
+          // vcn: 'x4_yezi', //发音人
+          vcn:'x4_xiaoling',
+          speed: 60,//语速([0-100]
           volume: 50,//音量([0-100])
           pitch: 50,//音高([0-100])
           bgs: 0,

@@ -109,6 +109,16 @@
 				5,
 				4.83
 			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "WaveButton",
+			"Segments": [
+				0,
+				0,
+				0,
+				0.267
+			]
 		}
 	]
 }

@@ -55,6 +55,11 @@
 			"Id": "mouthoff",
 			"Value": 0,
 			"Blend": "Add"
+		},
+		{
+			"Id": "songButton2",
+			"Value": 1,
+			"Blend": "Add"
 		}
 	]
 }

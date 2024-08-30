@@ -70,6 +70,16 @@
 			"Id": "HanButton",
 			"Value": 0,
 			"Blend": "Add"
+		},
+		{
+			"Id": "talkButton",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "WaveButton",
+			"Value": 0,
+			"Blend": "Add"
 		}
 	]
 }

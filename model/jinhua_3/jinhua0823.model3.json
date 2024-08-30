@@ -21,6 +21,10 @@
 				"File": "expressions/maohan.exp3.json"
 			},
 			{
+				"Name": "talk",
+				"File": "expressions/talk.exp3.json"
+			},
+			{
 				"Name": "expression1",
 				"File": "expressions/expression1.exp3.json"
 			},
@@ -104,7 +108,7 @@
 			],
 			"Talk": [
 				{
-					"File": "motions/talk10s.motion3.json"
+					"File": "motions/talk5s.motion3.json"
 				}
 			],
 			"Nod": [

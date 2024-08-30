@@ -312,10 +312,10 @@ function onModeChange(control_mode){
         stationModuleStart()
         let default_question_text = '欢迎进入聊车直播间'
         // let dfault_answer_text = '还可以试试"给我唱首关于金华的歌吧"。'
-        let dfault_answer_text = '我是小可，来跟我聊聊车吧，聊得越多，我会越懂哦。"。'
+        let default_answer_text = '我是小可，来跟我聊聊车吧，聊得越多，我会越懂哦。'
         //清空对话框
         control_tts_show(default_question_text)
-        control_answer_show(dfault_answer_text)
+        control_answer_show(default_answer_text)
 
     }else if(control_mode == 'SINGEL'){
         //关掉lat

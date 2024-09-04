@@ -61,7 +61,7 @@ export async function live2dMain() {
 
     // triggerMotion('Idle')
     triggerMotion('Wave')
-   
+
 }
 //test express motion trigger
 // setTimeout(()=>{
@@ -89,11 +89,13 @@ export async function triggerExpression(express_name){
         'talk':'talk' //说话开关
     }
     
-    let name  = express_name_map[express_name] || 'expression1'
     if(model.expression){
-        console.log('触发 model expression',express_name)
-        live2d_express_name = name
-        await model.expression(name)
+        if(live2d_express_name !== express_name){
+            console.log('触发 表情 expression', live2d_express_name)
+            live2d_express_name = express_name
+            let name  = express_name_map[live2d_express_name] || 'expression1'
+            await model.expression(name)
+        }
     }
 }
 
@@ -147,7 +149,11 @@ function motionMatchFace(motion_name){
         
         triggerExpression('empty')
     }else if(motion_name == 'Wave'){
-
+        //需要等待招手动画结束 才能执行其他motion 需要修复Wave不能被中断的问题
+        live2d_waveing = true
+        setTimeout(()=>{
+            live2d_waveing = false
+        },6500)
         triggerExpression('empty')
     
     }else if(motion_name == 'Nod'){
@@ -156,23 +162,24 @@ function motionMatchFace(motion_name){
     }else if(motion_name == 'Talk'){
         triggerExpression('talk')
 
-    }else if(motion_name == 'Wave'){
-        //需要等待招手动画结束 才能执行其他motion 需要修复Wave不能被中断的问题
-        live2d_waveing = true
-        setTimeout(()=>{
-            live2d_waveing = false
-        },6500)
     }
     
     //需要等待招手动画结束
-    if(live2d_waveing){
+    if(live2d_waveing && motion_name !== 'Wave'){
         return
     }
 
     live2d_motion_name = motion_name
     console.log('触发 开始动作',live2d_motion_name)
-    
-    model.motion(live2d_motion_name, 0 ,priority.FORCE)
+    let priority_map = {
+        'Wave': priority.NORMAL,
+        'Song': priority.FORCE,
+        'Talk': priority.FORCE,
+        'Nod': priority.FORCE,
+        'Idle': priority.FORCE,
+        'Think': priority.FORCE,
+    }
+    model.motion(live2d_motion_name, 0 ,priority_map[live2d_motion_name])
 }
 
 export function triggerMotion(motion_name){

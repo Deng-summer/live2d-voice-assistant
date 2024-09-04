@@ -4,7 +4,7 @@ import { control_mode  } from './control.js'
 import { stop_audio_address, stop_introduce} from './bus-stop-audio/stop-info.js'
 import { control_answer_show } from './control-page.js'
 
-let control_station_time = 1000 * 60 //获取站点 间隔时间  
+let control_station_time = 1000 * 60 * 10 //获取站点 间隔时间  
 let control_station_timer = null //定时器
 let control_audioPlayer
 let control_station_current //当前站点
@@ -71,6 +71,16 @@ function playStationAudioEnd(){
     control_request.finishCurStation(control_station_current)
 }
 
+//暂停播放
+// 打断播放并结束当前播放
+export function interruptStationPlay() {
+    if (control_audioPlayer && !control_audioPlayer.paused) { // 检查是否正在播放
+        control_audioPlayer.pause(); // 暂停播放
+        control_audioPlayer.currentTime = 0; // 将播放时间重置为0
+        playStationAudioEnd()
+    }
+}
+
 loadStationPlayer()
 
 function loadStationPlayer(){
@@ -78,7 +88,7 @@ function loadStationPlayer(){
     control_audioPlayer = document.getElementById('station_audio');
     // 监听播放出错时的处理
     control_audioPlayer.addEventListener('error', function(event) {
-        const error = audioPlayer.error;
+        const error = control_audioPlayer.error;
         console.log('error',error)
         let errorMessage;
         switch (error?.code) {

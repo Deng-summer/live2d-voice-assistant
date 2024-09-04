@@ -1,7 +1,7 @@
 import { typeWriter_formatAnswer,changeQuestionText } from '../utils/typeWriter.js'
 import { debounce } from '../utils/deounce.js'
 import { control_mode } from './control.js';
-import { triggerExpression, triggerRepeatMotion,triggerMotion, live2d_motion_name} from '../live2d-cubism4.js'
+import { triggerExpression, triggerRepeatMotion,triggerMotion, live2d_motion_name , live2d_express_name} from '../live2d-cubism4.js'
 
 
 function throttle(func, limit) {
@@ -23,7 +23,6 @@ function throttle(func, limit) {
         }
     };
 }
-
 let jinhuaStateImg = document.getElementById("jinhua_state_git");
 let jinhuaStateDiv = document.getElementById("jinhua-state-div");
 
@@ -73,15 +72,6 @@ export function control_answer_show(text){
     }
 }
 
-// finish-listening.gif
-// finish-talking.gif
-// listening.gif
-// start-listening.gif
-// start-thinking.gif
-// talking-to-thinking.gif //用不到
-// talking.gif
-// thinking-to-talking.gif 
-// thinking.gif
 
 function controlStateGif(state){
     console.log('controlStateGif',state)
@@ -264,5 +254,18 @@ export function page_changeState(state) {
     control_gif_state = state;
     control_model_motion()
 }
-
-
+// 睡眠开启判断
+export function page_live2d_startSleep(x,y){
+    if(control_mode === 'BUS'){
+        if(Number.isNaN(x) && Number.isNaN(y)){
+            if(live2d_express_name !== 'shuijiao'){
+                triggerExpression('shuijiao')
+            }
+            
+        }else{
+            if(live2d_express_name !== 'nomal' &&  live2d_motion_name !== 'Talk'){
+                triggerExpression('nomal')
+            }
+        }
+    }
+}

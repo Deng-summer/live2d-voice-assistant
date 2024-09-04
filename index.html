@@ -29,8 +29,6 @@
     <!-- <script type="module" src="./js/move-eye.js"></script> -->
     <script src="./js/face-api.min.js"></script>
     
-    <!-- 人脸检测 -->
-    <script type="module" src="./js/face-detector.js"></script>
     <!-- 处理接收消息-->
     <script src="./js/websocket.js"></script>
     <!-- <script src="./js/live2d.min.js"></script>  -->
@@ -130,18 +128,17 @@
         </div>
         <script>
             //control-page module 变量
-            let jinhuaStateImg  = document.getElementById("jinhua_state_git");
-            let jinhuaStateDiv = document.getElementById("jinhua-state-div");
-            let listening_text = document.getElementById("listening-text");
-            let dialog_body = document.querySelector(".dialog-body")
-            let page_observe_flag = false
-            const dialog_answer = document.querySelector(".dialog-answer");
-            let dialog_answer_lastHeight = dialog_answer.offsetHeight;
-            let control_gif_state; //保存当前状态判断gif 4种状态 thingking listening talking ''
-            // 用于存储定时器 ID 的数组
-            const timerIds = [];
-            let contrl_gif_time = 800 //gif 中间帧的间隔时间
-
+            // let jinhuaStateImg  = document.getElementById("jinhua_state_git");
+            // let jinhuaStateDiv = document.getElementById("jinhua-state-div");
+            // let listening_text = document.getElementById("listening-text");
+            // let dialog_body = document.querySelector(".dialog-body")
+            // let page_observe_flag = false
+            // const dialog_answer = document.querySelector(".dialog-answer");
+            // let dialog_answer_lastHeight = dialog_answer.offsetHeight;
+            // let control_gif_state; //保存当前状态判断gif 4种状态 thingking listening talking ''
+            // // 用于存储定时器 ID 的数组
+            // const timerIds = [];
+            // let contrl_gif_time = 800 //gif 中间帧的间隔时间
         </script>
         <script type="module">
             import { live2dMain }  from './js/live2d-cubism4.js'
@@ -187,6 +184,8 @@
         <script src="./js/tts-lat/example/crypto-js.js"></script>
         <script src="./js/tts-lat/dist/index.umd.js"></script>
         <script type="module" src="./js/tts-lat/example/tts/index.js"></script>
+        <!-- 人脸检测 -->
+        <script type="module" src="./js/face-detector.js"></script>
         <script type="module" >
             import { triggerRepeatMotion,triggerMotion,triggerExpression } from './js/live2d-cubism4.js'
             import { control_mode } from './js/jinhua/control.js'

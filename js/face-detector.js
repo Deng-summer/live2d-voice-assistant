@@ -1,5 +1,6 @@
 // import { onMounted, onUnmounted, reactive } from "vue";
 import { eyeMove } from './move-eye.js'
+import { page_live2d_startSleep } from './jinhua/control-page.js'
 /**属性状态 */
 const state = {
     /**初始化模型加载 */
@@ -206,18 +207,7 @@ async function fnRedraw() {
         x = window.innerWidth/2
         y = window.innerHeight/2
     }
-    // if (Number.isNaN(x) || Number.isNaN(y)) {
-    //     console.log('没有人脸')
-    //     x = parseInt(window.innerWidth/2)
-    //     y = parseInt(window.innerHeight/2)
-    // }
-    // if (x<0 || y<0) {
-    //     console.log('负数')
-    //     x = parseInt(window.innerWidth/2)
-    //     y = parseInt(window.innerHeight/2)
-    // }
-    // console.log(x,y)
-    // debugger
+    page_live2d_startSleep(x,y)
     if(x>0 && y>0){
         // console.log(x,y)
         //节流版

@@ -72,6 +72,9 @@
 		"Motions": {
 			"": [
 				{
+					"File": "motions/empty.motion3.json"
+				},
+				{
 					"File": "motions/IDLE.motion3.json"
 				},
 				{
@@ -94,6 +97,11 @@
 				},
 				{
 					"File": "motions/talk10s.motion3.json"
+				}
+			],
+			"Empty": [
+				{
+					"File": "motions/empty.motion3.json"
 				}
 			],
 			"Idle": [

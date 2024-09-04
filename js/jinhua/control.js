@@ -1,13 +1,13 @@
 import { control_request } from './control-api.js'
 import './control-music.js'
 import './control-station.js'
+import { interruptStationPlay } from './control-station.js'
 // import './control-heart.js' //暂时不用
 import { page_changeState } from './control-page.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
 import { control_tts_show, control_answer_show } from './control-page.js'
 import { triggerExpression, triggerRepeatMotion,triggerMotion} from '../live2d-cubism4.js'
-
 //金华  模式控制中心
 
 let control_modeMap = {
@@ -21,9 +21,6 @@ export let control_mode = "BUS" ;
 let control_modeText = document.getElementById('mode_text')
 document.addEventListener('keydown', wakeupDetect);
 
-let control_bus_timer = null
-let control_bus_time = 1000 * 10
-
 //一开始为报站模式
 enterMode('BUS')
 
@@ -35,6 +32,8 @@ function wakeupDetect(event){
         enterMode('READY')
         //开启识别
         latConnectWebSocket()
+        //关闭Station播报
+        interruptStationPlay()
     }
 }
 
@@ -287,25 +286,9 @@ function enterMode(mode){
         page_changeState('thinking')
     }
 
-    sleepTimer(mode)
-
     onModeChange(control_mode)
 }
 
-function sleepTimer(mode){
-    if(mode === 'BUS'){
-        if(!control_bus_timer){
-            control_bus_timer = setTimeout(()=>{
-                triggerExpression('shuijiao')
-            },control_bus_time)
-        }
-    }else{
-        if(control_bus_timer){
-            clearTimeout(control_bus_timer)
-            control_bus_timer = null
-        }
-    }
-}
 function onModeChange(control_mode){
 
     if(control_mode == 'BUS'){

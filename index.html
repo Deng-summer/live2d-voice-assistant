@@ -128,6 +128,21 @@
                 </div>
             </div>
         </div>
+        <script>
+            //control-page module 变量
+            let jinhuaStateImg  = document.getElementById("jinhua_state_git");
+            let jinhuaStateDiv = document.getElementById("jinhua-state-div");
+            let listening_text = document.getElementById("listening-text");
+            let dialog_body = document.querySelector(".dialog-body")
+            let page_observe_flag = false
+            const dialog_answer = document.querySelector(".dialog-answer");
+            let dialog_answer_lastHeight = dialog_answer.offsetHeight;
+            let control_gif_state; //保存当前状态判断gif 4种状态 thingking listening talking ''
+            // 用于存储定时器 ID 的数组
+            const timerIds = [];
+            let contrl_gif_time = 800 //gif 中间帧的间隔时间
+
+        </script>
         <script type="module">
             import { live2dMain }  from './js/live2d-cubism4.js'
             //切换皮肤
@@ -161,8 +176,8 @@
 
         </script>
         <!-- 金华控制中心 -->
-        <script type="module" src="./js/jinhua/control.js"></script>
-        <!-- <script type="module" src="./js/jinhua/control-page.js"></script> -->
+        <script type="module" src="./js/jinhua/control.js" defer></script>
+
         <!-- 语音识别 -->
         <script src="./js/iat-js/example/crypto-js.js"></script>
         <script src="./js/iat-js/dist/index.umd.js"></script>
@@ -175,6 +190,7 @@
         <script type="module" >
             import { triggerRepeatMotion,triggerMotion,triggerExpression } from './js/live2d-cubism4.js'
             import { control_mode } from './js/jinhua/control.js'
+
             document.addEventListener('DOMContentLoaded', function () {
                 // const myAudio = document.getElementById('my_audio');
                 const musicAudio = document.getElementById('music_audio');
@@ -228,6 +244,7 @@
             };
 
         </script>
+        
     </body>
     <script>
     </script>

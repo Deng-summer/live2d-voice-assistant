@@ -1,6 +1,11 @@
 export const stop_audio_address = {
-    // '金华站':'./js/jinhua/bus-stop-audio/stop1.mp3',
-    '云蝶中心':'./js/jinhua/bus-stop-audio/stop1.mp3',
+    '云蝶中心':'./js/jinhua/bus-stop-audio/云蝶中心.mp3',
+    '启明谷站':'./js/jinhua/bus-stop-audio/启明谷站.mp3',
+    '望湖堤站':'./js/jinhua/bus-stop-audio/望湖堤站.mp3',
+    '国际交流中心站':'./js/jinhua/bus-stop-audio/国际交流中心站.mp3',
+    '理工学院站':'./js/jinhua/bus-stop-audio/理工学院站.mp3',
+    '秋枫港站':'./js/jinhua/bus-stop-audio/秋枫港站.mp3',
+    '金漪集站':'./js/jinhua/bus-stop-audio/金漪集站.mp3',
 }
 
 export const stop_introduce = {

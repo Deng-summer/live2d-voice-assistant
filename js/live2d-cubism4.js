@@ -91,10 +91,10 @@ export async function triggerExpression(express_name){
     
     if(model.expression){
         if(live2d_express_name !== express_name){
-            console.log('触发 表情 expression', live2d_express_name)
             live2d_express_name = express_name
             let name  = express_name_map[live2d_express_name] || 'expression1'
             await model.expression(name)
+            console.log('触发 表情 expression', live2d_express_name)
         }
     }
 }

@@ -106,7 +106,7 @@ function controlStateGif(state){
             // stateImg = './js/jinhua/state-gif/listening.gif'
             // stateImg = './js/jinhua/state-gif/start-thinking.gif'
 
-            stateImg = '../../css/transparent.png';
+            stateImg = '/css/transparent.png';
             break;
     }
     //动画过渡 fixed闪烁

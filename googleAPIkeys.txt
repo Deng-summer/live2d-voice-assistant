@@ -1,0 +1,9 @@
+nano ~/.bashrc
+export GOOGLE_API_KEY="AIzaSyB0y-hr-byVeAvxE9gxBqp1pPWxdOTAqOA"
+export GOOGLE_DEFAULT_CLIENT_ID="788243036499-1j5nqvnr4lj7gd0fhmrm0f94sqskn6uc.apps.googleusercontent.com"
+export GOOGLE_DEFAULT_CLIENT_SECRET="xDHuELbrKd_Bu1OvetUlCXpZ"
+source ~/.bashrc
+
+nano ~/.zshrc
+source ~/.zshrc
+

@@ -10,13 +10,13 @@ export GOOGLE_DEFAULT_CLIENT_SECRET="xDHuELbrKd_Bu1OvetUlCXpZ"
 pkill -f chromium
 
 # 启动 Chromium 浏览器并全屏显示指定网页
-chromium-browser --start-fullscreen "http://101.126.81.196:8801/" --disable-notifications --disable-popup-blocking --disable-infobars &
+chromium-browser --start-fullscreen "https://avatar.chekkk.com/live2d/0001/" --disable-notifications --disable-popup-blocking --disable-infobars &
 
 # 等待 Chromium 启动完成
 sleep 5
 
 # 获取 Chromium 窗口的窗口ID
-WINDOW_ID=$(wmctrl -l | grep "http://101.126.81.196:8801/" | awk '{print $1}')
+WINDOW_ID=$(wmctrl -l | grep "https://avatar.chekkk.com/live2d/0001/" | awk '{print $1}')
 
 # 设置窗口为始终在最上面
 wmctrl -i -r $WINDOW_ID -b add,above

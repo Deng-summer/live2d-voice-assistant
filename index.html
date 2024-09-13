@@ -41,93 +41,96 @@
     <link rel="stylesheet" href="./css/element-ui.css">
     <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css"> -->
     <body>
-        <div class="live2dpage" id="live2dpage">
-            <div id="listen-desc" style="display: none;">正在听...</div>
-            <div class="page_draw">
-                <video
-                    id="page_draw-video"
-                    muted
-                ></video>
-                <canvas id="page_draw-video-canvas"></canvas>
+        <div id="page">
+            <div class="live2dpage" id="live2dpage">
+                <div id="listen-desc" style="display: none;">正在听...</div>
+                <div class="page_draw">
+                    <video
+                        id="page_draw-video"
+                        muted
+                    ></video>
+                    <canvas id="page_draw-video-canvas"></canvas>
+                </div>
+                <!-- live2d audio 播放live2d 模型声音-->
+                <audio id="my_audio"></audio>
+                <audio id="music_audio"></audio>
+                <audio id="station_audio"></audio>
+                <div class="waifu-tips"></div>
+                <div>
+                    <!-- <canvas id="mycanvas" width=800 height=800></canvas> -->
+                    <canvas id="canvaslive2d4"></canvas>
+                </div>
+                <div id="control"></div>
+                <!-- <div class="black-bg"></div> -->
             </div>
-            <!-- live2d audio 播放live2d 模型声音-->
-            <audio id="my_audio"></audio>
-            <audio id="music_audio"></audio>
-            <audio id="station_audio"></audio>
-            <div class="waifu-tips"></div>
-            <div>
-                <!-- <canvas id="mycanvas" width=800 height=800></canvas> -->
-                <canvas id="canvaslive2d4"></canvas>
-            </div>
-            <div id="control"></div>
-            <!-- <div class="black-bg"></div> -->
-        </div>
-        <div id="app">
-            <!-- 字幕 模块 -->
-            <div class="dialog-sec">
-                <div class="dialog-body">
-                    <div class="dialog-question">
-                    </div>
-                    <div class="dialog-answer">
-                        <p class="dialog-answer-p"></p>
-                    </div>
-                    <div id="music-moudle">
-                        <div class="music-left">
-                            <div class="music-left-1"></div>
-                            <div class="music-left-2"></div>
-                            <div class="music-left-3">
-                                <p class="music-title">金漪湖之歌</p>
-                                <p>AI创作</p>
+            <div id="app">
+                <!-- 字幕 模块 -->
+                <div class="dialog-sec">
+                    <div class="dialog-body">
+                        <div class="dialog-question">
+                        </div>
+                        <div class="dialog-answer">
+                            <p class="dialog-answer-p"></p>
+                        </div>
+                        <div id="music-moudle">
+                            <div class="music-left">
+                                <div class="music-left-1"></div>
+                                <div class="music-left-2"></div>
+                                <div class="music-left-3">
+                                    <p class="music-title">金漪湖之歌</p>
+                                    <p>AI创作</p>
+                                </div>
+                            </div>
+                            <div id="music-progress">
+                                <div id="music-progress-bar"></div>
                             </div>
                         </div>
-                        <div id="music-progress">
-                            <div id="music-progress-bar"></div>
+                        
+                    </div>
+                </div>
+                <!-- 金华 模块 -->
+                <div class="jinhua-class">
+                    <!-- 语音识别 -->
+                    <br />
+                    <div style="visibility: hidden;">
+                        <div>
+                            <!-- 浏览器录音听写： -->
+                            <button id="btn_control">录音状态</button>
+                        </div>
+                        <br />
+                        <div>
+                            <span>当前模式为:</span>
+                            <span id="mode_text"></span>
                         </div>
                     </div>
-                    
-                </div>
-            </div>
-            <!-- 金华 模块 -->
-            <div class="jinhua-class">
-                <!-- 语音识别 -->
-                <br />
-                <div style="visibility: hidden;">
-                    <div>
-                        <!-- 浏览器录音听写： -->
-                        <button id="btn_control">录音状态</button>
-                    </div>
                     <br />
-                    <div>
-                        <span>当前模式为:</span>
-                        <span id="mode_text"></span>
+                    <!-- <div id="result"></div> -->
+                    <!-- 语音合成 -->
+                    <div class="tts-lat-class">
+                        <!-- <textarea
+                            id="textarea"
+                            style="height: 200px; width: 500px"
+                            placeholder="请输入您要合成的文本"
+                        >
+                            春江潮水连海平，海上明月共潮生。
+                        </textarea> -->
+                        <!-- <div>语速([0-100])：<input id="speed" value="50" /></div>
+                        <div>音量([0-100])：<input id="volume" value="50" /></div>
+                        <div>音高([0-100])：<input id="pitch" value="50" /></div> -->
+                        <!-- <div>发音人：<input id="vcn" value="xiaoyan" /></div> -->
+                        <!-- x4_lingxiaolu_en -->
+                        <!-- <button id="controll_tts"></button> -->
                     </div>
-                </div>
-                <br />
-                <!-- <div id="result"></div> -->
-                <!-- 语音合成 -->
-                <div class="tts-lat-class">
-                    <!-- <textarea
-                        id="textarea"
-                        style="height: 200px; width: 500px"
-                        placeholder="请输入您要合成的文本"
-                    >
-                        春江潮水连海平，海上明月共潮生。
-                    </textarea> -->
-                    <!-- <div>语速([0-100])：<input id="speed" value="50" /></div>
-                    <div>音量([0-100])：<input id="volume" value="50" /></div>
-                    <div>音高([0-100])：<input id="pitch" value="50" /></div> -->
-                    <!-- <div>发音人：<input id="vcn" value="xiaoyan" /></div> -->
-                    <!-- x4_lingxiaolu_en -->
-                    <!-- <button id="controll_tts"></button> -->
-                </div>
-                <div class="jinhua-state-div" id="jinhua-state-div">
-                    <img id="jinhua_state_git"  src="./css/transparent.png"/>
-                    <p id="listening-text">正在听...</p>
+                    <div class="jinhua-state-div" id="jinhua-state-div">
+                        <img id="jinhua_state_git"  src="./css/transparent.png"/>
+                        <p id="listening-text">正在听...</p>
+                    </div>
                 </div>
             </div>
         </div>
         <script>
-            const jinhua_pathname = window.location.pathname
+            const systemLoadingTime = 3000
+
         </script>
         <script type="module">
             import { live2dMain }  from './js/live2d-cubism4.js'
@@ -137,6 +140,7 @@
             //     model.changeTexure(1);
             // }
             const pageElement = document.getElementById('live2dpage'); // 替换成您要触发事件的元素的ID
+
             //暂时关闭连接
             // connect()
             (async ()=>{
@@ -157,6 +161,16 @@
                 mounted() {
                     // 将方法挂载到 window 对象
                     window.showEleMessage = this.showEleMessage;
+                    const loading = this.$loading({
+                        lock: true,
+                        text: '大模型AI伴侣加载中...',
+                        spinner: 'el-icon-loading',
+                        background: 'rgba(0, 0, 0, 0.7)'
+                    });
+                    setTimeout(() => {
+                        loading.close();
+                        document.getElementById('page').style.visibility = 'visible'
+                    }, systemLoadingTime);
                 }
             });
 

@@ -21,8 +21,12 @@ export let control_mode = "BUS" ;
 let control_modeText = document.getElementById('mode_text')
 document.addEventListener('keydown', wakeupDetect);
 
-//一开始为报站模式
-enterMode('BUS')
+setTimeout(()=>{
+    //系统加载时间3000
+    //一开始为报站模式
+    enterMode('BUS')
+},systemLoadingTime)
+
 
 //唤醒检测
 function wakeupDetect(event){

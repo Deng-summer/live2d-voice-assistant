@@ -1,5 +1,6 @@
 #page{
-    visibility: hidden;
+    /* visibility: hidden; */
+    opacity: 0; /* 确保元素不可见 */
 }
 .waifu {
     position: fixed;

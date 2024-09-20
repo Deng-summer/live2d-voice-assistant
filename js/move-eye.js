@@ -15,7 +15,6 @@ export function eyeMove(clientX,clientY){
     // console.log(clientX, clientY)
 
     // console.log(model)
-    console.log(clientX, clientY)
     if(model && model.focus){
         model.focus(clientX, clientY)
     }

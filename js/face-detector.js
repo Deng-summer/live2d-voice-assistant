@@ -229,7 +229,7 @@ function throttle(func, wait) {
     };
 }
 // 使用节流函数包装 eyeMove 函数
-const throttledEyeMove = throttle(eyeMove, 50);
+const throttledEyeMove = throttle(eyeMove, 2000);
 /**启动摄像头视频媒体 */
 async function fnOpen() {
     if (state.stream) return;

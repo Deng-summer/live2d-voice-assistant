@@ -136,8 +136,8 @@
           aue: "raw",
           auf: "audio/L16;rate=16000",
           // vcn: 'xiaofeng', //发音人
-          vcn: 'aisbabyxu', //免费 许小宝
-          // vcn: 'x4_yezi', //小露发音人
+          // vcn: 'aisbabyxu', //免费 许小宝
+          vcn: 'x4_yezi', //小露发音人
           // vcn:'x4_panting',//潘婷
           // vcn:'x4_xiaoling',//志玲
           speed: 55,//语速([0-100]

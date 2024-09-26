@@ -9,9 +9,9 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,la
   // var lat_API_KEY = "15cef8aebda3f263918938388219c6ea";
 
   //jason jinhua
-  var lat_APPID = "68d6bff2";
-  var lat_API_SECRET = "YTFmYWZiZWEwOGFmMzFmNjVlNWIzOTVm";
-  var lat_API_KEY = "a0c9b7763601a9968f358f1faa6f2539";
+  var lat_APPID = "41d33e78";
+  var lat_API_SECRET = "YzEzNzEyNDIyNGZmYjc4NzExYTMxYjA4";
+  var lat_API_KEY = "eeea1620a36847236a8f1309d28b9cc7";
 
 
   let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"

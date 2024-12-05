@@ -14,6 +14,11 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,la
   var lat_API_KEY = "eeea1620a36847236a8f1309d28b9cc7";
 
 
+    //dxr2
+    var lat_APPID = "e3c362d4";
+    var lat_API_SECRET = "NWM4ZDMwZDA4YzU5NmNjOGQ5NTE1Y2Mx";
+    var lat_API_KEY = "7466275c8bb1d6ca274ec46bb2eadc3d";
+
   let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"
 
   const lat_btnControl = document.getElementById("btn_control");

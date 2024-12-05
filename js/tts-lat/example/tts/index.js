@@ -8,11 +8,15 @@
   // var tts_API_SECRET = "N2YyZjZhNzhkM2VmNDE5Y2IxOTdiZmIx";
   // var tts_API_KEY = "15cef8aebda3f263918938388219c6ea";
   
-    //jason shuoche
-    var tts_APPID = "de599ef5";
-    var tts_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
-    var tts_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
+  //jason shuoche
+  // var tts_APPID = "de599ef5";
+  // var tts_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
+  // var tts_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
 
+  //jason  17810379459
+  var tts_APPID = "d2fd31be";
+  var tts_API_SECRET = "Zjk2MTAwNTQyZDllZTdkZWExZTFjMmRm";
+  var tts_API_KEY = "828a47a2098677a6799a74ad67b53d6d";
 
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
   import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'

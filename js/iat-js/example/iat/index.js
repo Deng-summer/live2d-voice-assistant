@@ -9,9 +9,14 @@ import { latResultOnChange,latWsOnClosed,latOnload,latWsOnOpened,latWsOnError,la
   // var lat_API_KEY = "15cef8aebda3f263918938388219c6ea";
 
   //jason shuoche
-  var lat_APPID = "de599ef5";
-  var lat_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
-  var lat_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
+  // var lat_APPID = "de599ef5";
+  // var lat_API_SECRET = "Nzk1ZmI4Yjk0MjZkNDFhN2YzOGVhNGYz";
+  // var lat_API_KEY = "197cc246140823af5d3a1e853b37bcf0";
+  
+  // jason  17810379459
+  var lat_APPID = "d2fd31be";
+  var lat_API_SECRET = "Zjk2MTAwNTQyZDllZTdkZWExZTFjMmRm";
+  var lat_API_KEY = "828a47a2098677a6799a74ad67b53d6d";
 
 
   let lat_btnStatus = "UNDEFINED"; // "UNDEFINED" "CONNECTING" "OPEN" "CLOSING" "CLOSED"

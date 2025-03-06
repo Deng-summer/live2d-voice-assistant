@@ -5,6 +5,7 @@ import { tts_connectWebSocket } from '../tts-lat/example/tts/index.js'
 import { control_answer_show,page_changeState } from './control-page.js'
 import { extractLastJSONObject } from '../utils/deounce.js'
 // import { face_max_emotion } from '../face-detector.js'
+import { replacCircle,containsLatex } from '../utils/mathReplace.js'
 export let singel_recoder_tts_content_origin = '' //记录接收的语音部分
 export let singel_recoder_tts_content_play = '' //记录读了的语音部分
 export let singel_tts_done = false //流式是否结束
@@ -49,7 +50,11 @@ export function chunkSingelReceived(data){
     
 
     if(content){
-
+        if(containsLatex(content)){
+            content = replacCircle(content)
+            console.log('content',content)
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
         control_answer_show(content)
 
         //记录 接收的流式文字
@@ -125,9 +130,9 @@ function dealContentPlay(str_origin,str_sub){
     }else{
 
         play_content = new_content
-
     }
-
+    if(containsLatex(play_content)){
+        play_content = replacCircle(play_content)
+    }
     return play_content
 }
-

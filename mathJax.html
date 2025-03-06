@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+</head>
+<body>
+    <p>这是一个数学公式：$$E = mc^2$$。</p>
+    <p>这是一行文本，包含公式 $$E = mc^2$$ 和块级公式 $$\int_0^\infty e^{-x^2} dx$$</p>
+
+    <p>多云，15~23$^{circ}$C</p>
+    <p>多云，15~23&deg;C</p>
+    <p>多云，15~23\u00B0C</p>
+    <p>金义新区今日多云，气温 17$^{circ}$C-25$^{circ}$C，东风 3 级。</p>
+    <p>多云，15~23$^\circ$C</p>
+    
+
+    
+    
+    <script type="text/javascript">
+        let text = "多云，15~23$^{circ}$C";
+
+        function replacCircle(str) {
+            return str.replace(/\$\^{circ}\$/g, '°');
+        }
+        console.log(replacCircle(text));  
+
+         // 等待页面加载完成
+        window.onload = function() {
+            // 等待 MathJax 加载完成并渲染公式
+            if (window.MathJax) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                   // 如果 MathJax 脚本加载后执行的回调函数
+            } else {
+                // 如果 MathJax 没有加载完成，可以选择再试一次
+                // setTimeout(function() {
+                //     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+                // }, 2000); // 1秒后再试
+            }
+        };
+    </script>
+</body>
+</html>

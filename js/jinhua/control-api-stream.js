@@ -7,7 +7,7 @@ export const control_request_stream = {
     getMultiDialogue:getMultiDialogue,
 }
 
-const timeout = 8000 //接口超时时间
+const timeout = 15000 //接口超时时间
 // const base_url = 'http://localhost:3000' //node_webservice测试环境
 // const base_url = 'http://1.95.87.50:9000' //生产环境 panke
 const base_url ='https://avatar.chekkk.com/ai' //生产环境 小巴域名

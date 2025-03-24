@@ -37,6 +37,10 @@
   var tts_API_SECRET = "YzQxODVmYTU0MDEwZWQ4Zjc1ZWEwZmIx"
   var tts_API_KEY = "5c834e6d4e6f5ae3e28406768ab340d5"
 
+  // jianxin 2025.3.24 9:55
+  var tts_APPID = "704c6226"
+  var tts_API_SECRET = "NTk3NDM2ZTU3ZThkNTUyY2FhYTE4OGQ4"
+  var tts_API_KEY = "c760a6eb09be2c6a053aa9c9889f93b8"
   
   import { ttsWsOnClosed_Singel,singel_recoder_tts_content_play, singel_recoder_tts_content_origin,singel_follow_tts_conntectWebSoket } from '../../../jinhua/control-singel-talk.js'
   import { ttsWsOnClosed_Multi, multi_recoder_tts_content_play, multi_recoder_tts_content_origin,multi_follow_tts_conntectWebSoket } from '../../../jinhua/control-multi-talk.js'

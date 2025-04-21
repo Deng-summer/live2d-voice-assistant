@@ -4,10 +4,11 @@ import { control_mode  } from './control.js'
 import { stop_audio_address, stop_introduce} from './bus-stop-audio/stop-info.js'
 import { control_answer_show } from './control-page.js'
 
-let control_station_time = 1000 * 60 * 10 //获取站点 间隔时间  
+let control_station_time = 1000 * 3 //获取站点 间隔时间  
 let control_station_timer = null //定时器
 let control_audioPlayer
 let control_station_current //当前站点
+let palying_station = false
 
 export function stationModuleStart(){
     getLoopStation()
@@ -16,28 +17,30 @@ export function stationModuleStart(){
 //获取站点
 function getLoopStation(){
     if(control_mode == 'BUS'){
-        control_request.getStation().then((data)=>{
+        if(palying_station === false){
+            control_request.getStation().then((data)=>{
 
-            const { station, status } = data
-            if(status === '允许报站' && station && control_mode == 'BUS'){
-            // if(station && control_mode == 'BUS'){
-                control_station_current = station
-                //播报站点
-                playStationAudio(station)
-            }
-
-        }).catch((error)=>{
-            console.log(error)
-        }).finally(()=>{
-            //释放上一个定时器资源
-            if(control_station_timer){
-                clearTimeout(control_station_timer)
-                control_station_timer = null
-            }
-            control_station_timer = setTimeout(() => {
-                getLoopStation()
-            }, control_station_time);
-        })
+                const { station, status } = data
+                if(status === '允许报站' && station && control_mode == 'BUS'){
+                // if(station && control_mode == 'BUS'){
+                    control_station_current = station
+                    //播报站点
+                    playStationAudio(station)
+                }
+    
+            }).catch((error)=>{
+                console.log(error)
+            }).finally(()=>{
+                //释放上一个定时器资源
+                if(control_station_timer){
+                    clearTimeout(control_station_timer)
+                    control_station_timer = null
+                }
+                control_station_timer = setTimeout(() => {
+                    getLoopStation()
+                }, control_station_time);
+            })
+        }
     }else{
         //其他模式
         if(control_station_timer){
@@ -51,6 +54,7 @@ function getLoopStation(){
 function playStationAudio(station){
     let audioFilePath = stop_audio_address[station]
     if(audioFilePath){
+        palying_station = true
         control_audioPlayer.src = audioFilePath;
         // 加载新的音频文件
         control_audioPlayer.load();
@@ -67,8 +71,11 @@ function playStationAudio(station){
 
 //播放完成
 function playStationAudioEnd(){
+    palying_station = false
     //上报当前站点播放完成
-    control_request.finishCurStation(control_station_current)
+    control_request.finishCurStation(control_station_current).finally(()=>{
+        getLoopStation()
+    })
 }
 
 //暂停播放

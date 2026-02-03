@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__fetch__fetch",
+      "WebFetch(domain:www.volcengine.com)",
+      "Bash(if:*)",
+      "Bash(then touch .gitignore)",
+      "Bash(fi:*)",
+      "Bash(if ! grep -q \"doubao-credentials.js\" .gitignore)",
+      "Bash(then echo -e \"\\\\n# 豆包API凭证文件\\\\njs/doubao-wakeup/doubao-credentials.js\")",
+      "WebSearch",
+      "Bash(lsof:*)"
+    ]
+  }
+}

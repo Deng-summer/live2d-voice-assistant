@@ -1,0 +1,23 @@
+{
+  "name": "doubao-wakeup",
+  "version": "1.0.0",
+  "description": "豆包唤醒词检测模块",
+  "type": "module",
+  "scripts": {
+    "token": "node token-server.js",
+    "proxy": "node proxy-server.js"
+  },
+  "keywords": [
+    "doubao",
+    "websocket",
+    "wakeup",
+    "speech-recognition"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "ws": "^8.16.0"
+  }
+}

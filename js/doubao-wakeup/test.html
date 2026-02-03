@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆包唤醒词测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #0b7dda;
+        }
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #da190b;
+        }
+        .log {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .log-entry {
+            margin: 5px 0;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 豆包唤醒词测试</h1>
+
+        <div class="status" id="status">
+            <strong>状态：</strong><span id="status-text">未启动</span>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="startTest()">启动检测</button>
+            <button class="btn-secondary" onclick="pauseTest()">暂停</button>
+            <button class="btn-secondary" onclick="resumeTest()">恢复</button>
+            <button class="btn-danger" onclick="stopTest()">停止</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="duration">00:00:00</div>
+                <div class="stat-label">监听时长</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="wakeup-count">0</div>
+                <div class="stat-label">唤醒次数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="connection-count">0</div>
+                <div class="stat-label">连接次数</div>
+            </div>
+        </div>
+
+        <div>
+            <strong>说明：</strong>
+            <ul>
+                <li>点击"启动检测"开始监听唤醒词</li>
+                <li>对着麦克风说"湖宝湖宝"进行测试</li>
+                <li>支持的唤醒词：湖宝湖宝、湖宝、胡宝胡宝</li>
+                <li>检测到唤醒词后会在日志中显示</li>
+            </ul>
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <script type="module">
+        import {
+            startWakeupDetection,
+            stopWakeupDetection,
+            pauseWakeupDetection,
+            resumeWakeupDetection,
+            getWakeupStatus
+        } from './doubao-wakeup.js'
+
+        let updateInterval = null
+
+        window.startTest = async function() {
+            try {
+                addLog('正在启动唤醒词检测...')
+
+                await startWakeupDetection(() => {
+                    addLog('🎉 检测到唤醒词！', 'success')
+                    updateStats()
+                })
+
+                addLog('✓ 唤醒词检测已启动', 'success')
+                updateStatus()
+                startStatsUpdate()
+            } catch (error) {
+                addLog('✗ 启动失败: ' + error.message, 'error')
+            }
+        }
+
+        window.stopTest = function() {
+            stopWakeupDetection()
+            addLog('✓ 唤醒词检测已停止', 'info')
+            updateStatus()
+            stopStatsUpdate()
+        }
+
+        window.pauseTest = function() {
+            pauseWakeupDetection()
+            addLog('⏸ 已暂停监听', 'info')
+            updateStatus()
+        }
+
+        window.resumeTest = function() {
+            resumeWakeupDetection()
+            addLog('▶ 已恢复监听', 'info')
+            updateStatus()
+        }
+
+        function updateStatus() {
+            const status = getWakeupStatus()
+            const statusText = document.getElementById('status-text')
+
+            const statusMap = {
+                'listening': '🟢 正常监听中',
+                'connecting': '🟡 连接中...',
+                'paused': '⏸️ 已暂停',
+                'stopped': '⚫ 已停止',
+                'error': '🔴 错误',
+                'scheduled_stop': '🌙 定时停止中',
+                'limit_reached': '🚫 已达上限'
+            }
+
+            statusText.textContent = statusMap[status.status] || status.status
+            updateStats()
+        }
+
+        function updateStats() {
+            const status = getWakeupStatus()
+            const stats = status.stats
+
+            document.getElementById('duration').textContent = stats.listeningDurationFormatted
+            document.getElementById('wakeup-count').textContent = stats.wakeupCount
+            document.getElementById('connection-count').textContent = stats.connectionCount
+        }
+
+        function startStatsUpdate() {
+            updateInterval = setInterval(updateStats, 1000)
+        }
+
+        function stopStatsUpdate() {
+            if (updateInterval) {
+                clearInterval(updateInterval)
+                updateInterval = null
+            }
+        }
+
+        function addLog(message, type = 'info') {
+            const logElement = document.getElementById('log')
+            const timestamp = new Date().toLocaleTimeString()
+            const color = type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#aed581'
+
+            const entry = document.createElement('div')
+            entry.className = 'log-entry'
+            entry.innerHTML = `<span style="color: #78909c">[${timestamp}]</span> <span style="color: ${color}">${message}</span>`
+
+            logElement.appendChild(entry)
+            logElement.scrollTop = logElement.scrollHeight
+        }
+
+        // 初始化
+        addLog('豆包唤醒词测试页面已加载')
+        addLog('请点击"启动检测"开始测试')
+    </script>
+</body>
+</html>

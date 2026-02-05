@@ -3,19 +3,19 @@ import { chunkSingelReceived } from './control-singel-talk.js'
 
 //金华 接口
 export const control_request_stream = {
-    getDialogue:getDialogue,
-    getMultiDialogue:getMultiDialogue,
+    getDialogue: getDialogue,
+    getMultiDialogue: getMultiDialogue,
 }
 
 const timeout = 15000 //接口超时时间
 // const base_url = 'http://localhost:3000' //node_webservice测试环境
-// const base_url = 'http://1.95.87.50:9000' //生产环境 panke
-const base_url ='https://avatar.chekkk.com/ai' //生产环境 小巴域名
+const base_url = 'http://1.95.87.50:9000' //生产环境 panke
+// const base_url = 'https://avatar.chekkk.com/ai' //生产环境 小巴域名
 
 
-function getDialogue(content,sentiment){
-    return new Promise(async (resolve,reject)=>{
-        
+function getDialogue(content, sentiment) {
+    return new Promise(async (resolve, reject) => {
+
         const abortController = new AbortController();
         const signal = abortController.signal;
 
@@ -37,22 +37,22 @@ function getDialogue(content,sentiment){
                 body: JSON.stringify({
                     // 可根据服务器要求的格式设置具体的数据
                     content: content,
-                    sentiment:sentiment
+                    sentiment: sentiment
                 }),
                 signal: signal
             };
             try {
-                let response = await fetch(base_url+'/process_dialogue', requestOptions)
+                let response = await fetch(base_url + '/process_dialogue', requestOptions)
                 timeoutId && clearTimeout(timeoutId); // 在请求成功返回后清除超时计时器
                 if (!response.ok) {
                     reject('请求失败')
                     throw new Error('Network response was not ok');
                 }
-            
+
                 const reader = response.body.getReader();
                 const textDecoder = new TextDecoder();
                 let output = '';
-                
+
                 function readChunk() {
                     return reader.read().then(({ done, value }) => {
                         if (done) {
@@ -85,16 +85,16 @@ function getDialogue(content,sentiment){
 
 
 
-function getMultiDialogue(content,sentiment){
-    
+function getMultiDialogue(content, sentiment) {
+
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    return new Promise(async (resolve,reject)=>{
+    return new Promise(async (resolve, reject) => {
 
         const timeoutId = setTimeout(() => {
             abortController.abort(); // 在超时后中止请求
-            timeoutId && clearTimeout(timeoutId); 
+            timeoutId && clearTimeout(timeoutId);
             reject('getMultiDialogue超时')
         }, timeout); // 设置超时时间为 10 秒（单位为毫秒）
 
@@ -122,11 +122,11 @@ function getMultiDialogue(content,sentiment){
                     reject('请求失败')
                     throw new Error('Network response was not ok');
                 }
-            
+
                 const reader = response.body.getReader();
                 const textDecoder = new TextDecoder();
                 let output = '';
-                
+
                 function readChunk() {
                     return reader.read().then(({ done, value }) => {
                         if (done) {
@@ -145,14 +145,14 @@ function getMultiDialogue(content,sentiment){
                         reject(`读取流时发生错误: ${err?.message}`);
                     });
                 }
-    
+
                 return readChunk();
             } catch (e) {
                 reject(e)
             }
         }
         catch (error) {
-            timeoutId && clearTimeout(timeoutId); 
+            timeoutId && clearTimeout(timeoutId);
             reject(error)
         }
     })

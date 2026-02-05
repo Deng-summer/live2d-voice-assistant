@@ -6,8 +6,19 @@ import { interruptStationPlay } from './control-station.js'
 import { page_changeState } from './control-page.js'
 import { lat_connectWebSocket } from '../iat-js/example/iat/index.js'
 import { debounce, hasNChinese,formatNowTime,removeTrailingPeriod } from '../utils/deounce.js'
-import { control_tts_show, control_answer_show } from './control-page.js'
+import { control_tts_show, control_answer_show, page_toggleDialogVisibility } from './control-page.js'
 import { triggerExpression, triggerRepeatMotion,triggerMotion} from '../live2d-cubism4.js'
+// 导入豆包唤醒词模块
+import { startWakeupDetection, stopWakeupDetection } from '../doubao-wakeup/doubao-wakeup.js'
+// 导入状态提示系统
+import {
+    showStatusTip,
+    showWakeupSuccess,
+    showTempMessage,
+    autoShowTipForMode
+} from './control-tips.js'
+// 导入配置
+import { WAKEUP_CONFIG, getStatusMessage } from './control-config.js'
 //金华  模式控制中心
 
 let control_modeMap = {
@@ -19,25 +30,258 @@ let control_modeMap = {
 }
 export let control_mode = "BUS" ;
 let control_modeText = document.getElementById('mode_text')
-document.addEventListener('keydown', wakeupDetect);
+
+// 记录进入 MUSIC 模式前的模式（用于音乐播放完成后返回）
+let previousModeBeforeMusic = null
+
+// 豆包唤醒词检测状态
+let doubaoWakeupActive = false
+
+// 获取按钮元素和提示元素
+let doubaoWakeupBtn = null
+let wakeupHint = null
+
+// 显示唤醒提示
+function showWakeupHint() {
+    // 根据配置决定是否显示
+    if (!WAKEUP_CONFIG.SHOW_WAKEUP_HINT) {
+        return
+    }
+
+    if (!wakeupHint) {
+        wakeupHint = document.getElementById('wakeup-hint')
+    }
+    if (wakeupHint) {
+        wakeupHint.classList.remove('hide')
+        wakeupHint.classList.add('show')
+    }
+}
+
+// 隐藏唤醒提示
+function hideWakeupHint() {
+    // 根据配置决定是否需要隐藏（如果本来就不显示，就不需要隐藏）
+    if (!WAKEUP_CONFIG.SHOW_WAKEUP_HINT) {
+        return
+    }
+
+    if (!wakeupHint) {
+        wakeupHint = document.getElementById('wakeup-hint')
+    }
+    if (wakeupHint) {
+        wakeupHint.classList.remove('show')
+        wakeupHint.classList.add('hide')
+        setTimeout(() => {
+            wakeupHint.style.display = 'none'
+        }, 500)
+    }
+}
+
+// 更新状态文字
+function updateStatusText() {
+    const message = getStatusMessage(control_mode, doubaoWakeupActive)
+    control_tts_show(message.question)
+    control_answer_show(message.answer)
+}
+
+// 注释掉原来的按键唤醒
+// document.addEventListener('keydown', wakeupDetect);
+
+// 改为手动启动（像 test.html 一样）
+// 添加按键监听：按 'D' 键启动/停止豆包唤醒词检测（根据配置决定是否启用）
+if (WAKEUP_CONFIG.ENABLE_KEY_D_SHORTCUT) {
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'd' || event.key === 'D') {
+            toggleDoubaoWakeup()
+        }
+    })
+    console.log('✓ 按键 D 快捷键已启用')
+}
+
+// 切换豆包唤醒词检测状态
+function toggleDoubaoWakeup() {
+    if (!doubaoWakeupActive) {
+        console.log('启动豆包唤醒词检测')
+        startDoubaoWakeup()
+    } else {
+        console.log('停止豆包唤醒词检测')
+        stopDoubaoWakeup()
+    }
+}
+
+// 更新按钮状态
+function updateWakeupButton() {
+    if (!doubaoWakeupBtn) {
+        doubaoWakeupBtn = document.getElementById('doubao-wakeup-btn')
+    }
+
+    if (doubaoWakeupBtn) {
+        if (doubaoWakeupActive) {
+            doubaoWakeupBtn.textContent = '⏸️ 停止唤醒词检测'
+            doubaoWakeupBtn.style.background = '#f44336'
+        } else {
+            doubaoWakeupBtn.textContent = '🎤 启动唤醒词检测'
+            doubaoWakeupBtn.style.background = '#4CAF50'
+        }
+    }
+}
 
 setTimeout(()=>{
     //系统加载时间3000
     //一开始为报站模式
     enterMode('BUS')
+    // 注释掉自动启动，改为手动启动
+    // startDoubaoWakeup()
+
+    // 根据配置决定是否显示按钮
+    const buttonContainer = document.getElementById('doubao-control-div')
+    if (buttonContainer && WAKEUP_CONFIG.SHOW_WAKEUP_BUTTON) {
+        buttonContainer.style.display = 'block'
+        console.log('✓ 唤醒词控制按钮已显示')
+    }
+
+    // 绑定按钮点击事件
+    doubaoWakeupBtn = document.getElementById('doubao-wakeup-btn')
+    if (doubaoWakeupBtn) {
+        doubaoWakeupBtn.addEventListener('click', toggleDoubaoWakeup)
+        console.log('✓ 唤醒词控制按钮已绑定')
+    }
+
+    // 根据配置决定是否自动启动唤醒检测
+    if (WAKEUP_CONFIG.AUTO_START_ON_LOAD) {
+        console.log(`⏰ 将在 ${WAKEUP_CONFIG.AUTO_START_DELAY / 1000} 秒后自动启动唤醒检测`)
+        setTimeout(() => {
+            // 只在 BUS 模式下自动启动
+            if (control_mode === 'BUS' && !doubaoWakeupActive) {
+                console.log('🚀 自动启动唤醒词检测')
+                startDoubaoWakeup()
+            }
+        }, WAKEUP_CONFIG.AUTO_START_DELAY)
+    }
+
+    // 显示提示信息
+    const keyHint = WAKEUP_CONFIG.ENABLE_KEY_D_SHORTCUT ? '或按 D 键' : ''
+    const buttonHint = WAKEUP_CONFIG.SHOW_WAKEUP_BUTTON ? `点击右下角按钮${keyHint}启动唤醒词检测` : '唤醒词检测将自动启动'
+    showTempMessage(buttonHint, 5000)
 },systemLoadingTime)
 
 
+// 启动豆包唤醒词检测
+async function startDoubaoWakeup() {
+    if (doubaoWakeupActive) {
+        console.log('豆包唤醒词检测已在运行')
+        return
+    }
+
+    try {
+        console.log('正在启动豆包唤醒词检测...')
+        showTempMessage('正在启动唤醒词检测...', 2000)
+
+        await startWakeupDetection((wakeupWord) => {
+            console.log('✓ 检测到唤醒词:', wakeupWord)
+            onDoubaoWakeup()
+        })
+
+        doubaoWakeupActive = true
+        console.log('✓ 豆包唤醒词检测已启动')
+
+        // 更新按钮状态
+        updateWakeupButton()
+
+        // 显示唤醒提示（根据配置）
+        showWakeupHint()
+
+        // 更新状态文字
+        updateStatusText()
+
+        // 显示初始提示
+        if (control_mode === 'BUS') {
+            autoShowTipForMode('BUS')
+            // 触发睡觉表情和 Idle 动作
+            triggerExpression('shuijiao')
+            triggerRepeatMotion('Idle')
+        }
+    } catch (error) {
+        console.error('❌ 豆包唤醒词启动失败:', error)
+        console.log('降级到按键唤醒模式')
+        showTempMessage('唤醒词检测启动失败，请按 Enter 键唤醒', 3000)
+        // 降级到按键唤醒
+        document.addEventListener('keydown', wakeupDetect)
+    }
+}
+
+// 停止豆包唤醒词检测
+function stopDoubaoWakeup() {
+    if (!doubaoWakeupActive) {
+        return
+    }
+
+    try {
+        stopWakeupDetection()
+        doubaoWakeupActive = false
+        console.log('✓ 豆包唤醒词检测已停止')
+
+        // 更新按钮状态
+        updateWakeupButton()
+
+        // 更新状态文字
+        updateStatusText()
+
+        showTempMessage('唤醒词检测已停止', 2000)
+    } catch (error) {
+        console.error('❌ 停止豆包唤醒词失败:', error)
+    }
+}
+
+// 豆包唤醒词检测到唤醒时的回调
+function onDoubaoWakeup() {
+    if (control_mode === 'BUS') {
+        // 隐藏唤醒提示
+        hideWakeupHint()
+
+        // 立即停止豆包唤醒词检测（节省成本）
+        stopDoubaoWakeup()
+        console.log('✓ 唤醒成功，已停止豆包检测')
+
+        // 显示唤醒成功提示
+        showWakeupSuccess()
+        showEleMessage('正在唤醒','success',1500)
+
+        // 触发挥手动作
+        triggerMotion('Wave')
+
+        // 修改：唤醒后直接进入连续对话模式（MULTI）
+        // 注意：这里只设置模式，不调用 enterMode，避免触发 toMultiMoudle()
+        control_mode = 'MULTI'
+        control_modeText = document.getElementById("mode_text");
+        control_modeText.innerText = `${control_modeMap['MULTI']}`;
+
+        // 显示对话框（因为没有调用 enterMode，需要手动显示）
+        page_toggleDialogVisibility(true)
+
+        // 显示对应模式的状态提示
+        autoShowTipForMode('MULTI')
+        page_changeState('listening')
+
+        //开启讯飞识别（这样用户可以直接说话）
+        latConnectWebSocket()
+
+        //关闭Station播报 - 暂时屏蔽报站功能
+        // interruptStationPlay()
+    }
+}
+
+// 保留原来的按键唤醒函数（作为降级方案）
 //唤醒检测
 function wakeupDetect(event){
     if(event.key === 'Enter' && control_mode == 'BUS'){
+        showWakeupSuccess()
         showEleMessage('正在唤醒','success',1500)
         // triggerMotion('Wave')
         enterMode('READY')
         //开启识别
         latConnectWebSocket()
-        //关闭Station播报
-        interruptStationPlay()
+        //关闭Station播报 - 暂时屏蔽报站功能
+        // interruptStationPlay()
     }
 }
 
@@ -86,7 +330,11 @@ function jugeMode() {
         '坐下': 'BUS',
         '退出': 'BUS',
         '退下': 'BUS',
+        '退一下': 'BUS',
         '结束': 'BUS',
+        '再见': 'BUS',
+        '拜拜': 'BUS',
+        'bye': 'BUS',
         '音乐': 'MUSIC',
         '唱歌': 'MUSIC',
         '播放':'MUSIC',
@@ -113,7 +361,7 @@ function jugeMode() {
                 debouncedEnterMode(keywordToMode[keyword]);
                 latClose()
                 // enterMode(keywordToMode[keyword])
-                showEleMessage('小可已退下','success')
+                showEleMessage('湖宝：下次再见👋','success')
                 console.log('指令匹配退出')
                 return; //退出当前函数
             }
@@ -126,6 +374,16 @@ function jugeMode() {
                         //防抖处理 音乐/多轮
                         debouncedEnterMode(keywordToMode[keyword]);
                         console.log('指令匹配进入功能模式')
+                        return; //退出当前函数
+                    }
+                    // 允许从 MULTI 模式切换到 MUSIC 模式
+                    if(control_mode == 'MULTI' && keywordToMode[keyword] == 'MUSIC'){
+                        incluesKeyWord = true
+                        // 记录当前是从 MULTI 模式进入 MUSIC
+                        previousModeBeforeMusic = 'MULTI'
+                        //防抖处理 音乐
+                        debouncedEnterMode('MUSIC');
+                        console.log('从多轮模式切换到音乐模式')
                         return; //退出当前函数
                     }
                 }
@@ -165,8 +423,14 @@ const debouncedToMultiMoudle = debounce(() => {
     
 //主动关闭语音识别 集成清除定时器功能
 function latClose(){
-    control_lat_ws.close()
-    control_lat_recorder.stop() //停止录音
+    // 添加空值检查，防止在未初始化时调用
+    if (control_lat_ws && typeof control_lat_ws.close === 'function') {
+        control_lat_ws.close()
+    }
+
+    if (control_lat_recorder && typeof control_lat_recorder.stop === 'function') {
+        control_lat_recorder.stop() //停止录音
+    }
 
     //清除 唤醒计时器时会重新计时
     if(control_delay_timer_READY){
@@ -280,12 +544,49 @@ import { stationModuleStart } from './control-station.js'
 
 
 function enterMode(mode){
+    // 记录上一个模式
+    const previousMode = control_mode
+
+    // 如果要进入 MUSIC 模式，记录前一个模式（用于音乐结束后返回）
+    if(mode === 'MUSIC' && previousMode === 'MULTI'){
+        previousModeBeforeMusic = 'MULTI'
+    } else if(mode === 'MUSIC'){
+        // 从其他模式进入 MUSIC，清空记录（返回 BUS）
+        previousModeBeforeMusic = null
+    }
+
     control_mode = mode
     control_modeText = document.getElementById("mode_text");
     control_modeText.innerText = `${control_modeMap[mode]}`;
 
+    // 显示对应模式的状态提示
+    autoShowTipForMode(mode)
+
+    // 控制对话框显示/隐藏
+    if(mode === 'BUS'){
+        page_toggleDialogVisibility(false) // 隐藏对话框
+    } else {
+        page_toggleDialogVisibility(true) // 显示对话框
+    }
+
     if(mode === 'BUS'){
         page_changeState('')
+
+        // 如果是从 MULTI 模式退出，且配置了自动重启，则重新启动唤醒检测
+        if (previousMode === 'MULTI' && WAKEUP_CONFIG.AUTO_RESTART_AFTER_MULTI && !doubaoWakeupActive) {
+            console.log('🔄 从多轮对话退出，自动重启唤醒词检测')
+            setTimeout(() => {
+                startDoubaoWakeup()
+            }, 1000) // 延迟1秒，让用户看到退出提示
+        }
+
+        // 注释掉自动重启逻辑，避免重复连接
+        // 返回 BUS 模式时，不自动重新启动豆包唤醒词检测
+        // 用户需要手动按 D 键启动
+        // if (!doubaoWakeupActive) {
+        //     console.log('返回 BUS 模式，重新启动豆包唤醒词检测')
+        //     startDoubaoWakeup()
+        // }
     }else if( mode === 'MUSIC' || mode === 'MULTI' || mode === 'SINGEL'){
         page_changeState('thinking')
     }
@@ -296,28 +597,43 @@ function enterMode(mode){
 function onModeChange(control_mode){
 
     if(control_mode == 'BUS'){
-        stationModuleStart()
-        let default_question_text = '通过遥控器可跟我连续对话哦，试试说“跟我聊聊天”，或者说“退下吧”。'
-        let dfault_answer_text = '还可以试试“给我唱首关于金华的歌吧”。'
-        //清空对话框
-        control_tts_show(default_question_text)
-        control_answer_show(dfault_answer_text)
+        // 暂时屏蔽报站功能
+        // stationModuleStart()
+
+        // 更新状态文字
+        updateStatusText()
+
+        // 如果唤醒词检测已启动，显示睡觉状态
+        if (doubaoWakeupActive) {
+            showWakeupHint()
+            triggerExpression('shuijiao')
+            triggerRepeatMotion('Idle')
+        }
 
     }else if(control_mode == 'SINGEL'){
         //关掉lat
         latClose()
         singelModuleStart(control_lat_result)
 
+        // 更新状态文字
+        updateStatusText()
+
     }else if(control_mode == 'MULTI'){
 
         toMultiMoudle()
-        
+
+        // 更新状态文字
+        updateStatusText()
+
     }else if(control_mode == 'MUSIC'){
         //关掉lat
         latClose()
 
         musicModuleStart(control_lat_result)
-        
+
+        // 更新状态文字
+        updateStatusText()
+
     }
 
 }
@@ -339,8 +655,20 @@ function toMultiMoudle(){
 //音乐播放完成回调
 export function onMusicModuleEnd(){
     console.log('onMusicEnd','音乐播放结束')
-    //回到报站模式
-    enterMode('BUS')
+
+    // 如果是从 MULTI 模式进入的音乐模式，返回 MULTI 模式
+    if(previousModeBeforeMusic === 'MULTI'){
+        console.log('音乐播放结束，返回多轮对话模式')
+        previousModeBeforeMusic = null // 清空记录
+
+        // 清空语音识别结果，避免自动发起对话请求
+        control_lat_result = ''
+
+        enterMode('MULTI')
+    } else {
+        // 否则回到报站模式
+        enterMode('BUS')
+    }
 }
 //单轮对话完成回调
 export function onSingleModuleEnd(){
@@ -358,7 +686,11 @@ export function onMultiModuleEnd(){
 
         //回答结束
         control_multi_answing = false
-        console.log('onMultiModuleEnd 多轮对话结束') 
+        console.log('onMultiModuleEnd 多轮对话结束')
+
+        // 显示等待用户提问的状态
+        autoShowTipForMode('MULTI_ASKING')
+
         //lat被主动关闭 lat主动开启
         latConnectWebSocket() //继续下一轮多轮
     }

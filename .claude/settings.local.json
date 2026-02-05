@@ -9,7 +9,8 @@
       "Bash(if ! grep -q \"doubao-credentials.js\" .gitignore)",
       "Bash(then echo -e \"\\\\n# 豆包API凭证文件\\\\njs/doubao-wakeup/doubao-credentials.js\")",
       "WebSearch",
-      "Bash(lsof:*)"
+      "Bash(lsof:*)",
+      "Bash(chmod:*)"
     ]
   }
 }

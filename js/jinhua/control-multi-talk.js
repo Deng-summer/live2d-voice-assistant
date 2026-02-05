@@ -9,31 +9,44 @@ import { control_answer_show,page_changeState } from './control-page.js'
 import { triggerExpression } from '../live2d-cubism4.js'
 import { extractLastJSONObject } from '../utils/deounce.js'
 import { replacCircle,containsLatex } from '../utils/mathReplace.js'
+import { showStatusTip } from './control-tips.js'
 
 export let multi_recoder_tts_content_origin = '' //记录接收的语音部分
 export let multi_recoder_tts_content_play = '' //记录读了的语音部分
 export let multi_tts_done = false //流式是否结束
 export let multi_tts_start = true //代表流式第一个包
+let multi_first_content_received = false //是否已接收到第一个内容包
 
 
 //识别文字输出后2s 没有结果输出 结束录音
 //无效输出 60s后 结束录音 
 export function multiModuleStart(tts_result){
 
+    // 验证输入是否有效，如果为空或只有空格，不发起请求
+    if(!tts_result || tts_result.trim() === ''){
+        console.log('多轮对话输入为空，不发起请求')
+        onMultiModuleEnd()
+        return
+    }
+
+    // 显示"正在生成"提示
+    showStatusTip('MULTI_GENERATING')
+
     multi_recoder_tts_content_play = ''
-    multi_recoder_tts_content_origin = '' 
+    multi_recoder_tts_content_origin = ''
     multi_tts_done = false
     multi_tts_start = true
+    multi_first_content_received = false
 
     // control_request_stream.getMultiDialogue(tts_result,face_max_emotion).then((data)=>{
     control_request_stream.getMultiDialogue(tts_result,'中性').then((data)=>{
-    
+
         //流式结束处理
         // console.log(data)
     }).catch((err) => {
         console.log('多轮对话接口出错/超时',err)
         showEleMessage('对话出错/网络超时','error')
-        onMultiModuleEnd() 
+        onMultiModuleEnd()
     })
 }
 
@@ -49,13 +62,39 @@ export function chunkMultiReceived(data){
     let content = parse_data?.data?.content //该包的文字内容
     let status = parse_data?.data?.status  //该包的状态
     // console.log('parse_data',content)
-    
+
     //流式包结束帧
     if(status === 'done!'){
         multi_tts_done = true
+
+        // 如果流式结束时还没有开始TTS播放（没有遇到标点符号），强制播放所有内容
+        if(multi_tts_start && multi_recoder_tts_content_origin){
+            console.log('流式结束，强制播放剩余内容:', multi_recoder_tts_content_origin)
+            page_changeState('talking')
+            multi_tts_start = false
+
+            let content_play = dealContentPlay(multi_recoder_tts_content_origin, multi_recoder_tts_content_play)
+
+            // 如果没有完整的句子，播放所有内容
+            if(!content_play){
+                content_play = multi_recoder_tts_content_origin
+            }
+
+            tts_connectWebSocket(content_play)
+            multi_recoder_tts_content_play += content_play
+
+            //触发表情
+            triggerExpression('sikao2')
+        }
     }
 
     if(content){
+        // 接收到第一个内容包时，显示正在回复状态
+        if(!multi_first_content_received){
+            multi_first_content_received = true
+            showStatusTip('MULTI_TALKING')
+        }
+
         if(containsLatex(content)){
             content = replacCircle(content)
             console.log('content',content)
@@ -79,14 +118,14 @@ export function chunkMultiReceived(data){
                 let content_play = dealContentPlay(multi_recoder_tts_content_origin,multi_recoder_tts_content_play)
 
                 tts_connectWebSocket(content_play)
-                
+
                 multi_recoder_tts_content_play += content_play
 
                 //触发表情
                 triggerExpression('sikao2')
 
             }
-            
+
         }
     }
 

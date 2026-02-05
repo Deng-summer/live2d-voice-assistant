@@ -28,6 +28,7 @@ let jinhuaStateDiv = document.getElementById("jinhua-state-div");
 
 let listening_text = document.getElementById("listening-text");
 let dialog_body = document.querySelector(".dialog-body")
+let dialog_sec = document.querySelector(".dialog-sec")
 
 const handleScrollToEnd = throttle(
     () => {
@@ -261,11 +262,21 @@ export function page_live2d_startSleep(x,y){
             if(live2d_express_name !== 'shuijiao'){
                 triggerExpression('shuijiao')
             }
-            
+
         }else{
             if(live2d_express_name !== 'nomal' &&  live2d_motion_name !== 'Talk'){
                 triggerExpression('nomal')
             }
         }
+    }
+}
+
+// 控制对话框显示/隐藏
+export function page_toggleDialogVisibility(show) {
+    if (!dialog_sec) {
+        dialog_sec = document.querySelector(".dialog-sec")
+    }
+    if (dialog_sec) {
+        dialog_sec.style.display = show ? 'block' : 'none'
     }
 }

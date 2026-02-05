@@ -1,3 +1,4 @@
+
 /**
  * 豆包 API 鉴权模块
  *
@@ -7,23 +8,28 @@
  */
 
 import { DOUBAO_CONFIG } from './doubao-config.js'
+import { getTokenApiUrl, printEnvironment } from './doubao-env.js'
 
 /**
  * 获取 JWT Token
  *
- * 由于豆包 Token API 不支持 CORS，需要通过本地服务器代理
- *
- * 使用方法：
- * 1. 启动 Token 服务器：node token-server.js
- * 2. 服务器会在 http://localhost:3000 监听
- * 3. 前端调用 /token 端点获取 JWT Token
+ * 根据环境自动选择 API 地址：
+ * - 本地环境：http://localhost:3001/token
+ * - 线上环境：/api/doubao/token（Nginx 转发）
  *
  * @returns {Promise<string>} JWT Token
  */
 export async function getToken() {
     try {
-        // 从本地 Token 服务器获取（解决 CORS 问题）
-        const response = await fetch('http://localhost:3001/token', {
+        // 获取 Token API 地址（根据环境自动选择）
+        const tokenApiUrl = getTokenApiUrl()
+
+        if (DOUBAO_CONFIG.DEBUG) {
+            printEnvironment()
+            console.log(`${DOUBAO_CONFIG.LOG_PREFIX} 正在从 ${tokenApiUrl} 获取 Token...`)
+        }
+
+        const response = await fetch(tokenApiUrl, {
             method: 'GET',
         })
 
@@ -46,7 +52,9 @@ export async function getToken() {
         return data.token
     } catch (error) {
         console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 获取 JWT Token 失败:`, error)
-        console.error('请确保 Token 服务器已启动：node token-server.js')
+        console.error('请确保：')
+        console.error('  - 本地环境：Token 服务器已启动（node token-server.js）')
+        console.error('  - 线上环境：Nginx 配置正确')
         throw error
     }
 }

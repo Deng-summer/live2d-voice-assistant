@@ -46,6 +46,23 @@ export function chunkSingelReceived(data){
     //流式包结束帧
     if(status === 'done!'){
         singel_tts_done = true
+
+        // 如果流式结束时还没有开始TTS播放（没有遇到标点符号），强制播放所有内容
+        if(singel_tts_start && singel_recoder_tts_content_origin){
+            console.log('流式结束，强制播放剩余内容:', singel_recoder_tts_content_origin)
+            singel_tts_start = false
+            page_changeState('talking')
+
+            let content_play = dealContentPlay(singel_recoder_tts_content_origin, singel_recoder_tts_content_play)
+
+            // 如果没有完整的句子，播放所有内容
+            if(!content_play){
+                content_play = singel_recoder_tts_content_origin
+            }
+
+            tts_connectWebSocket(content_play)
+            singel_recoder_tts_content_play += content_play
+        }
     }
     
 

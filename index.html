@@ -13,6 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=1.0, maximum-scale=4.0">
         </meta>
         <link rel="stylesheet" type="text/css" href="css/page.css?v=1.4.2"/>
+        <link rel="stylesheet" type="text/css" href="css/status-tips.css"/>
         <style></style>
     </head>
 
@@ -129,6 +130,43 @@
                     <div class="jinhua-state-div" id="jinhua-state-div">
                         <img id="jinhua_state_git"  src="./css/transparent.png"/>
                         <p id="listening-text">正在听...</p>
+                    </div>
+                    <!-- 唤醒提示 -->
+                    <div id="wakeup-hint" style="position: fixed;
+                                                   top: 40%;
+                                                   left: 50%;
+                                                   transform: translate(-50%, -50%);
+                                                   background: linear-gradient(135deg, rgba(163, 186, 232, 0.85) 0%, rgba(28, 113, 149, 0.85) 100%);
+                                                   backdrop-filter: blur(10px);
+                                                   -webkit-backdrop-filter: blur(10px);
+                                                   color: white;
+                                                   padding: 30px 50px;
+                                                   border-radius: 24px;
+                                                   border: 2px solid rgba(255, 255, 255, 0.3);
+                                                   font-size: 28px;
+                                                   font-weight: bold;
+                                                   text-align: center;
+                                                   box-shadow: 0 12px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.1) inset;
+                                                   z-index: 999;
+                                                   display: none;
+                                                   animation: pulse 2s infinite;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">🎤</div>
+                        <div>说"湖宝湖宝"来唤醒我吧！</div>
+                    </div>
+                    <!-- 豆包唤醒词控制按钮 -->
+                    <div class="doubao-control-div" id="doubao-control-div" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+                        <button id="doubao-wakeup-btn"
+                                style="padding: 12px 24px;
+                                       font-size: 16px;
+                                       background: #4CAF50;
+                                       color: white;
+                                       border: none;
+                                       border-radius: 8px;
+                                       cursor: pointer;
+                                       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                                       transition: all 0.3s;">
+                            🎤 启动唤醒词检测
+                        </button>
                     </div>
                 </div>
             </div>

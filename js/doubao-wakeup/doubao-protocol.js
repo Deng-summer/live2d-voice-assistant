@@ -200,7 +200,21 @@ export function buildAudioOnlyRequest(audioData, isLastPacket = false) {
  */
 export function parseServerResponse(data) {
     try {
+        // 验证数据长度
+        if (!data || data.byteLength < 12) {
+            console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 数据长度不足: ${data?.byteLength || 0} bytes (最小需要12 bytes)`)
+            return {
+                messageType: MessageType.ERROR_RESPONSE,
+                isError: true,
+                error: `Data too short: ${data?.byteLength || 0} bytes`,
+            }
+        }
+
         const view = new DataView(data)
+
+        if (DOUBAO_CONFIG.DEBUG) {
+            console.log(`${DOUBAO_CONFIG.LOG_PREFIX} 收到数据包: ${data.byteLength} bytes`)
+        }
 
         // 1. 解析Header (4 bytes)
         const headerByte0 = view.getUint8(0)
@@ -214,6 +228,50 @@ export function parseServerResponse(data) {
         const serialization = (headerByte2 >> 4) & 0x0F
         const compression = headerByte2 & 0x0F
 
+        // 特殊处理：如果是错误响应，直接返回错误信息
+        if (messageType === MessageType.ERROR_RESPONSE) {
+            if (DOUBAO_CONFIG.DEBUG) {
+                console.log(`${DOUBAO_CONFIG.LOG_PREFIX} 收到错误响应 (messageType: ${messageType})`)
+            }
+
+            // 尝试解析错误消息
+            try {
+                let offset = 4
+                if (messageFlags & 0x01 || messageFlags & 0x03) {
+                    offset += 4  // 跳过 sequence
+                }
+
+                const payloadSize = view.getUint32(offset, false)
+                offset += 4
+
+                // 对错误响应也进行大小验证，但使用更宽松的限制
+                if (payloadSize > 0 && payloadSize < 1024 * 1024) {  // 1MB
+                    const payloadBytes = new Uint8Array(data, offset, payloadSize)
+                    const payloadText = new TextDecoder().decode(payloadBytes)
+                    const payload = JSON.parse(payloadText)
+
+                    console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 服务器错误:`, payload)
+
+                    return {
+                        messageType: MessageType.ERROR_RESPONSE,
+                        isError: true,
+                        error: payload.message || payload.error || '未知错误',
+                        payload: payload,
+                    }
+                } else {
+                    console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 错误响应的 payload size 异常: ${payloadSize}`)
+                }
+            } catch (e) {
+                console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 解析错误响应失败:`, e)
+            }
+
+            return {
+                messageType: MessageType.ERROR_RESPONSE,
+                isError: true,
+                error: '服务器返回错误响应',
+            }
+        }
+
         // 2. 解析Sequence (4 bytes) - 如果有的话
         let offset = 4
         let sequence = null
@@ -225,6 +283,38 @@ export function parseServerResponse(data) {
         // 3. 解析Payload Size (4 bytes)
         const payloadSize = view.getUint32(offset, false)
         offset += 4
+
+        // 验证 Payload Size 是否合理（防止异常大的值导致内存错误）
+        const MAX_PAYLOAD_SIZE = 10 * 1024 * 1024  // 10MB
+        if (payloadSize > MAX_PAYLOAD_SIZE || payloadSize < 0) {
+            console.error(`${DOUBAO_CONFIG.LOG_PREFIX} Payload size 异常: ${payloadSize} bytes (最大允许: ${MAX_PAYLOAD_SIZE} bytes)`)
+            console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 数据包详情:`, {
+                totalSize: data.byteLength,
+                headerByte0: headerByte0.toString(16),
+                headerByte1: headerByte1.toString(16),
+                headerByte2: headerByte2.toString(16),
+                messageType,
+                messageFlags,
+                offset,
+                payloadSize
+            })
+            return {
+                messageType: MessageType.ERROR_RESPONSE,
+                isError: true,
+                error: `Invalid payload size: ${payloadSize}`,
+            }
+        }
+
+        // 验证数据包是否完整
+        const expectedTotalSize = offset + payloadSize
+        if (data.byteLength < expectedTotalSize) {
+            console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 数据包不完整: 实际 ${data.byteLength} bytes, 期望 ${expectedTotalSize} bytes`)
+            return {
+                messageType: MessageType.ERROR_RESPONSE,
+                isError: true,
+                error: `Incomplete data: expected ${expectedTotalSize}, got ${data.byteLength}`,
+            }
+        }
 
         // 4. 解析Payload
         let payload = null

@@ -409,3 +409,46 @@ button.inactive {
     }
 }
 
+/* 唤醒提示动画 */
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+}
+
+#wakeup-hint.show {
+    display: block !important;
+    animation: fadeIn 0.5s ease-out, pulse 2s infinite 0.5s;
+}
+
+#wakeup-hint.hide {
+    animation: fadeOut 0.5s ease-out;
+}
+

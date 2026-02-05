@@ -178,7 +178,7 @@ export function onMusicModuleEnd() {
 if (keywordToMode[keyword] == 'BUS') {
     incluesKeyWord = true
     latClose()
-    showEleMessage('小可已退下', 'success')
+    showEleMessage('湖宝：下次再见👋', 'success')
     console.log('指令匹配退出')
     startWakeupDetection(onWakeupDetected)  // 新增
     return;

@@ -1,0 +1,150 @@
+/* 金华状态提示系统样式 */
+
+.waifu-tips {
+    position: fixed;
+    bottom: 15%;
+    right: 4%;
+    max-width: 600px;
+    min-width: 446px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 主提示文字 */
+.status-tip-main {
+    font-size: 22px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* 副提示文字 */
+.status-tip-sub {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+/* 示例列表 */
+.status-tip-examples {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #ecf0f1;
+}
+
+/* 单个示例 */
+.status-tip-example {
+    font-size: 13px;
+    color: #34495e;
+    padding: 6px 0;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+}
+
+.status-tip-example:before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: #3498db;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* 临时消息 */
+.status-tip-temp {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* 动画效果 */
+@keyframes tipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes tipFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+.tip-fade-in {
+    animation: tipFadeIn 0.3s ease;
+}
+
+.tip-fade-out {
+    animation: tipFadeOut 0.3s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .waifu-tips {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        padding: 15px;
+    }
+
+    .status-tip-main {
+        font-size: 16px;
+    }
+
+    .status-tip-sub {
+        font-size: 13px;
+    }
+
+    .status-tip-example {
+        font-size: 12px;
+    }
+}
+
+/* 不同状态的颜色主题 */
+.waifu-tips[data-mode="BUS"] {
+    border-left: 4px solid #3498db;
+}
+
+.waifu-tips[data-mode="READY"] {
+    border-left: 4px solid #2ecc71;
+}
+
+.waifu-tips[data-mode="SINGEL"] {
+    border-left: 4px solid #f39c12;
+}
+
+.waifu-tips[data-mode="MULTI"] {
+    border-left: 4px solid #9b59b6;
+}
+
+.waifu-tips[data-mode="MUSIC"] {
+    border-left: 4px solid #e74c3c;
+}
+
+.waifu-tips[data-mode="LISTENING"] {
+    border-left: 4px solid #1abc9c;
+}

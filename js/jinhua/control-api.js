@@ -9,9 +9,9 @@ export const control_request = {
 }
 
 const timeout = 3000 //接口超时时间
-// const base_url = 'http://localhost:3000' //node_webservice测试环境
-// const base_url = 'http://1.95.87.50:9000' //生产环境 panke
-const base_url ='https://avatar.chekkk.com/ai' //生产环境 小巴域名
+// const base_url = 'http://localhost:8080' //node_webservice测试环境
+const base_url = 'http://1.95.87.50:9000' //生产环境 panke
+// const base_url ='https://avatar.chekkk.com/ai' //生产环境 小巴域名
 
 function getMusicUrl(content){
     return new Promise((resolve,reject)=>{
@@ -20,7 +20,7 @@ function getMusicUrl(content){
             method: 'POST',
             url:base_url + '/process_generate_music',
             responseType: 'json',
-            timeout: 1000*6,
+            timeout: 1000*60, //获取音乐60秒超时时间
         }).then( res =>{
             // console.log('getMusicUrl',res)
             const {code ,data,message} = res?.data || {}

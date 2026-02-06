@@ -39,17 +39,32 @@ export async function getToken() {
 
         const data = await response.json()
 
-        if (!data.success || !data.token) {
+        // 兼容两种返回格式：
+        // 1. Node.js token-server 格式：{ success: true, token: "..." }
+        // 2. 豆包 API 原始格式：{ jwt_token: "..." }
+        let token = null
+        if (data.token) {
+            // Node.js token-server 格式
+            token = data.token
+        } else if (data.jwt_token) {
+            // 豆包 API 原始格式
+            token = data.jwt_token
+        }
+
+        if (!token) {
             throw new Error(data.error || '未获取到 JWT Token')
         }
 
         if (DOUBAO_CONFIG.DEBUG) {
             console.log(`${DOUBAO_CONFIG.LOG_PREFIX} JWT Token 获取成功`)
-            console.log('  Token:', data.token.substring(0, 20) + '...')
-            console.log('  Cached:', data.cached ? '是' : '否')
+            console.log('  Token:', token.substring(0, 20) + '...')
+            console.log('  来源:', data.token ? 'Token Server' : '豆包 API')
+            if (data.cached !== undefined) {
+                console.log('  Cached:', data.cached ? '是' : '否')
+            }
         }
 
-        return data.token
+        return token
     } catch (error) {
         console.error(`${DOUBAO_CONFIG.LOG_PREFIX} 获取 JWT Token 失败:`, error)
         console.error('请确保：')

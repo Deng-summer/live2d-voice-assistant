@@ -202,10 +202,8 @@ async function startDoubaoWakeup() {
         }
     } catch (error) {
         console.error('❌ 豆包唤醒词启动失败:', error)
-        console.log('降级到按键唤醒模式')
-        showTempMessage('唤醒词检测启动失败，请按 Enter 键唤醒', 3000)
-        // 降级到按键唤醒
-        document.addEventListener('keydown', wakeupDetect)
+        showTempMessage('唤醒词检测启动失败，请检查配置或手动重启', 3000)
+        // 不再自动降级到按键唤醒，完全交给现有的开关控制
     }
 }
 

@@ -11,6 +11,7 @@
 
 import express from 'express'
 import cors from 'cors'
+import https from 'https'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
@@ -58,37 +59,63 @@ let tokenCache = {
  * 获取 JWT Token
  */
 async function fetchToken() {
-    try {
-        const response = await fetch('https://openspeech.bytedance.com/api/v1/sts/token', {
+    return new Promise((resolve, reject) => {
+        const postData = JSON.stringify({
+            appid: DOUBAO_CREDENTIALS.APP_KEY,
+            duration: 3600,  // 1小时
+        })
+
+        const options = {
+            hostname: 'openspeech.bytedance.com',
+            port: 443,
+            path: '/api/v1/sts/token',
             method: 'POST',
             headers: {
                 'Authorization': `Bearer; ${DOUBAO_CREDENTIALS.ACCESS_KEY}`,
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                appid: DOUBAO_CREDENTIALS.APP_KEY,
-                duration: 3600,  // 1小时
-            }),
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        }
+
+        const req = https.request(options, (res) => {
+            let data = ''
+
+            res.on('data', (chunk) => {
+                data += chunk
+            })
+
+            res.on('end', () => {
+                try {
+                    if (res.statusCode !== 200) {
+                        reject(new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`))
+                        return
+                    }
+
+                    const jsonData = JSON.parse(data)
+
+                    if (!jsonData.jwt_token) {
+                        reject(new Error('未获取到 JWT Token'))
+                        return
+                    }
+
+                    console.log('✅ JWT Token 获取成功')
+                    console.log('  Token:', jsonData.jwt_token.substring(0, 20) + '...')
+
+                    resolve(jsonData.jwt_token)
+                } catch (error) {
+                    reject(new Error(`解析响应失败: ${error.message}`))
+                }
+            })
         })
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-        }
+        req.on('error', (error) => {
+            console.error('❌ 获取 JWT Token 失败:', error.message)
+            reject(error)
+        })
 
-        const data = await response.json()
-
-        if (!data.jwt_token) {
-            throw new Error('未获取到 JWT Token')
-        }
-
-        console.log('✅ JWT Token 获取成功')
-        console.log('  Token:', data.jwt_token.substring(0, 20) + '...')
-
-        return data.jwt_token
-    } catch (error) {
-        console.error('❌ 获取 JWT Token 失败:', error.message)
-        throw error
-    }
+        req.write(postData)
+        req.end()
+    })
 }
 
 /**

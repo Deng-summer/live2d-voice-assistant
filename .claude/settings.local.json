@@ -10,7 +10,12 @@
       "Bash(then echo -e \"\\\\n# 豆包API凭证文件\\\\njs/doubao-wakeup/doubao-credentials.js\")",
       "WebSearch",
       "Bash(lsof:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(npm install node-fetch@2)",
+      "Bash(kill:*)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(git restore:*)"
     ]
   }
 }

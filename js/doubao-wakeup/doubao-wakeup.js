@@ -143,11 +143,9 @@ class DoubaoWakeup {
                     this.startWakeupDetection(this.onWakeupCallback)
                 }, DOUBAO_CONFIG.RETRY_INTERVAL)
             } else {
-                // 重试失败，降级到键盘唤醒
-                if (DOUBAO_CONFIG.FALLBACK_TO_KEYBOARD) {
-                    console.log(`${DOUBAO_CONFIG.LOG_PREFIX} 降级到键盘唤醒模式`)
-                    this.enableKeyboardFallback()
-                }
+                // 重试失败，不再降级到键盘唤醒
+                // 完全交给现有的开关控制
+                console.log(`${DOUBAO_CONFIG.LOG_PREFIX} 重试失败，请检查配置或手动重启`)
             }
 
             throw error

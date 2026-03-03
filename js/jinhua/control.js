@@ -97,6 +97,31 @@ if (WAKEUP_CONFIG.ENABLE_KEY_D_SHORTCUT) {
     console.log('✓ 按键 D 快捷键已启用')
 }
 
+// 添加全局 Enter 键监听：在 MUSIC 模式下打断音乐播放并进入连续对话
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        // 在 MUSIC 模式下，打断音乐播放并进入连续对话
+        if (control_mode === 'MUSIC') {
+            console.log('检测到 Enter 键，打断音乐播放')
+
+            // 停止音乐播放
+            stopMusicPlayback()
+
+            // 清空语音识别结果，避免自动发起对话请求
+            control_lat_result = ''
+
+            // 直接进入连续对话模式
+            enterMode('MULTI')
+
+            showEleMessage('已切换到连续对话模式', 'success', 1500)
+        }
+        // 在 BUS 模式下，保留原来的唤醒逻辑
+        else if (control_mode === 'BUS') {
+            wakeupDetect(event)
+        }
+    }
+})
+
 // 切换豆包唤醒词检测状态
 function toggleDoubaoWakeup() {
     if (!doubaoWakeupActive) {
@@ -536,7 +561,7 @@ function checkClearTimer(){
 
 import { singelModuleStart } from './control-singel-talk.js'
 import { multiModuleStart } from './control-multi-talk.js'
-import { musicModuleStart } from './control-music.js'
+import { musicModuleStart, stopMusicPlayback } from './control-music.js'
 import { stationModuleStart } from './control-station.js'
 
 

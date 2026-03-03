@@ -126,6 +126,16 @@ function playMusicEnd(){
     onMusicModuleEnd() //通知 控制中心control
 }
 
+// 导出停止音乐播放的函数（用于外部打断）
+export function stopMusicPlayback(){
+    if(control_audioPlayer){
+        control_audioPlayer.pause() // 暂停播放
+        control_audioPlayer.currentTime = 0 // 重置播放进度
+        showMusicProgress(false) // 隐藏音乐进度条
+        console.log('音乐播放已被手动打断')
+    }
+}
+
 //下载音频 options 预请求会被拦截
 async function downMusicAudio(filePath){
     

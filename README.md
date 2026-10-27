@@ -1,3 +1,19 @@
+# 湖宝 · Live2D 语音聊天助手
+
+这是原项目源码仓库。项目以 Live2D 角色为交互入口，整合语音唤醒、语音识别、连续对话、语音合成与字幕；人脸表情识别是项目中的探索功能，当前入口已注释。
+
+![湖宝交互场景示意](./docs/湖宝-对话场景示意.png)
+
+> 图片基于现有角色画面制作，文字是展示用示意，并非当前实时对话截图。
+
+## 当前运行情况
+
+页面和角色动画仍可展示。实时语音链路依赖本地 `localhost:3001/token` 服务、第三方语音 API 以及原对话后端 `avatar.chekkk.com/ai`；截至 2026 年 10 月，这些服务尚未恢复，因此对话与字幕不能保证正常运行。启动说明见下方原项目文档。
+
+GitHub 公共版本保留了原项目的 7 个开发分支及源码历史；GitHub 密钥保护拦截的历史火山引擎凭证已在发布副本中替换为占位符。
+
+---
+
 # fguby-live2D
 ![Travis](https://img.shields.io/badge/live2D-2.1.0-ff69b4.svg?labelColor=blueviolet)
 ![Travis](https://img.shields.io/badge/-javascript-important.svg)

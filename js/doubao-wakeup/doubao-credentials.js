@@ -10,11 +10,11 @@
 export const DOUBAO_CREDENTIALS = {
     // 应用ID（必填）
     // 从火山引擎控制台获取
-    APP_KEY: '4145251174',
+    APP_KEY: '3100553971',
 
     // 访问密钥（必填）
     // 从火山引擎控制台获取
-    ACCESS_KEY: 'LpK1fJ6uG4frTjWqMiZZ7Jp8agvDeSAW',
+    ACCESS_KEY: 'ildZ234LgPJyCmi9ns9wpfhIvRmo26ja',
 
     // 资源ID（必填）
     // 推荐使用：volc.seedasr.sauc.concurrent（豆包2.0并发版）
